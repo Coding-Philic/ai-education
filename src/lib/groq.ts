@@ -23,9 +23,11 @@ const diagnosticCache = new Map<string, { data: DiagnosticResult; timestamp: num
 const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
 const FALLBACK_MODELS = [
-  process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
-  'llama-3.3-70b-versatile',
-  'llama-3.1-8b-instant',
+  process.env.GROQ_MODEL || 'groq/compound-mini',
+  'groq/compound-mini',
+  'qwen/qwen3.8-27b',
+  'groq/compound',
+  'openai/gpt-oss-20b',
 ];
 
 async function executeGroqWithFallback(createParams: any, timeoutMs = 4000): Promise<any> {
@@ -2116,8 +2118,8 @@ Format MUST be strict valid JSON:
 Do NOT output any markdown backticks. Return ONLY JSON.
 `.trim();
 
-      const response = await groqClient.chat.completions.create({
-        model: process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
+      const response = await executeGroqWithFallback({
+        model: process.env.GROQ_MODEL || 'groq/compound-mini',
         messages: [
           { role: 'system', content: sysDesignPrompt },
           {
@@ -2127,8 +2129,8 @@ Do NOT output any markdown backticks. Return ONLY JSON.
         ],
         response_format: { type: 'json_object' },
         temperature: 0.1,
-        max_tokens: 450,
-      });
+        max_tokens: 380,
+      }, 4000);
 
       console.log(`⚡ [Groq LPU LIVE INFERENCE] System Design Visual frames generated! Model: ${response.model}`);
 
@@ -2195,8 +2197,8 @@ Allowed matchStatus values: "SCANNING" | "MATCHED" | "PRUNED" | "PRESERVED_NULL"
 Do NOT output any markdown backticks. Return ONLY JSON.
 `.trim();
 
-      const response = await groqClient.chat.completions.create({
-        model: process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
+      const response = await executeGroqWithFallback({
+        model: process.env.GROQ_MODEL || 'groq/compound-mini',
         messages: [
           { role: 'system', content: sqlSystemPrompt },
           {
@@ -2206,8 +2208,8 @@ Do NOT output any markdown backticks. Return ONLY JSON.
         ],
         response_format: { type: 'json_object' },
         temperature: 0.1,
-        max_tokens: 850,
-      });
+        max_tokens: 420,
+      }, 4000);
 
       console.log(`⚡ [Groq LPU LIVE INFERENCE] SQL Visual frames generated! Model: ${response.model}, Tokens: ${JSON.stringify(response.usage)}`);
 
