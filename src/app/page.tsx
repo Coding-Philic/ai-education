@@ -13,7 +13,7 @@ import {
   TrendingUp,
   Cpu,
   Layers,
-  Check
+  Map
 } from 'lucide-react';
 import SkillRadar from '@/components/shared/SkillRadar';
 import { Track, UserProfile } from '@/lib/types';
@@ -45,7 +45,7 @@ export default function HomePage() {
 
   const getDomainTag = (domain: string) => {
     if (domain === 'dsa') return { text: 'DSA Memory Visualizer', color: 'text-[#0D684D] bg-[#EFF5F0] border-[#D5E2D8]' };
-    if (domain === 'sql') return { text: 'Chai SQLab Engine', color: 'text-[#0284C7] bg-[#F0F9FF] border-[#BAE6FD]' };
+    if (domain === 'sql') return { text: 'SQL Lab Engine', color: 'text-[#0284C7] bg-[#F0F9FF] border-[#BAE6FD]' };
     return { text: 'Distributed Architecture', color: 'text-[#7C3AED] bg-[#F5F3FF] border-[#DDD6FE]' };
   };
 
@@ -87,7 +87,7 @@ export default function HomePage() {
             className="px-6 py-3.5 rounded-full bg-white hover:bg-[#F5F2E5] text-[#141A17] border border-[#E0DCCF] text-sm font-semibold shadow-xs flex items-center gap-2 transition-all hover:border-[#D0CABA]"
           >
             <Database className="w-4 h-4 text-[#0D684D]" />
-            <span>Chai SQLab</span>
+            <span>SQL Lab</span>
           </Link>
           <Link
             href="/tracks/system-design"
@@ -96,25 +96,6 @@ export default function HomePage() {
             <Network className="w-4 h-4 text-[#0D684D]" />
             <span>System Design</span>
           </Link>
-        </div>
-
-        {/* Value Props Row (WisprType Image 1) */}
-        <div className="pt-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-[#5E6D66] font-medium">
-          <span className="flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-[#0D684D]" /> Groq LPU Inference
-          </span>
-          <span className="text-[#D0CABA]">•</span>
-          <span className="flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-[#0D684D]" /> 100% Dynamic PostgreSQL
-          </span>
-          <span className="text-[#D0CABA]">•</span>
-          <span className="flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-[#0D684D]" /> Zero Hardcoded Content
-          </span>
-          <span className="text-[#D0CABA]">•</span>
-          <span className="flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-[#0D684D]" /> AKTU Student Cohort
-          </span>
         </div>
 
         {/* Mac Window Mockup Card with Aurora Glow Pill (WisprType Image 2) */}
@@ -126,7 +107,6 @@ export default function HomePage() {
                 <span className="w-3 h-3 rounded-full bg-[#EF4444]/90 inline-block"></span>
                 <span className="w-3 h-3 rounded-full bg-[#F59E0B]/90 inline-block"></span>
                 <span className="w-3 h-3 rounded-full bg-[#10B981]/90 inline-block"></span>
-                <span className="text-[11px] font-mono text-[#7C8E86] ml-2">CogniFlow Compiler — Live AST Trace Engine</span>
               </div>
               <span className="text-[10px] font-mono text-[#52645D] uppercase tracking-wider">Groq LPU Active</span>
             </div>
@@ -161,12 +141,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 4 Metric Bento Cards */}
-        <div className="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto text-left">
-          <div className="glass-panel p-4 rounded-xl border border-[#E5E1D3]">
-            <span className="text-[#6F7E77] text-xs font-medium block">Active Student Cohort</span>
-            <span className="text-xl font-bold font-mono text-[#141A17] mt-0.5 block">438 Engineers</span>
-          </div>
+        {/* 3 Metric Bento Cards */}
+        <div className="pt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto text-left">
           <div className="glass-panel p-4 rounded-xl border border-[#E5E1D3]">
             <span className="text-[#6F7E77] text-xs font-medium block">AI Inference Latency</span>
             <span className="text-xl font-bold font-mono text-[#0D684D] mt-0.5 block">&lt; 380ms LPU</span>
@@ -276,7 +252,9 @@ export default function HomePage() {
       <section className="glass-panel p-7 rounded-2xl border border-[#E5E1D3] flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xs">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-xl">🗺️</span>
+            <div className="w-7 h-7 rounded-lg bg-[#EFF5F0] border border-[#D5E2D8] flex items-center justify-center text-[#0D684D]">
+              <Map className="w-4 h-4" />
+            </div>
             <h2 className="text-lg font-bold text-[#141A17]">AI Roadmap Generator</h2>
             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D]">NEW</span>
           </div>
@@ -285,10 +263,10 @@ export default function HomePage() {
             <strong className="text-[#141A17]"> personalized, adaptive study roadmap</strong> with daily tasks, XP rewards, and smart re-routing if you fall behind.
           </p>
           <div className="flex flex-wrap gap-2 text-[10px] pt-1">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#4E5C56]">✅ Mood-adaptive pacing</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#4E5C56]">⚡ XP + Streaks</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#4E5C56]">🔄 AI dynamic re-routes</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#4E5C56]">🎯 DSA / SQL / System Design</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#4E5C56]">Mood-adaptive pacing</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#4E5C56]">Adaptive Streaks</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#4E5C56]">AI dynamic re-routes</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#4E5C56]">DSA / SQL / System Design</span>
           </div>
         </div>
         <Link

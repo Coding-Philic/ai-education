@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
@@ -9,19 +9,17 @@ import {
   Network, 
   Users, 
   ShieldCheck, 
-  Zap, 
-  Flame, 
   Sparkles,
-  Radio,
-  Map
+  Map,
+  Menu,
+  X
 } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [onlineCount, setOnlineCount] = useState(142);
   const [userRole, setUserRole] = useState<'student' | 'admin'>('student');
-  const [xp, setXp] = useState(1850);
-  const [streak, setStreak] = useState(14);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Check saved role or default
@@ -30,18 +28,27 @@ export default function Navbar() {
       setUserRole(saved);
     }
 
-    // Sync XP from localStorage (set by roadmap engine)
-    const savedXP = localStorage.getItem('cogniflow_xp');
-    if (savedXP) setXp(parseInt(savedXP));
-    const savedStreak = localStorage.getItem('cogniflow_streak');
-    if (savedStreak) setStreak(parseInt(savedStreak));
+    // Close menu on outside click
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
 
-    // Dynamic presence variation for realism
-    const interval = setInterval(() => {
-      setOnlineCount(prev => prev + (Math.random() > 0.5 ? 1 : -1));
-    }, 8000);
+    // Close menu on Escape key
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false);
+      }
+    };
 
-    return () => clearInterval(interval);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const toggleRole = () => {
@@ -61,12 +68,12 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#FAF8EE]/90 backdrop-blur-md border-b border-[#E5E1D3] transition-all">
+    <header className="sticky top-0 z-50 bg-[#FAF8EE]/90 backdrop-blur-md border-b border-[#E5E1D3] transition-all" ref={menuRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         
         {/* Brand & Hackathon Badge */}
         <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2.5 group">
+          <Link href="/" className="flex items-center gap-2.5 group" onClick={() => setIsMenuOpen(false)}>
             <div className="w-9 h-9 rounded-full bg-[#0D382B] flex items-center justify-center text-white shadow-xs group-hover:bg-[#08261D] transition-all">
               <Sparkles className="w-4 h-4 text-[#34D399] group-hover:rotate-12 transition-transform" />
             </div>
@@ -81,68 +88,92 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Navigation Links - Pill Navbar like WisprType */}
-        <nav className="hidden md:flex items-center gap-1.5 bg-[#F4F0E3]/70 p-1 rounded-full border border-[#E5E1D3]">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium transition-all ${
-                  isActive
-                    ? 'bg-white text-[#0D382B] font-semibold shadow-xs border border-[#D5E2D8]'
-                    : 'text-[#4E5C56] hover:text-[#141A17] hover:bg-white/60'
-                }`}
-              >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#0D684D]' : 'text-[#6B7A74]'}`} />
-                <span>{item.label}</span>
-                {item.badge && (
-                  <span className={`text-[9px] font-semibold px-1.5 py-0.2 rounded-full ${
-                    item.badge === 'AI' 
-                      ? 'bg-[#EFF5F0] text-[#0D684D] border border-[#D5E2D8]'
-                      : 'bg-[#FFF8E6] text-[#B45309] border border-[#FDE68A]'
-                  }`}>
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Right Controls: Real-time Presence, XP, and Role Toggle */}
+        {/* Minimal Right Controls: Mode Switcher & Hamburger Button */}
         <div className="flex items-center gap-2.5">
-          {/* Live Online Counter */}
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D] text-xs font-mono">
-            <Radio className="w-3 h-3 animate-pulse text-[#059669]" />
-            <span className="font-semibold">{onlineCount} live</span>
-          </div>
-
-          {/* XP & Streak Pills */}
-          <div className="hidden sm:flex items-center gap-1.5">
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white border border-[#E5E1D3] text-xs text-[#141A17] font-semibold shadow-xs">
-              <Zap className="w-3.5 h-3.5 text-[#D97706] fill-[#D97706]/20" />
-              <span>{xp} XP</span>
-            </div>
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white border border-[#E5E1D3] text-xs text-[#141A17] font-semibold shadow-xs">
-              <Flame className="w-3.5 h-3.5 text-[#E11D48] fill-[#E11D48]/20" />
-              <span>{streak}d</span>
-            </div>
-          </div>
-
-          {/* Fast Role Switcher (WisprType Pill Button) */}
+          {/* Mode Switcher Pill */}
           <button
             onClick={toggleRole}
             title="Click to toggle Student / Admin role"
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#0D382B] hover:bg-[#08261D] text-white shadow-xs hover:shadow-sm transition-all cursor-pointer"
           >
-            <span>{userRole === 'admin' ? '🛡️ Admin Mode' : '🎓 Student Mode'}</span>
+            <span>{userRole === 'admin' ? 'Admin Mode' : 'Student Mode'}</span>
+          </button>
+
+          {/* Clean Hamburger Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(prev => !prev)}
+            aria-label="Toggle navigation menu"
+            className="w-9 h-9 rounded-full bg-[#F4F0E3] hover:bg-[#ECE6D5] border border-[#E5E1D3] flex items-center justify-center text-[#141A17] transition-all cursor-pointer shadow-xs active:scale-95"
+          >
+            {isMenuOpen ? (
+              <X className="w-4 h-4 text-[#0D382B]" />
+            ) : (
+              <Menu className="w-4 h-4 text-[#0D382B]" />
+            )}
           </button>
         </div>
 
       </div>
+
+      {/* Hamburger Menu Overlay / Dropdown */}
+      {isMenuOpen && (
+        <div className="absolute top-16 right-4 sm:right-6 lg:right-8 w-72 sm:w-80 bg-[#FAF8EE] border border-[#E5E1D3] rounded-2xl shadow-xl p-3 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="text-[11px] font-mono uppercase tracking-wider text-[#7C8E86] px-3 py-1.5 font-semibold flex items-center justify-between">
+            <span>Navigation</span>
+            <span className="text-[10px] text-[#0D684D] bg-[#EFF5F0] px-2 py-0.5 rounded-full border border-[#D5E2D8]">
+              {userRole === 'admin' ? 'Admin' : 'Student'}
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-1 mt-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all ${
+                    isActive
+                      ? 'bg-[#0D382B] text-white font-semibold shadow-xs'
+                      : 'text-[#3A4742] hover:text-[#141A17] hover:bg-[#F4F0E3]'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#34D399]' : 'text-[#6B7A74]'}`} />
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge && (
+                    <span className={`text-[9px] font-semibold px-2 py-0.5 rounded-full ${
+                      isActive
+                        ? 'bg-white/20 text-[#A7F3D0]'
+                        : item.badge === 'AI'
+                        ? 'bg-[#EFF5F0] text-[#0D684D] border border-[#D5E2D8]'
+                        : 'bg-[#FFF8E6] text-[#B45309] border border-[#FDE68A]'
+                    }`}>
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="mt-2.5 pt-2.5 border-t border-[#E5E1D3] flex items-center justify-between px-2 text-[11px] text-[#7C8E86]">
+            <span>Active: {userRole === 'student' ? 'Student Mode' : 'Admin Mode'}</span>
+            <button
+              onClick={() => {
+                toggleRole();
+                setIsMenuOpen(false);
+              }}
+              className="text-xs font-semibold text-[#0D684D] hover:underline cursor-pointer"
+            >
+              Switch to {userRole === 'student' ? 'Admin' : 'Student'}
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

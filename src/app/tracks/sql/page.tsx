@@ -30,7 +30,7 @@ export default function SqlTrackPage() {
     return (
       <div className="py-24 flex flex-col items-center justify-center gap-3 text-slate-400">
         <Loader2 className="w-6 h-6 animate-spin text-cyan-400" />
-        <span className="text-xs font-mono">Loading Dynamic Chai SQLab Engine...</span>
+        <span className="text-xs font-mono">Loading Dynamic SQL Lab Engine...</span>
       </div>
     );
   }

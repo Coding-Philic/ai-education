@@ -24,17 +24,20 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
   ];
 
   // SVG Radar Polygon Math
-  const size = 260;
-  const center = size / 2;
-  const radius = 95;
+  const width = 380;
+  const height = 280;
+  const centerX = width / 2;
+  const centerY = height / 2;
+  const radius = 76;
   const totalAxes = axes.length;
 
   const getCoordinates = (index: number, valueRatio: number) => {
     const angle = (Math.PI * 2 / totalAxes) * index - Math.PI / 2;
     const r = radius * valueRatio;
     return {
-      x: center + r * Math.cos(angle),
-      y: center + r * Math.sin(angle),
+      x: centerX + r * Math.cos(angle),
+      y: centerY + r * Math.sin(angle),
+      angle
     };
   };
 
@@ -63,9 +66,9 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
   return (
     <div className="glass-panel p-6 rounded-2xl flex flex-col md:flex-row items-center gap-6 border border-[#E5E1D3]">
       
-      {/* SVG Radar Chart */}
-      <div className="relative w-[260px] h-[260px] shrink-0">
-        <svg width={size} height={size} className="overflow-visible">
+      {/* SVG Radar Chart - calibrated width & dynamic anchor to eliminate text overflow */}
+      <div className="relative w-full md:w-[380px] h-[280px] shrink-0 flex items-center justify-center">
+        <svg viewBox="0 0 380 280" className="w-full h-full">
           {/* Concentric grid webs */}
           {gridPolygons.map((points, idx) => (
             <polygon
@@ -85,8 +88,8 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
             return (
               <line
                 key={i}
-                x1={center}
-                y1={center}
+                x1={centerX}
+                y1={centerY}
                 x2={x}
                 y2={y}
                 stroke="#D9D4C3"
@@ -105,10 +108,31 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
             className="transition-all duration-700 ease-out"
           />
 
-          {/* Vertex Points & Labels */}
+          {/* Vertex Points & Non-Clipping Boundary Labels */}
           {axes.map((axis, i) => {
-            const { x, y } = getCoordinates(i, axis.value / 100);
-            const labelPos = getCoordinates(i, 1.25);
+            const { x, y, angle } = getCoordinates(i, axis.value / 100);
+            const cosVal = Math.cos(angle);
+            const sinVal = Math.sin(angle);
+            
+            // Label offset outside the 1.0 ring
+            const labelDist = radius + 18;
+            const lx = centerX + labelDist * cosVal;
+            const ly = centerY + labelDist * sinVal;
+
+            let textAnchor: 'middle' | 'start' | 'end' = 'middle';
+            if (cosVal < -0.2) {
+              textAnchor = 'end';
+            } else if (cosVal > 0.2) {
+              textAnchor = 'start';
+            }
+
+            let dominantBaseline: 'auto' | 'middle' | 'hanging' = 'middle';
+            if (sinVal < -0.6) {
+              dominantBaseline = 'auto';
+            } else if (sinVal > 0.6) {
+              dominantBaseline = 'hanging';
+            }
+
             return (
               <g key={i}>
                 <circle
@@ -120,11 +144,11 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
                   strokeWidth="1.5"
                 />
                 <text
-                  x={labelPos.x}
-                  y={labelPos.y}
-                  textAnchor="middle"
-                  alignmentBaseline="middle"
-                  className="text-[10px] fill-[#4E5C56] font-semibold"
+                  x={lx}
+                  y={ly}
+                  textAnchor={textAnchor}
+                  dominantBaseline={dominantBaseline}
+                  className="text-[10px] fill-[#4E5C56] font-semibold select-none"
                 >
                   {axis.label} ({axis.value}%)
                 </text>

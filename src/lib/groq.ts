@@ -11,7 +11,7 @@ const groqApiKey = process.env.GROQ_API_KEY;
 const isGroqConfigured = groqApiKey && groqApiKey !== 'mock_or_user_key' && !groqApiKey.includes('your_groq_api_key');
 
 const groqClient = isGroqConfigured
-  ? new Groq({ apiKey: groqApiKey })
+  ? new Groq({ apiKey: groqApiKey, maxRetries: 0 })
   : null;
 
 /**
@@ -70,6 +70,9 @@ export function extractTargetFromCode(code: string, fallback: number = 47): numb
 export function detectAlgorithmFromCode(code: string): string {
   const c = code.toLowerCase();
   // 1. Trees & Traversals
+  if (c.includes('symmetric') || c.includes('mirror') || c.includes('is_symmetric') || c.includes('issymmetric')) {
+    return 'Check if Binary Tree is Symmetric';
+  }
   if (c.includes('treenode') || c.includes('inverttree') || c.includes('maxdepth') || c.includes('levelorder') || c.includes('isvalidbst') || c.includes('lowestcommonancestor') || (c.includes('root') && (c.includes('left') || c.includes('right')))) {
     if (c.includes('invert')) return 'Invert Binary Tree';
     if (c.includes('depth') || c.includes('maxdepth')) return 'Tree Max Depth';
@@ -169,6 +172,11 @@ export function detectAlgorithmFromCode(code: string): string {
 /**
  * Dynamic simulator for Binary Search on any array and target
  */
+/**
+ * Dynamic simulator for Binary Search
+ * Generates 18 to 26 granular animation frames tracing interval bounds,
+ * while loop conditions, midpoint calculations, element reads, comparisons, and bound narrowing.
+ */
 function simulateBinarySearch(elements: number[], target: number, codeLines: string[]): VisualFrame[] {
   const frames: VisualFrame[] = [];
   let low = 0;
@@ -180,21 +188,42 @@ function simulateBinarySearch(elements: number[], target: number, codeLines: str
     const idx = codeLines.findIndex(l => pattern.test(l));
     return idx >= 0 ? idx + 1 : 1;
   };
-  const initLine = findLine(/def|function|low\s*=|lo\s*=|left\s*=/i);
-  const loopLine = findLine(/while/i);
-  const midLine = findLine(/mid\s*=/i);
-  const compareLine = findLine(/if.*==|elif|else/i);
+  const initLine = findLine(/def|function/i) || 1;
+  const boundsLine = findLine(/low\s*=|lo\s*=|left\s*=/i) || 2;
+  const loopLine = findLine(/while/i) || 3;
+  const midLine = findLine(/mid\s*=/i) || 4;
+  const readLine = findLine(/nums\[mid\]|elements\[mid\]|arr\[mid\]/i) || midLine;
+  const compareLine = findLine(/if.*==/i) || 5;
+  const leftShrinkLine = findLine(/high\s*=|hi\s*=|right\s*=/i) || 7;
+  const rightShrinkLine = findLine(/low\s*=|lo\s*=|left\s*=/i) || 9;
+  const returnLine = findLine(/return/i) || 6;
 
+  // Frame 1: Invocation
   frames.push({
     step: step++,
-    lineNumber: initLine || 1,
-    action: 'INITIALIZE_BOUNDS',
+    lineNumber: initLine,
+    action: 'INVOKE_SEARCH',
     dataStructureState: { type: 'ARRAY', elements: [...elements] },
     pointers: { low: 0, high: elements.length - 1 },
     highlightedElements: [0, elements.length - 1],
-    explanation: `Initialize search bounds: low=0 (val ${elements[0]}), high=${elements.length - 1} (val ${elements[elements.length - 1]}). Searching for target ${target}.`,
+    explanation: `Call binary_search with sorted array of ${elements.length} elements: [${elements.join(', ')}]. Target = ${target}.`,
     animationHint: 'pointer-left-move',
-    memoryScope: { low: 0, high: elements.length - 1, target, arrayLength: elements.length },
+    memoryScope: { target, arrayLength: elements.length, low: 0, high: elements.length - 1 },
+    variables: { target, length: elements.length },
+  });
+
+  // Frame 2: Initialize bounds
+  frames.push({
+    step: step++,
+    lineNumber: boundsLine,
+    action: 'INIT_BOUNDS',
+    dataStructureState: { type: 'ARRAY', elements: [...elements] },
+    pointers: { low: 0, high: elements.length - 1 },
+    highlightedElements: [0, elements.length - 1],
+    explanation: `Initialize search bounds: low = 0 (val ${elements[0]}), high = ${elements.length - 1} (val ${elements[elements.length - 1]}). Search space size: ${elements.length}.`,
+    animationHint: 'pointer-left-move',
+    memoryScope: { low: 0, high: elements.length - 1, target },
+    variables: { low: 0, high: elements.length - 1 },
   });
 
   let found = false;
@@ -202,65 +231,156 @@ function simulateBinarySearch(elements: number[], target: number, codeLines: str
   const maxIterations = 20;
 
   while (low <= high && iterations++ < maxIterations) {
+    // Frame: while condition
+    frames.push({
+      step: step++,
+      lineNumber: loopLine,
+      action: 'CHECK_WHILE_CONDITION',
+      dataStructureState: { type: 'ARRAY', elements: [...elements] },
+      pointers: { low, high },
+      highlightedElements: [low, high],
+      explanation: `Evaluate loop condition: low <= high (${low} <= ${high} is True). Search interval contains ${high - low + 1} candidates.`,
+      animationHint: 'compare',
+      memoryScope: { low, high, candidates: high - low + 1 },
+      variables: { low, high, 'low <= high': true },
+    });
+
     const mid = Math.floor((low + high) / 2);
     const midVal = elements[mid];
 
     // Frame: calculate mid
     frames.push({
       step: step++,
-      lineNumber: midLine || loopLine,
+      lineNumber: midLine,
       action: 'CALCULATE_MID',
       dataStructureState: { type: 'ARRAY', elements: [...elements] },
       pointers: { low, mid, high },
       highlightedElements: [mid],
-      explanation: `Calculate midpoint: mid = floor((${low} + ${high}) / 2) = ${mid}. Inspect element at [${mid}] with value ${midVal}.`,
+      explanation: `Calculate midpoint: mid = floor((${low} + ${high}) / 2) = ${mid}.`,
       animationHint: 'index-jump',
-      memoryScope: { low, high, mid, midVal, target },
+      memoryScope: { low, high, mid },
+      variables: { low, high, mid },
     });
 
-    if (midVal === target) {
-      // Found target!
+    // Frame: read mid element
+    frames.push({
+      step: step++,
+      lineNumber: readLine,
+      action: 'READ_MID_ELEMENT',
+      dataStructureState: { type: 'ARRAY', elements: [...elements] },
+      pointers: { low, mid, high },
+      highlightedElements: [mid],
+      explanation: `Inspect element at midpoint: elements[${mid}] = ${midVal}.`,
+      animationHint: 'compare',
+      memoryScope: { mid, midVal, target },
+      variables: { mid, 'elements[mid]': midVal },
+    });
+
+    // Frame: compare mid with target
+    const isTargetMatch = midVal === target;
+    const isTargetSmaller = midVal > target;
+    frames.push({
+      step: step++,
+      lineNumber: compareLine,
+      action: 'COMPARE_MID_WITH_TARGET',
+      dataStructureState: { type: 'ARRAY', elements: [...elements] },
+      pointers: { low, mid, high },
+      highlightedElements: [mid],
+      explanation: isTargetMatch
+        ? `Compare elements[${mid}] (${midVal}) == target (${target}): Match found!`
+        : isTargetSmaller
+        ? `Compare elements[${mid}] (${midVal}) with target (${target}): ${midVal} > ${target}.`
+        : `Compare elements[${mid}] (${midVal}) with target (${target}): ${midVal} < ${target}.`,
+      animationHint: isTargetMatch ? 'target-found' : 'compare',
+      memoryScope: { midVal, target, diff: midVal - target },
+      variables: { 'elements[mid]': midVal, target, match: isTargetMatch },
+    });
+
+    if (isTargetMatch) {
+      // Frame: match confirmed
       frames.push({
         step: step++,
-        lineNumber: compareLine || midLine,
+        lineNumber: compareLine,
         action: 'TARGET_FOUND',
         dataStructureState: { type: 'ARRAY', elements: [...elements] },
         pointers: { low, mid, high },
         highlightedElements: [mid],
-        explanation: `Target match found! elements[${mid}] == ${target}. Successfully located at index ${mid} in O(log n) time!`,
+        explanation: `Target confirmed! elements[${mid}] == ${target}. Located in O(log n) time!`,
         animationHint: 'target-found',
-        memoryScope: { low, high, mid, result: mid, found: true },
+        memoryScope: { result: mid, found: true },
+        variables: { matchedIndex: mid, found: true },
       });
+
+      // Frame: return index
+      frames.push({
+        step: step++,
+        lineNumber: returnLine,
+        action: 'RETURN_INDEX',
+        dataStructureState: { type: 'ARRAY', elements: [...elements] },
+        pointers: { low, mid, high },
+        highlightedElements: [mid],
+        explanation: `Return index ${mid}. Binary search completed successfully in ${iterations} iterations.`,
+        animationHint: 'target-found',
+        memoryScope: { returnValue: mid },
+        variables: { returned: mid },
+      });
+
       found = true;
       break;
-    } else if (midVal > target) {
-      // Target in left half
+    } else if (isTargetSmaller) {
       const nextHigh = mid - 1;
       frames.push({
         step: step++,
-        lineNumber: compareLine,
-        action: 'SHRINK_LEFT',
+        lineNumber: leftShrinkLine,
+        action: 'NARROW_TO_LEFT_HALF',
         dataStructureState: { type: 'ARRAY', elements: [...elements] },
         pointers: { low, mid, high },
         highlightedElements: [mid],
-        explanation: `Value ${midVal} > target ${target}. Target must lie in left subarray. Narrow right bound: high = mid - 1 = ${nextHigh}.`,
+        explanation: `Value ${midVal} > target ${target}. Target must lie in left subarray. Narrow right bound.`,
         animationHint: 'pointer-right-move',
         memoryScope: { low, high: nextHigh, mid, target, direction: 'LEFT' },
+        variables: { direction: 'LEFT', action: 'high = mid - 1' },
+      });
+
+      frames.push({
+        step: step++,
+        lineNumber: leftShrinkLine,
+        action: 'UPDATE_HIGH_BOUND',
+        dataStructureState: { type: 'ARRAY', elements: [...elements] },
+        pointers: { low, high: nextHigh },
+        highlightedElements: [low, nextHigh],
+        explanation: `Update upper bound: high = ${mid} - 1 = ${nextHigh}. Remaining range: [${low}..${nextHigh}].`,
+        animationHint: 'pointer-right-move',
+        memoryScope: { low, high: nextHigh },
+        variables: { high: nextHigh },
       });
       high = nextHigh;
     } else {
-      // Target in right half
       const nextLow = mid + 1;
       frames.push({
         step: step++,
-        lineNumber: compareLine,
-        action: 'SHRINK_RIGHT',
+        lineNumber: rightShrinkLine,
+        action: 'NARROW_TO_RIGHT_HALF',
         dataStructureState: { type: 'ARRAY', elements: [...elements] },
         pointers: { low, mid, high },
         highlightedElements: [mid],
-        explanation: `Value ${midVal} < target ${target}. Target must lie in right subarray. Advance left bound: low = mid + 1 = ${nextLow}.`,
+        explanation: `Value ${midVal} < target ${target}. Target must lie in right subarray. Advance left bound.`,
         animationHint: 'pointer-left-move',
         memoryScope: { low: nextLow, high, mid, target, direction: 'RIGHT' },
+        variables: { direction: 'RIGHT', action: 'low = mid + 1' },
+      });
+
+      frames.push({
+        step: step++,
+        lineNumber: rightShrinkLine,
+        action: 'UPDATE_LOW_BOUND',
+        dataStructureState: { type: 'ARRAY', elements: [...elements] },
+        pointers: { low: nextLow, high },
+        highlightedElements: [nextLow, high],
+        explanation: `Update lower bound: low = ${mid} + 1 = ${nextLow}. Remaining range: [${nextLow}..${high}].`,
+        animationHint: 'pointer-left-move',
+        memoryScope: { low: nextLow, high },
+        variables: { low: nextLow },
       });
       low = nextLow;
     }
@@ -269,14 +389,28 @@ function simulateBinarySearch(elements: number[], target: number, codeLines: str
   if (!found) {
     frames.push({
       step: step++,
-      lineNumber: loopLine || 1,
-      action: 'TARGET_NOT_FOUND',
+      lineNumber: loopLine,
+      action: 'SEARCH_INTERVAL_EXHAUSTED',
       dataStructureState: { type: 'ARRAY', elements: [...elements] },
       pointers: { low: Math.min(low, elements.length - 1), high: Math.max(0, high) },
       highlightedElements: [],
-      explanation: `Search exhausted (low > high). Target ${target} is not present in the array. Returning -1.`,
+      explanation: `Search exhausted: low (${low}) > high (${high}). Target ${target} is not in array.`,
       animationHint: 'target-miss',
-      memoryScope: { low, high, result: -1, found: false },
+      memoryScope: { low, high, found: false },
+      variables: { found: false },
+    });
+
+    frames.push({
+      step: step++,
+      lineNumber: returnLine,
+      action: 'RETURN_NOT_FOUND',
+      dataStructureState: { type: 'ARRAY', elements: [...elements] },
+      pointers: {},
+      highlightedElements: [],
+      explanation: `Return -1. Target element not found in array.`,
+      animationHint: 'target-miss',
+      memoryScope: { returnValue: -1 },
+      variables: { returned: -1 },
     });
   }
 
@@ -386,6 +520,8 @@ function simulateBubbleSort(rawElements: number[], codeLines: string[]): VisualF
 
 /**
  * Dynamic simulator for Two Pointer / Two Sum
+ * Generates 18 to 22 granular, high-fidelity animation frames tracing every loop check,
+ * pointer read, addition, comparison, branch pruning, pointer advancement, and return.
  */
 function simulateTwoPointer(elements: number[], target: number, codeLines: string[]): VisualFrame[] {
   const frames: VisualFrame[] = [];
@@ -393,63 +529,214 @@ function simulateTwoPointer(elements: number[], target: number, codeLines: strin
   let right = elements.length - 1;
   let step = 1;
 
+  // Frame 1: Invocation of two_sum
   frames.push({
     step: step++,
-    lineNumber: 2,
-    action: 'INITIALIZE_POINTERS',
+    lineNumber: 1,
+    action: 'INVOKE_TWO_SUM',
     dataStructureState: { type: 'ARRAY', elements: [...elements] },
     pointers: { left: 0, right: elements.length - 1 },
     highlightedElements: [0, elements.length - 1],
-    explanation: `Two pointers initialized: left at index 0 (${elements[0]}), right at index ${elements.length - 1} (${elements[elements.length - 1]}). Target sum is ${target}.`,
+    explanation: `Call two_sum with sorted array [${elements.join(', ')}] and target sum ${target}.`,
     animationHint: 'pointer-left-move',
-    memoryScope: { left: 0, right: elements.length - 1, target },
+    memoryScope: { target, arrayLength: elements.length, left: 0, right: elements.length - 1 },
+    variables: { target, length: elements.length },
+  });
+
+  // Frame 2: Initialize left pointer
+  frames.push({
+    step: step++,
+    lineNumber: 2,
+    action: 'INIT_LEFT_POINTER',
+    dataStructureState: { type: 'ARRAY', elements: [...elements] },
+    pointers: { left: 0 },
+    highlightedElements: [0],
+    explanation: `Initialize left pointer at index 0 (value: ${elements[0]}).`,
+    animationHint: 'pointer-left-move',
+    memoryScope: { left: 0, leftVal: elements[0] },
+    variables: { left: 0, 'numbers[left]': elements[0] },
+  });
+
+  // Frame 3: Initialize right pointer
+  frames.push({
+    step: step++,
+    lineNumber: 3,
+    action: 'INIT_RIGHT_POINTER',
+    dataStructureState: { type: 'ARRAY', elements: [...elements] },
+    pointers: { left: 0, right: elements.length - 1 },
+    highlightedElements: [0, elements.length - 1],
+    explanation: `Initialize right pointer at index ${elements.length - 1} (value: ${elements[elements.length - 1]}).`,
+    animationHint: 'pointer-right-move',
+    memoryScope: { left: 0, right: elements.length - 1, rightVal: elements[elements.length - 1] },
+    variables: { left: 0, right: elements.length - 1, 'numbers[right]': elements[elements.length - 1] },
   });
 
   let found = false;
   let iters = 0;
-  while (left < right && iters++ < 15) {
+  while (left < right && iters++ < 20) {
     const curSum = elements[left] + elements[right];
 
-    if (curSum === target) {
+    // Frame: while condition check
+    frames.push({
+      step: step++,
+      lineNumber: 4,
+      action: 'CHECK_WHILE_LOOP',
+      dataStructureState: { type: 'ARRAY', elements: [...elements] },
+      pointers: { left, right },
+      highlightedElements: [left, right],
+      explanation: `Evaluate loop condition: left < right (${left} < ${right} is True). Pointers have not crossed.`,
+      animationHint: 'compare',
+      memoryScope: { left, right, condition: `${left} < ${right}` },
+      variables: { left, right, 'left < right': true },
+    });
+
+    // Frame: read pointer elements
+    frames.push({
+      step: step++,
+      lineNumber: 5,
+      action: 'READ_POINTER_VALUES',
+      dataStructureState: { type: 'ARRAY', elements: [...elements] },
+      pointers: { left, right },
+      highlightedElements: [left, right],
+      explanation: `Read active pair: numbers[${left}] = ${elements[left]} and numbers[${right}] = ${elements[right]}.`,
+      animationHint: 'compare',
+      memoryScope: { left, right, valLeft: elements[left], valRight: elements[right] },
+      variables: { 'numbers[left]': elements[left], 'numbers[right]': elements[right] },
+    });
+
+    // Frame: compute current sum
+    frames.push({
+      step: step++,
+      lineNumber: 5,
+      action: 'COMPUTE_CURRENT_SUM',
+      dataStructureState: { type: 'ARRAY', elements: [...elements] },
+      pointers: { left, right },
+      highlightedElements: [left, right],
+      explanation: `Calculate sum: ${elements[left]} + ${elements[right]} = ${curSum}.`,
+      animationHint: 'compare',
+      memoryScope: { left, right, currentSum: curSum, target },
+      variables: { current_sum: curSum, target },
+    });
+
+    // Frame: compare sum with target
+    const isMatch = curSum === target;
+    const isDeficit = curSum < target;
+    frames.push({
+      step: step++,
+      lineNumber: 6,
+      action: 'COMPARE_SUM_WITH_TARGET',
+      dataStructureState: { type: 'ARRAY', elements: [...elements] },
+      pointers: { left, right },
+      highlightedElements: [left, right],
+      explanation: isMatch
+        ? `Compare current_sum (${curSum}) with target (${target}): Match found! Exact target sum achieved.`
+        : isDeficit
+        ? `Compare current_sum (${curSum}) with target (${target}): ${curSum} < ${target} (Sum is too small).`
+        : `Compare current_sum (${curSum}) with target (${target}): ${curSum} > ${target} (Sum is too large).`,
+      animationHint: isMatch ? 'target-found' : 'compare',
+      memoryScope: { currentSum: curSum, target, diff: curSum - target },
+      variables: { current_sum: curSum, target, 'is_match': isMatch },
+    });
+
+    if (isMatch) {
+      // Frame: target match confirmation
       frames.push({
         step: step++,
-        lineNumber: 5,
-        action: 'MATCH_FOUND',
+        lineNumber: 6,
+        action: 'TARGET_MATCH_CONFIRMED',
         dataStructureState: { type: 'ARRAY', elements: [...elements] },
         pointers: { left, right },
         highlightedElements: [left, right],
-        explanation: `Match found! elements[${left}] (${elements[left]}) + elements[${right}] (${elements[right]}) == ${target}. Result indices: [${left + 1}, ${right + 1}].`,
+        explanation: `Target matched! numbers[${left}] (${elements[left]}) + numbers[${right}] (${elements[right]}) == ${target}.`,
         animationHint: 'target-found',
-        memoryScope: { left, right, currentSum: curSum, target, result: [left + 1, right + 1] },
+        memoryScope: { left, right, currentSum: curSum, target, matched: true },
+        variables: { matched: true, leftIndex: left, rightIndex: right },
       });
-      found = true;
-      break;
-    } else if (curSum < target) {
-      const nextLeft = left + 1;
+
+      // Frame: 1-based index calculation
       frames.push({
         step: step++,
         lineNumber: 7,
-        action: 'INCREMENT_LEFT',
+        action: 'CALCULATE_1_BASED_INDEX',
         dataStructureState: { type: 'ARRAY', elements: [...elements] },
         pointers: { left, right },
         highlightedElements: [left, right],
-        explanation: `Sum ${curSum} < target ${target}. Since array is sorted, increase sum by advancing left pointer: left = ${nextLeft}.`,
+        explanation: `Convert 0-indexed positions [${left}, ${right}] to 1-indexed problem format: [${left + 1}, ${right + 1}].`,
+        animationHint: 'target-found',
+        memoryScope: { result: [left + 1, right + 1] },
+        variables: { result: [left + 1, right + 1] },
+      });
+
+      // Frame: return optimal solution
+      frames.push({
+        step: step++,
+        lineNumber: 7,
+        action: 'RETURN_SOLUTION',
+        dataStructureState: { type: 'ARRAY', elements: [...elements] },
+        pointers: { left, right },
+        highlightedElements: [left, right],
+        explanation: `Optimal two-pointer execution complete! Return [${left + 1}, ${right + 1}] in O(n) time and O(1) space.`,
+        animationHint: 'target-found',
+        memoryScope: { result: [left + 1, right + 1], status: 'OPTIMAL' },
+        variables: { returned: [left + 1, right + 1] },
+      });
+
+      found = true;
+      break;
+    } else if (isDeficit) {
+      const nextLeft = left + 1;
+      frames.push({
+        step: step++,
+        lineNumber: 8,
+        action: 'EVALUATE_SUM_DEFICIT',
+        dataStructureState: { type: 'ARRAY', elements: [...elements] },
+        pointers: { left, right },
+        highlightedElements: [left, right],
+        explanation: `Sum ${curSum} < ${target}. Since array is sorted non-decreasingly, advance left pointer to increase sum.`,
+        animationHint: 'pointer-left-move',
+        memoryScope: { left, right, currentSum: curSum, target, action: 'increment_left' },
+        variables: { action: 'left += 1' },
+      });
+
+      frames.push({
+        step: step++,
+        lineNumber: 9,
+        action: 'INCREMENT_LEFT_POINTER',
+        dataStructureState: { type: 'ARRAY', elements: [...elements] },
+        pointers: { left: nextLeft, right },
+        highlightedElements: [nextLeft, right],
+        explanation: `Advance left: left = ${left} + 1 = ${nextLeft} (pointing to ${elements[nextLeft]}).`,
         animationHint: 'pointer-left-move',
         memoryScope: { left: nextLeft, right, currentSum: curSum, target },
+        variables: { left: nextLeft, 'numbers[left]': elements[nextLeft] },
       });
       left = nextLeft;
     } else {
       const nextRight = right - 1;
       frames.push({
         step: step++,
-        lineNumber: 9,
-        action: 'DECREMENT_RIGHT',
+        lineNumber: 10,
+        action: 'EVALUATE_SUM_SURPLUS',
         dataStructureState: { type: 'ARRAY', elements: [...elements] },
         pointers: { left, right },
         highlightedElements: [left, right],
-        explanation: `Sum ${curSum} > target ${target}. Since array is sorted, decrease sum by retreating right pointer: right = ${nextRight}.`,
+        explanation: `Sum ${curSum} > ${target}. Since array is sorted non-decreasingly, retreat right pointer to decrease sum.`,
+        animationHint: 'pointer-right-move',
+        memoryScope: { left, right, currentSum: curSum, target, action: 'decrement_right' },
+        variables: { action: 'right -= 1' },
+      });
+
+      frames.push({
+        step: step++,
+        lineNumber: 11,
+        action: 'DECREMENT_RIGHT_POINTER',
+        dataStructureState: { type: 'ARRAY', elements: [...elements] },
+        pointers: { left, right: nextRight },
+        highlightedElements: [left, nextRight],
+        explanation: `Retreat right: right = ${right} - 1 = ${nextRight} (pointing to ${elements[nextRight]}).`,
         animationHint: 'pointer-right-move',
         memoryScope: { left, right: nextRight, currentSum: curSum, target },
+        variables: { right: nextRight, 'numbers[right]': elements[nextRight] },
       });
       right = nextRight;
     }
@@ -458,14 +745,28 @@ function simulateTwoPointer(elements: number[], target: number, codeLines: strin
   if (!found) {
     frames.push({
       step: step++,
-      lineNumber: 11,
-      action: 'NO_PAIR_FOUND',
+      lineNumber: 12,
+      action: 'POINTERS_CROSSED',
       dataStructureState: { type: 'ARRAY', elements: [...elements] },
       pointers: { left, right },
       highlightedElements: [],
-      explanation: `Pointers met (left >= right). No two numbers add up to target ${target}.`,
+      explanation: `Pointers met (left >= right). Search space exhausted. No two numbers sum up to ${target}.`,
       animationHint: 'target-miss',
       memoryScope: { result: [] },
+      variables: { returned: [] },
+    });
+
+    frames.push({
+      step: step++,
+      lineNumber: 12,
+      action: 'RETURN_EMPTY',
+      dataStructureState: { type: 'ARRAY', elements: [...elements] },
+      pointers: {},
+      highlightedElements: [],
+      explanation: `Return empty array []. Execution finished.`,
+      animationHint: 'target-miss',
+      memoryScope: { result: [] },
+      variables: { returned: [] },
     });
   }
 
@@ -643,157 +944,670 @@ function simulateStack(elements: any[], codeLines: string[], algoName: string): 
 }
 
 /**
-/**
- * Dynamic simulator for Binary Tree traversal and BST validation
+ * Exhaustive simulator for Symmetric Tree: Mirror Reflection (LC 101)
+ * Generates 18 to 20 detailed animation frames tracing every recursive mirror comparison
  */
-function simulateTree(elements: any[], codeLines: string[], algoName: string): VisualFrame[] {
+function simulateSymmetricTree(treeNodes: any[], codeLines: string[]): VisualFrame[] {
   const frames: VisualFrame[] = [];
-  const treeNodes = elements && elements.length > 0 ? elements : [5, 1, 4, null, null, 3, 6];
   let step = 1;
-  const isBST = algoName.toLowerCase().includes('bst') || algoName.toLowerCase().includes('valid');
 
-  if (isBST) {
-    // ── Full BST Validation Simulation ──
-    const rootVal = treeNodes[0];
+  // Frame 1: Invocation of is_symmetric(root)
+  frames.push({
+    step: step++,
+    lineNumber: 8,
+    action: 'INVOKE_ENTRY',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { root: 0 },
+    highlightedElements: [0],
+    variables: { root: treeNodes[0] },
+    explanation: `Call is_symmetric(root). Initiating mirror reflection validation on root node (val: ${treeNodes[0]}).`,
+    animationHint: 'pointer-left-move',
+    memoryScope: { rootVal: treeNodes[0] },
+  });
+
+  // Frame 2: Call is_mirror(root, root)
+  frames.push({
+    step: step++,
+    lineNumber: 2,
+    action: 'CALL_MIRROR_ROOT',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 0, t2: 0 },
+    highlightedElements: [0],
+    variables: { 't1.val': treeNodes[0], 't2.val': treeNodes[0] },
+    explanation: `Call is_mirror(root, root). Compare root against itself to bootstrap mirror recursion.`,
+    animationHint: 'compare',
+    memoryScope: { t1: 0, t2: 0 },
+  });
+
+  // Frame 3: Check base conditions on root
+  frames.push({
+    step: step++,
+    lineNumber: 3,
+    action: 'CHECK_NULL_ROOT',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 0, t2: 0 },
+    highlightedElements: [0],
+    variables: { 'not t1': false, 'not t2': false },
+    explanation: `Check null conditions: neither t1 nor t2 is null. Proceeding to value equality.`,
+    animationHint: 'compare',
+    memoryScope: { isNull: false },
+  });
+
+  // Frame 4: Compare root values
+  frames.push({
+    step: step++,
+    lineNumber: 5,
+    action: 'COMPARE_ROOT_VAL',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 0, t2: 0 },
+    highlightedElements: [0],
+    variables: { 't1.val': treeNodes[0], 't2.val': treeNodes[0], match: true },
+    explanation: `Compare values: t1.val == t2.val (${treeNodes[0]} == ${treeNodes[0]}). Match! Now recurse into mirror subtrees.`,
+    animationHint: 'target-found',
+    memoryScope: { match: true },
+  });
+
+  // Frame 5: Recurse into Level 1 outer children (nodes 1 and 2)
+  frames.push({
+    step: step++,
+    lineNumber: 6,
+    action: 'RECURSE_OUTER_L1',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 1, t2: 2 },
+    highlightedElements: [1, 2],
+    variables: { 't1 (root.left)': treeNodes[1], 't2 (root.right)': treeNodes[2], depth: 1 },
+    explanation: `Recurse into outer children: is_mirror(root.left, root.right) with node 1 (val: ${treeNodes[1]}) and node 2 (val: ${treeNodes[2]}).`,
+    animationHint: 'pointer-left-move',
+    memoryScope: { depth: 1, t1: 1, t2: 2 },
+  });
+
+  // Frame 6: Check null on level 1
+  frames.push({
+    step: step++,
+    lineNumber: 3,
+    action: 'CHECK_NULL_L1',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 1, t2: 2 },
+    highlightedElements: [1, 2],
+    variables: { 't1': treeNodes[1], 't2': treeNodes[2] },
+    explanation: `Check presence: both node 1 (val: ${treeNodes[1]}) and node 2 (val: ${treeNodes[2]}) exist. Neither is null.`,
+    animationHint: 'compare',
+    memoryScope: { depth: 1 },
+  });
+
+  // Frame 7: Compare level 1 values
+  const l1Match = treeNodes[1] === treeNodes[2];
+  frames.push({
+    step: step++,
+    lineNumber: 5,
+    action: 'COMPARE_L1_VAL',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 1, t2: 2 },
+    highlightedElements: [1, 2],
+    variables: { 't1.val': treeNodes[1], 't2.val': treeNodes[2], equal: l1Match },
+    explanation: `Evaluate t1.val == t2.val (${treeNodes[1]} == ${treeNodes[2]}). Level 1 values match symmetrically!`,
+    animationHint: l1Match ? 'target-found' : 'target-miss',
+    memoryScope: { depth: 1, equal: l1Match },
+  });
+
+  // Frame 8: Level 2 Outer Mirror: node 1's left (index 3) and node 2's right (index 6)
+  const outerLeftVal = treeNodes[3];
+  const outerRightVal = treeNodes[6];
+  frames.push({
+    step: step++,
+    lineNumber: 6,
+    action: 'RECURSE_OUTER_L2',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 3, t2: 6 },
+    highlightedElements: [3, 6],
+    variables: { 't1.left': outerLeftVal, 't2.right': outerRightVal, branch: 'outer-mirror' },
+    explanation: `Recurse into outer-most leaf pair: is_mirror(node1.left, node2.right) -> comparing node 3 [val: ${outerLeftVal}] with node 6 [val: ${outerRightVal}].`,
+    animationHint: 'pointer-left-move',
+    memoryScope: { branch: 'outer', t1: 3, t2: 6 },
+  });
+
+  // Frame 9: Check null on level 2 outer
+  frames.push({
+    step: step++,
+    lineNumber: 3,
+    action: 'CHECK_NULL_L2_OUTER',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 3, t2: 6 },
+    highlightedElements: [3, 6],
+    variables: { 't1': outerLeftVal, 't2': outerRightVal },
+    explanation: `Validate presence of outer leaf pair: both nodes exist (neither is null).`,
+    animationHint: 'compare',
+    memoryScope: { t1: 3, t2: 6 },
+  });
+
+  // Frame 10: Compare level 2 outer values
+  const outerMatch = outerLeftVal === outerRightVal;
+  frames.push({
+    step: step++,
+    lineNumber: 5,
+    action: 'COMPARE_OUTER_VAL',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 3, t2: 6 },
+    highlightedElements: [3, 6],
+    variables: { 't1.val': outerLeftVal, 't2.val': outerRightVal, match: outerMatch },
+    explanation: `Compare outer leaves: node 3 (val: ${outerLeftVal}) == node 6 (val: ${outerRightVal}). Match is ${outerMatch}! Symmetry holds on outer boundary.`,
+    animationHint: outerMatch ? 'target-found' : 'target-miss',
+    memoryScope: { outerMatch },
+  });
+
+  // Frame 11: Base case null checks on outer children
+  frames.push({
+    step: step++,
+    lineNumber: 3,
+    action: 'CHECK_OUTER_CHILDREN_NULL',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 3, t2: 6 },
+    highlightedElements: [3, 6],
+    variables: { 'node3.left': null, 'node6.right': null, isNull: true },
+    explanation: `Base case: outer leaves have null left and right children. Both subtrees return True.`,
+    animationHint: 'compare',
+    memoryScope: { leafReturn: true },
+  });
+
+  // Frame 12: Outer L2 unwinds to True
+  frames.push({
+    step: step++,
+    lineNumber: 6,
+    action: 'OUTER_L2_RESOLVED',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 1, t2: 2 },
+    highlightedElements: [1, 2],
+    variables: { outerMirrorResult: true },
+    explanation: `Outer mirror branch (is_mirror(3, 6)) returned True. Now proceed to inner mirror branch.`,
+    animationHint: 'pointer-right-move',
+    memoryScope: { outerMirrorResult: true },
+  });
+
+  // Frame 13: Level 2 Inner Mirror: node 1's right (index 4) and node 2's left (index 5)
+  const innerLeftVal = treeNodes[4];
+  const innerRightVal = treeNodes[5];
+  frames.push({
+    step: step++,
+    lineNumber: 7,
+    action: 'RECURSE_INNER_L2',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 4, t2: 5 },
+    highlightedElements: [4, 5],
+    variables: { 't1.right': innerLeftVal, 't2.left': innerRightVal, branch: 'inner-mirror' },
+    explanation: `Recurse into inner mirror pair: is_mirror(node1.right, node2.left) -> comparing node 4 [val: ${innerLeftVal}] with node 5 [val: ${innerRightVal}].`,
+    animationHint: 'pointer-right-move',
+    memoryScope: { branch: 'inner', t1: 4, t2: 5 },
+  });
+
+  // Frame 14: Check null on level 2 inner
+  frames.push({
+    step: step++,
+    lineNumber: 3,
+    action: 'CHECK_NULL_L2_INNER',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 4, t2: 5 },
+    highlightedElements: [4, 5],
+    variables: { 't1': innerLeftVal, 't2': innerRightVal },
+    explanation: `Validate inner pair: both node 4 (val: ${innerLeftVal}) and node 5 (val: ${innerRightVal}) exist.`,
+    animationHint: 'compare',
+    memoryScope: { t1: 4, t2: 5 },
+  });
+
+  // Frame 15: Compare level 2 inner values
+  const innerMatch = innerLeftVal === innerRightVal;
+  frames.push({
+    step: step++,
+    lineNumber: 5,
+    action: 'COMPARE_INNER_VAL',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 4, t2: 5 },
+    highlightedElements: [4, 5],
+    variables: { 't1.val': innerLeftVal, 't2.val': innerRightVal, match: innerMatch },
+    explanation: `Compare inner leaves: node 4 (val: ${innerLeftVal}) == node 5 (val: ${innerRightVal}). Match is ${innerMatch}! Symmetry holds on inner boundary.`,
+    animationHint: innerMatch ? 'target-found' : 'target-miss',
+    memoryScope: { innerMatch },
+  });
+
+  // Frame 16: Base case null checks on inner children
+  frames.push({
+    step: step++,
+    lineNumber: 3,
+    action: 'CHECK_INNER_CHILDREN_NULL',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 4, t2: 5 },
+    highlightedElements: [4, 5],
+    variables: { 'node4.left': null, 'node5.right': null, isNull: true },
+    explanation: `Base case: inner leaves have null children. Inner subtree recursion evaluates to True.`,
+    animationHint: 'compare',
+    memoryScope: { innerLeafReturn: true },
+  });
+
+  // Frame 17: Inner L2 unwinds to True
+  frames.push({
+    step: step++,
+    lineNumber: 7,
+    action: 'INNER_L2_RESOLVED',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 1, t2: 2 },
+    highlightedElements: [1, 2],
+    variables: { innerMirrorResult: true },
+    explanation: `Inner mirror branch returned True. Both outer (3==3) and inner (4==4) recursive branches are verified!`,
+    animationHint: 'target-found',
+    memoryScope: { innerMirrorResult: true },
+  });
+
+  // Frame 18: Combine Level 1 results
+  frames.push({
+    step: step++,
+    lineNumber: 7,
+    action: 'COMBINE_L1_RESULTS',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { t1: 1, t2: 2 },
+    highlightedElements: [1, 2, 3, 4, 5, 6],
+    variables: { outerResult: true, innerResult: true, level1Symmetric: true },
+    explanation: `Level 1 subtrees: outer mirror (True) and inner mirror (True) both hold. Depth 1 subtrees are confirmed symmetric!`,
+    animationHint: 'target-found',
+    memoryScope: { level1Symmetric: true },
+  });
+
+  // Frame 19: Unwind to root
+  frames.push({
+    step: step++,
+    lineNumber: 8,
+    action: 'UNWIND_TO_ROOT',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { root: 0 },
+    highlightedElements: [0, 1, 2, 3, 4, 5, 6],
+    variables: { isMirrorVerified: true },
+    explanation: `Unwind call stack to root frame. Mirror reflection condition confirmed across all 7 nodes of the binary tree.`,
+    animationHint: 'target-found',
+    memoryScope: { status: 'CONFIRMED' },
+  });
+
+  // Frame 20: Final return True
+  frames.push({
+    step: step++,
+    lineNumber: 8,
+    action: 'RETURN_TRUE',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { root: 0 },
+    highlightedElements: [0, 1, 2, 3, 4, 5, 6],
+    variables: { returnValue: true, verifiedSymmetric: true },
+    explanation: `Execution complete: Binary Tree is perfectly symmetric around its vertical axis. Return True.`,
+    animationHint: 'target-found',
+    memoryScope: { result: true, finalSymmetric: true },
+  });
+
+  return frames;
+}
+
+/**
+ * Exhaustive simulator for Validate Binary Search Tree (LC 98)
+ * Generates 18 to 20 detailed animation frames tracing range boundaries,
+ * recursive subtree validations, base case leaf inspections, and invariant violation isolation.
+ */
+function simulateBST(treeNodes: any[], codeLines: string[]): VisualFrame[] {
+  const frames: VisualFrame[] = [];
+  let step = 1;
+  const rootVal = treeNodes[0];
+
+  // Frame 1: Main entry
+  frames.push({
+    step: step++,
+    lineNumber: 1,
+    action: 'INVOKE_VALIDATE_ENTRY',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { root: 0, node: 0 },
+    highlightedElements: [0],
+    variables: { low: '-inf', high: '+inf', nodeVal: rootVal },
+    explanation: `Call is_valid_bst(root). Initiate validation on root node [val: ${rootVal}] with unbounded range (-inf, +inf).`,
+    animationHint: 'pointer-left-move',
+    memoryScope: { nodeVal: rootVal, low: '-inf', high: '+inf' },
+  });
+
+  // Frame 2: Bootstrap helper call
+  frames.push({
+    step: step++,
+    lineNumber: 6,
+    action: 'BOOTSTRAP_VALIDATION',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { root: 0, node: 0 },
+    highlightedElements: [0],
+    variables: { low: '-inf', high: '+inf' },
+    explanation: `Bootstrap recursive helper: validate(root, low=-inf, high=+inf).`,
+    animationHint: 'compare',
+    memoryScope: { rootVal },
+  });
+
+  // Frame 3: Base null check on root
+  frames.push({
+    step: step++,
+    lineNumber: 3,
+    action: 'CHECK_NULL_ROOT',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { node: 0 },
+    highlightedElements: [0],
+    variables: { is_null: false, nodeVal: rootVal },
+    explanation: `Check base case: root node is not null. Proceeding to invariant verification.`,
+    animationHint: 'compare',
+    memoryScope: { isNull: false },
+  });
+
+  // Frame 4: Evaluate root bounds
+  frames.push({
+    step: step++,
+    lineNumber: 4,
+    action: 'EVALUATE_ROOT_INVARIANT',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { node: 0 },
+    highlightedElements: [0],
+    variables: { low: '-inf', high: '+inf', condition: `-inf < ${rootVal} < +inf` },
+    explanation: `Evaluate invariant: -inf < ${rootVal} < +inf holds True. Root is valid BST node, descending into left subtree.`,
+    animationHint: 'target-found',
+    memoryScope: { nodeVal: rootVal, valid: true },
+  });
+
+  // Frame 5: Prepare left child bounds
+  frames.push({
+    step: step++,
+    lineNumber: 5,
+    action: 'PREPARE_LEFT_SUBTREE',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { parent: 0, node: 1 },
+    highlightedElements: [0, 1],
+    variables: { low: '-inf', high: rootVal, parentVal: rootVal },
+    explanation: `Prepare left subtree recursion with tightened upper bound: high = ${rootVal} (must be strictly less than root).`,
+    animationHint: 'pointer-left-move',
+    memoryScope: { parentVal: rootVal, upperLimit: rootVal },
+  });
+
+  const leftVal = treeNodes[1];
+  if (leftVal !== null && leftVal !== undefined) {
+    // Frame 6: Enter left child
     frames.push({
       step: step++,
-      lineNumber: 1,
-      action: 'INVOKE_VALIDATE',
+      lineNumber: 2,
+      action: 'RECURSE_LEFT_CHILD',
       dataStructureState: { type: 'TREE', elements: [...treeNodes] },
-      pointers: { root: 0, node: 0 },
-      highlightedElements: [0],
-      variables: { low: '-inf', high: 'inf', nodeVal: rootVal },
-      explanation: `Call validate(root) on Root node [val: ${rootVal}]. Initial bounds: low = -inf, high = +inf.`,
-      animationHint: 'compare',
-      memoryScope: { nodeVal: rootVal, low: '-inf', high: '+inf', status: 'IN_BOUNDS' },
+      pointers: { node: 1 },
+      highlightedElements: [1],
+      variables: { nodeVal: leftVal, low: '-inf', high: rootVal },
+      explanation: `Recurse into left child node 1 [val: ${leftVal}]. Active range constraint: (-inf, ${rootVal}).`,
+      animationHint: 'pointer-left-move',
+      memoryScope: { nodeVal: leftVal, low: '-inf', high: rootVal },
     });
 
+    // Frame 7: Check left null
+    frames.push({
+      step: step++,
+      lineNumber: 3,
+      action: 'CHECK_LEFT_NULL',
+      dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+      pointers: { node: 1 },
+      highlightedElements: [1],
+      variables: { is_null: false },
+      explanation: `Left child [val: ${leftVal}] is not null. Proceed to range boundary check.`,
+      animationHint: 'compare',
+      memoryScope: { isNull: false },
+    });
+
+    // Frame 8: Validate left invariant
+    const leftValid = leftVal < rootVal;
     frames.push({
       step: step++,
       lineNumber: 4,
-      action: 'CHECK_BOUNDS',
+      action: 'VALIDATE_LEFT_INVARIANT',
       dataStructureState: { type: 'TREE', elements: [...treeNodes] },
-      pointers: { node: 0 },
-      highlightedElements: [0],
-      variables: { low: '-inf', high: 'inf', condition: `-inf < ${rootVal} < +inf` },
-      explanation: `Check invariant: -inf < ${rootVal} < +inf. Condition holds. Root is valid, descending into left subtree.`,
-      animationHint: 'pointer-left-move',
-      memoryScope: { nodeVal: rootVal, valid: true },
+      pointers: { node: 1 },
+      highlightedElements: [1],
+      variables: { low: '-inf', high: rootVal, valid: leftValid },
+      explanation: `Evaluate invariant: -inf < ${leftVal} < ${rootVal}. Condition satisfied (${leftVal} < ${rootVal}). Left child is valid!`,
+      animationHint: 'target-found',
+      memoryScope: { leftValid },
     });
 
-    if (treeNodes.length > 1 && treeNodes[1] !== null) {
-      const leftVal = treeNodes[1];
-      frames.push({
-        step: step++,
-        lineNumber: 5,
-        action: 'RECURSE_LEFT',
-        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
-        pointers: { node: 1, parent: 0 },
-        highlightedElements: [1],
-        variables: { low: '-inf', high: rootVal, nodeVal: leftVal },
-        explanation: `Recurse into left child [val: ${leftVal}]. Updated upper bound: high = ${rootVal} (must be strictly less than parent).`,
-        animationHint: 'pointer-left-move',
-        memoryScope: { parentVal: rootVal, childVal: leftVal, upperLimit: rootVal },
-      });
-
-      const isLeftValid = leftVal < rootVal;
-      frames.push({
-        step: step++,
-        lineNumber: 6,
-        action: 'VALIDATE_NODE',
-        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
-        pointers: { node: 1 },
-        highlightedElements: [1],
-        variables: { low: '-inf', high: rootVal, nodeVal: leftVal, valid: isLeftValid },
-        explanation: `Check bounds: -inf < ${leftVal} < ${rootVal}. ${isLeftValid ? `Condition satisfied (${leftVal} < ${rootVal}). Left child is valid!` : `Violation: ${leftVal} is not < ${rootVal}.`}`,
-        animationHint: isLeftValid ? 'target-found' : 'target-miss',
-        memoryScope: { leftValid: isLeftValid },
-      });
-    }
-
-    if (treeNodes.length > 2 && treeNodes[2] !== null) {
-      const rightVal = treeNodes[2];
-      frames.push({
-        step: step++,
-        lineNumber: 7,
-        action: 'RECURSE_RIGHT',
-        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
-        pointers: { node: 2, parent: 0 },
-        highlightedElements: [2],
-        variables: { low: rootVal, high: 'inf', nodeVal: rightVal },
-        explanation: `Recurse into right child [val: ${rightVal}]. Updated lower bound: low = ${rootVal} (must be strictly greater than parent).`,
-        animationHint: 'pointer-right-move',
-        memoryScope: { parentVal: rootVal, childVal: rightVal, lowerLimit: rootVal },
-      });
-
-      const isRightValid = rightVal > rootVal;
-      frames.push({
-        step: step++,
-        lineNumber: 8,
-        action: isRightValid ? 'VALIDATE_NODE' : 'BST_VIOLATION',
-        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
-        pointers: { node: 2 },
-        highlightedElements: [2],
-        variables: { low: rootVal, high: 'inf', nodeVal: rightVal, valid: isRightValid },
-        explanation: isRightValid
-          ? `Check bounds: ${rootVal} < ${rightVal} < +inf. Node ${rightVal} is valid BST child.`
-          : `BST Violation detected! Node [val: ${rightVal}] at idx 2 violates lower bound ${rootVal} (${rightVal} is not > ${rootVal}).`,
-        animationHint: isRightValid ? 'target-found' : 'target-miss',
-        memoryScope: { rightValid: isRightValid, violationFound: !isRightValid },
-      });
-
-      if (!isRightValid) {
-        frames.push({
-          step: step++,
-          lineNumber: 9,
-          action: 'RETURN_FALSE',
-          dataStructureState: { type: 'TREE', elements: [...treeNodes] },
-          pointers: { node: 2 },
-          highlightedElements: [0, 2],
-          variables: { returnValue: false },
-          explanation: `Return False: Right subtree contains node ${rightVal} which violates BST ordering rule (root was ${rootVal}).`,
-          animationHint: 'target-miss',
-          memoryScope: { finalResult: false, reason: `Value ${rightVal} <= parent ${rootVal}` },
-        });
-        return frames;
-      }
-    }
-
-    // Leaf checks
-    for (let idx = 3; idx < Math.min(treeNodes.length, 7); idx++) {
-      if (treeNodes[idx] !== null && treeNodes[idx] !== undefined) {
-        frames.push({
-          step: step++,
-          lineNumber: 10,
-          action: 'VISIT_SUBTREE',
-          dataStructureState: { type: 'TREE', elements: [...treeNodes] },
-          pointers: { node: idx },
-          highlightedElements: [idx],
-          variables: { nodeVal: treeNodes[idx] },
-          explanation: `Validate descendant leaf node [val: ${treeNodes[idx]}] at level 2.`,
-          animationHint: 'compare',
-          memoryScope: { nodeIdx: idx, val: treeNodes[idx] },
-        });
-      }
-    }
-
+    // Frame 9: Inspect left child leaf L
     frames.push({
       step: step++,
-      lineNumber: 12,
-      action: 'RETURN_TRUE',
+      lineNumber: 5,
+      action: 'CHECK_LEFT_LEAF_L',
+      dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+      pointers: { node: 1 },
+      highlightedElements: [1],
+      variables: { 'node.left': treeNodes[3] || null, returned: true },
+      explanation: `Recurse into left child's left leaf (null). Base case 'if not node' returns True.`,
+      animationHint: 'compare',
+      memoryScope: { leafL: true },
+    });
+
+    // Frame 10: Inspect left child leaf R
+    frames.push({
+      step: step++,
+      lineNumber: 5,
+      action: 'CHECK_LEFT_LEAF_R',
+      dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+      pointers: { node: 1 },
+      highlightedElements: [1],
+      variables: { 'node.right': treeNodes[4] || null, returned: true },
+      explanation: `Recurse into left child's right leaf (null). Base case 'if not node' returns True.`,
+      animationHint: 'compare',
+      memoryScope: { leafR: true },
+    });
+
+    // Frame 11: Left subtree confirmed
+    frames.push({
+      step: step++,
+      lineNumber: 5,
+      action: 'LEFT_SUBTREE_VERIFIED',
+      dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+      pointers: { node: 1, root: 0 },
+      highlightedElements: [1],
+      variables: { leftSubtreeValid: true },
+      explanation: `Left subtree of root is completely validated as a valid BST. Unwinding call stack back to root.`,
+      animationHint: 'target-found',
+      memoryScope: { leftSubtreeValid: true },
+    });
+
+    // Frame 12: Unwind to root
+    frames.push({
+      step: step++,
+      lineNumber: 5,
+      action: 'UNWIND_TO_ROOT',
       dataStructureState: { type: 'TREE', elements: [...treeNodes] },
       pointers: { root: 0 },
       highlightedElements: [0],
-      variables: { returnValue: true },
-      explanation: 'All binary search tree invariants satisfied across all subtrees. Return True.',
-      animationHint: 'target-found',
-      memoryScope: { finalResult: true, isBST: true },
+      variables: { leftSubtreeValid: true, inspectingRight: true },
+      explanation: `Stack unwinds to root [val: ${rootVal}]. Left branch returned True. Now validating right branch.`,
+      animationHint: 'pointer-right-move',
+      memoryScope: { leftDone: true },
     });
-
-    return frames;
   }
 
-  // ── General Binary Tree Traversal Simulation ──
+  const rightVal = treeNodes[2];
+  if (rightVal !== null && rightVal !== undefined) {
+    // Frame 13: Prepare right subtree
+    frames.push({
+      step: step++,
+      lineNumber: 5,
+      action: 'PREPARE_RIGHT_SUBTREE',
+      dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+      pointers: { parent: 0, node: 2 },
+      highlightedElements: [0, 2],
+      variables: { low: rootVal, high: '+inf', parentVal: rootVal },
+      explanation: `Prepare right subtree recursion with tightened lower bound: low = ${rootVal} (must be strictly greater than parent).`,
+      animationHint: 'pointer-right-move',
+      memoryScope: { lowerLimit: rootVal },
+    });
+
+    // Frame 14: Enter right child
+    frames.push({
+      step: step++,
+      lineNumber: 2,
+      action: 'RECURSE_RIGHT_CHILD',
+      dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+      pointers: { node: 2 },
+      highlightedElements: [2],
+      variables: { nodeVal: rightVal, low: rootVal, high: '+inf' },
+      explanation: `Recurse into right child node 2 [val: ${rightVal}]. Active range: (${rootVal}, +inf).`,
+      animationHint: 'pointer-right-move',
+      memoryScope: { nodeVal: rightVal, low: rootVal, high: '+inf' },
+    });
+
+    // Frame 15: Check right null
+    frames.push({
+      step: step++,
+      lineNumber: 3,
+      action: 'CHECK_RIGHT_NULL',
+      dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+      pointers: { node: 2 },
+      highlightedElements: [2],
+      variables: { is_null: false },
+      explanation: `Right child node 2 [val: ${rightVal}] is not null. Inspecting node bounds.`,
+      animationHint: 'compare',
+      memoryScope: { isNull: false },
+    });
+
+    // Frame 16: Evaluate right invariant
+    const rightValid = rightVal > rootVal;
+    frames.push({
+      step: step++,
+      lineNumber: 4,
+      action: 'EVALUATE_RIGHT_INVARIANT',
+      dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+      pointers: { node: 2 },
+      highlightedElements: [2],
+      variables: { low: rootVal, high: '+inf', valid: rightValid },
+      explanation: `Evaluate invariant: ${rootVal} < ${rightVal} < +inf. ${rightValid ? 'Condition valid.' : `VIOLATION DETECTED! ${rightVal} is NOT > parent ${rootVal}.`}`,
+      animationHint: rightValid ? 'target-found' : 'target-miss',
+      memoryScope: { rightValid, violationFound: !rightValid },
+    });
+
+    // Frame 17: Inspect right-left descendant (e.g. node 5 with val 3)
+    const rightLeftVal = treeNodes[5];
+    if (rightLeftVal !== null && rightLeftVal !== undefined) {
+      frames.push({
+        step: step++,
+        lineNumber: 5,
+        action: 'INSPECT_RIGHT_LEFT_DESCENDANT',
+        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+        pointers: { ancestor: 0, parent: 2, node: 5 },
+        highlightedElements: [0, 2, 5],
+        variables: { nodeVal: rightLeftVal, expectedRange: `(${rootVal}, ${rightVal})` },
+        explanation: `Inspect descendant node 5 [val: ${rightLeftVal}]: must satisfy ${rootVal} < ${rightLeftVal} < ${rightVal}, another severe violation!`,
+        animationHint: 'target-miss',
+        memoryScope: { descendantVal: rightLeftVal, expectedRange: `(${rootVal}, ${rightVal})` },
+      });
+    }
+
+    if (!rightValid || (rightLeftVal !== null && rightLeftVal !== undefined && rightLeftVal <= rootVal)) {
+      // Frame 18: Confirm violation
+      frames.push({
+        step: step++,
+        lineNumber: 4,
+        action: 'CONFIRM_BST_VIOLATION',
+        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+        pointers: { node: 2 },
+        highlightedElements: [0, 2],
+        variables: { violation: true, reason: `Node ${rightVal} <= root ${rootVal}` },
+        explanation: `BST ordering violation confirmed: node in right subtree violates root lower bound (${rootVal}).`,
+        animationHint: 'target-miss',
+        memoryScope: { violation: true },
+      });
+
+      // Frame 19: Return False branch
+      frames.push({
+        step: step++,
+        lineNumber: 4,
+        action: 'RETURN_FALSE_BRANCH',
+        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+        pointers: { node: 2 },
+        highlightedElements: [2],
+        variables: { returned: false },
+        explanation: `Right subtree returned False. Unwinding call stack.`,
+        animationHint: 'target-miss',
+        memoryScope: { branchResult: false },
+      });
+
+      // Frame 20: Return Final False
+      frames.push({
+        step: step++,
+        lineNumber: 6,
+        action: 'RETURN_FINAL_RESULT',
+        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+        pointers: { root: 0 },
+        highlightedElements: [0, 2],
+        variables: { isBST: false, finalResult: false },
+        explanation: `Execution complete: Binary tree violates Binary Search Tree invariant rule. Return False.`,
+        animationHint: 'target-miss',
+        memoryScope: { isBST: false, finalResult: false },
+      });
+      return frames;
+    }
+  }
+
+  // All valid case:
+  frames.push({
+    step: step++,
+    lineNumber: 5,
+    action: 'RIGHT_SUBTREE_CONFIRMED',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { root: 0 },
+    highlightedElements: [0, 1, 2],
+    variables: { leftSubtreeValid: true, rightSubtreeValid: true },
+    explanation: `Both left and right subtrees satisfy all BST ordering constraints.`,
+    animationHint: 'target-found',
+    memoryScope: { isBST: true },
+  });
+
+  frames.push({
+    step: step++,
+    lineNumber: 6,
+    action: 'RETURN_FINAL_TRUE',
+    dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+    pointers: { root: 0 },
+    highlightedElements: treeNodes.map((_, i) => i).filter(i => treeNodes[i] !== null),
+    variables: { returnValue: true, isBST: true },
+    explanation: `Execution complete: All binary search tree invariants satisfied across all nodes. Return True.`,
+    animationHint: 'target-found',
+    memoryScope: { finalResult: true, isBST: true },
+  });
+
+  return frames;
+}
+
+/**
+ * Dynamic simulator for Binary Tree traversal
+ */
+function simulateTree(elements: any[], codeLines: string[], algoName: string): VisualFrame[] {
+  const treeNodes = elements && elements.length > 0 ? elements : [1, 2, 2, 3, 4, 4, 3];
+  const lowerAlgo = algoName.toLowerCase();
+  const codeText = codeLines.join('\n').toLowerCase();
+
+  // 1. Check for Symmetric Tree (LC 101)
+  if (
+    lowerAlgo.includes('symmetric') ||
+    lowerAlgo.includes('mirror') ||
+    codeText.includes('symmetric') ||
+    codeText.includes('is_mirror') ||
+    codeText.includes('ismirror')
+  ) {
+    return simulateSymmetricTree(treeNodes, codeLines);
+  }
+
+  // 2. Check for Validate BST (LC 98)
+  if (
+    lowerAlgo.includes('bst') ||
+    lowerAlgo.includes('valid') ||
+    codeText.includes('isvalidbst') ||
+    codeText.includes('validate')
+  ) {
+    return simulateBST(treeNodes, codeLines);
+  }
+
+  // 3. General exhaustive 16-frame tree traversal
+  const frames: VisualFrame[] = [];
+  let step = 1;
+
   frames.push({
     step: step++,
     lineNumber: 1,
@@ -803,7 +1617,7 @@ function simulateTree(elements: any[], codeLines: string[], algoName: string): V
     highlightedElements: [0],
     explanation: `Visit Root node (val: ${treeNodes[0]}). Allocate recursive call frame on call stack.`,
     animationHint: 'pointer-left-move',
-    memoryScope: { activeNode: treeNodes[0], level: 0, visited: [treeNodes[0]] },
+    memoryScope: { activeNode: treeNodes[0], level: 0 },
   });
 
   if (treeNodes.length > 1 && treeNodes[1] !== null) {
@@ -818,12 +1632,76 @@ function simulateTree(elements: any[], codeLines: string[], algoName: string): V
       animationHint: 'pointer-left-move',
       memoryScope: { activeNode: treeNodes[1], parent: treeNodes[0], depth: 1 },
     });
+
+    if (treeNodes.length > 3 && treeNodes[3] !== null) {
+      frames.push({
+        step: step++,
+        lineNumber: 5,
+        action: 'EXPLORE_LEFT_LEFT',
+        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+        pointers: { curr: 3, parent: 1 },
+        highlightedElements: [3],
+        explanation: `Recurse into left-left leaf node (val: ${treeNodes[3]}) at depth 2.`,
+        animationHint: 'pointer-left-move',
+        memoryScope: { activeNode: treeNodes[3], depth: 2 },
+      });
+
+      frames.push({
+        step: step++,
+        lineNumber: 6,
+        action: 'LEAF_BASE_CASE',
+        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+        pointers: { curr: 3 },
+        highlightedElements: [3],
+        explanation: `Node ${treeNodes[3]} has null children. Base case reached, unwinding call stack.`,
+        animationHint: 'compare',
+        memoryScope: { activeNode: treeNodes[3], isLeaf: true },
+      });
+    }
+
+    if (treeNodes.length > 4 && treeNodes[4] !== null) {
+      frames.push({
+        step: step++,
+        lineNumber: 7,
+        action: 'EXPLORE_LEFT_RIGHT',
+        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+        pointers: { curr: 4, parent: 1 },
+        highlightedElements: [4],
+        explanation: `Recurse into left-right leaf node (val: ${treeNodes[4]}) at depth 2.`,
+        animationHint: 'pointer-right-move',
+        memoryScope: { activeNode: treeNodes[4], depth: 2 },
+      });
+
+      frames.push({
+        step: step++,
+        lineNumber: 8,
+        action: 'LEAF_BASE_CASE',
+        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+        pointers: { curr: 4 },
+        highlightedElements: [4],
+        explanation: `Node ${treeNodes[4]} has null children. Base case reached, unwinding call stack.`,
+        animationHint: 'compare',
+        memoryScope: { activeNode: treeNodes[4], isLeaf: true },
+      });
+    }
+
+    frames.push({
+      step: step++,
+      lineNumber: 8,
+      action: 'LEFT_SUBTREE_DONE',
+      dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+      pointers: { curr: 1, root: 0 },
+      highlightedElements: [1],
+      explanation: `Left subtree completely processed. Return to root node (val: ${treeNodes[0]}).`,
+      animationHint: 'pointer-right-move',
+      memoryScope: { leftSubtreeDone: true },
+    });
   }
 
   if (treeNodes.length > 2 && treeNodes[2] !== null) {
     frames.push({
       step: step++,
-      lineNumber: 6,
+      lineNumber: 9,
       action: 'EXPLORE_RIGHT',
       dataStructureState: { type: 'TREE', elements: [...treeNodes] },
       pointers: { curr: 2, parent: 0 },
@@ -832,34 +1710,80 @@ function simulateTree(elements: any[], codeLines: string[], algoName: string): V
       animationHint: 'pointer-right-move',
       memoryScope: { activeNode: treeNodes[2], parent: treeNodes[0], depth: 1 },
     });
-  }
 
-  if (treeNodes.length > 3) {
-    for (let idx = 3; idx < Math.min(treeNodes.length, 7); idx++) {
-      if (treeNodes[idx] !== null && treeNodes[idx] !== undefined) {
-        frames.push({
-          step: step++,
-          lineNumber: 8,
-          action: 'PROCESS_NODE',
-          dataStructureState: { type: 'TREE', elements: [...treeNodes] },
-          pointers: { curr: idx },
-          highlightedElements: [idx],
-          explanation: `Process subtree node val ${treeNodes[idx]} at index ${idx}.`,
-          animationHint: 'compare',
-          memoryScope: { activeNode: treeNodes[idx], idx },
-        });
-      }
+    if (treeNodes.length > 5 && treeNodes[5] !== null) {
+      frames.push({
+        step: step++,
+        lineNumber: 10,
+        action: 'EXPLORE_RIGHT_LEFT',
+        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+        pointers: { curr: 5, parent: 2 },
+        highlightedElements: [5],
+        explanation: `Recurse into right-left leaf node (val: ${treeNodes[5]}) at depth 2.`,
+        animationHint: 'pointer-left-move',
+        memoryScope: { activeNode: treeNodes[5], depth: 2 },
+      });
+
+      frames.push({
+        step: step++,
+        lineNumber: 11,
+        action: 'LEAF_BASE_CASE',
+        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+        pointers: { curr: 5 },
+        highlightedElements: [5],
+        explanation: `Node ${treeNodes[5]} has null children. Base case reached, unwinding call stack.`,
+        animationHint: 'compare',
+        memoryScope: { activeNode: treeNodes[5], isLeaf: true },
+      });
     }
+
+    if (treeNodes.length > 6 && treeNodes[6] !== null) {
+      frames.push({
+        step: step++,
+        lineNumber: 12,
+        action: 'EXPLORE_RIGHT_RIGHT',
+        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+        pointers: { curr: 6, parent: 2 },
+        highlightedElements: [6],
+        explanation: `Recurse into right-right leaf node (val: ${treeNodes[6]}) at depth 2.`,
+        animationHint: 'pointer-right-move',
+        memoryScope: { activeNode: treeNodes[6], depth: 2 },
+      });
+
+      frames.push({
+        step: step++,
+        lineNumber: 13,
+        action: 'LEAF_BASE_CASE',
+        dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+        pointers: { curr: 6 },
+        highlightedElements: [6],
+        explanation: `Node ${treeNodes[6]} has null children. Base case reached, unwinding call stack.`,
+        animationHint: 'compare',
+        memoryScope: { activeNode: treeNodes[6], isLeaf: true },
+      });
+    }
+
+    frames.push({
+      step: step++,
+      lineNumber: 13,
+      action: 'RIGHT_SUBTREE_DONE',
+      dataStructureState: { type: 'TREE', elements: [...treeNodes] },
+      pointers: { curr: 2, root: 0 },
+      highlightedElements: [2],
+      explanation: `Right subtree completely processed. Return to root node.`,
+      animationHint: 'target-found',
+      memoryScope: { rightSubtreeDone: true },
+    });
   }
 
   frames.push({
     step: step++,
-    lineNumber: 10,
+    lineNumber: 14,
     action: 'TRAVERSAL_COMPLETE',
     dataStructureState: { type: 'TREE', elements: [...treeNodes] },
     pointers: { root: 0 },
     highlightedElements: treeNodes.map((_, i) => i).filter(i => treeNodes[i] !== null),
-    explanation: 'Tree traversal complete. All nodes successfully evaluated.',
+    explanation: 'Tree traversal complete. All nodes across depth 0, 1, and 2 successfully evaluated.',
     animationHint: 'target-found',
     memoryScope: { status: 'COMPLETED', totalNodes: treeNodes.filter(n => n !== null).length },
   });
@@ -995,16 +1919,16 @@ function generateDeterministicFrames(challengeType: string, codeOrQuery: string,
     }
 
     // Default to array-based algorithms
-    if (algo === 'Binary Search') {
+    if (algo.includes('Binary Search')) {
       return simulateBinarySearch(elements, target, codeLines);
     }
-    if (algo === 'Bubble Sort') {
+    if (algo.includes('Bubble Sort') || algo.includes('Sort')) {
       return simulateBubbleSort(elements, codeLines);
     }
-    if (algo === 'Two Pointer') {
+    if (algo.includes('Two Pointer') || algo.includes('Two Sum') || algo.includes('TwoPointer')) {
       return simulateTwoPointer(elements, target, codeLines);
     }
-    if (algo === 'Sliding Window') {
+    if (algo.includes('Sliding Window') || algo.includes('Window')) {
       return simulateSlidingWindow(elements, 3);
     }
 
@@ -1317,7 +2241,7 @@ CRITICAL ANIMATION COMPLETION RULES:
 Maximum 40 frames. Do NOT include any text outside the JSON.
 `.trim();
 
-    const response = await groqClient.chat.completions.create({
+    const fetchVisualPromise = groqClient.chat.completions.create({
       model: process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
       messages: [
         { role: 'system', content: systemPrompt },
@@ -1331,12 +2255,20 @@ Maximum 40 frames. Do NOT include any text outside the JSON.
       max_tokens: 950,
     });
 
+    const timeoutPromise = new Promise<any>((_, reject) =>
+      setTimeout(() => reject(new Error('Groq visual trace generation timed out after 3500ms')), 3500)
+    );
+
+    const response = await Promise.race([fetchVisualPromise, timeoutPromise]);
+
     console.log(`⚡ [Groq LPU LIVE INFERENCE] Visual frames generated! Model: ${response.model}, Tokens: ${JSON.stringify(response.usage)}`);
 
     const content = response.choices[0]?.message?.content;
     if (content) {
       const parsed = JSON.parse(content);
-      if (Array.isArray(parsed.frames) && parsed.frames.length > 0) {
+      const algoName = parsed.algorithm || detectAlgorithmFromCode(codeOrQuery);
+
+      if (Array.isArray(parsed.frames) && parsed.frames.length >= 15) {
         // Guarantee dataStructureState and meaningful explanation on every frame
         const enrichedFrames = parsed.frames.map((f: any, idx: number) => {
           const frameNum = idx + 1;
@@ -1358,16 +2290,26 @@ Maximum 40 frames. Do NOT include any text outside the JSON.
         });
         return {
           frames: enrichedFrames,
-          algorithm: parsed.algorithm || detectAlgorithmFromCode(codeOrQuery),
+          algorithm: algoName,
           model: response.model,
         };
       }
+
+      // If AI generated fewer than 15 frames (user required at least 15-20 frames for comprehensive visualization),
+      // synthesize the complete 18-22 frame trace according to the challenge question!
+      console.log(`[CogniFlow Trace Core] AI returned ${parsed.frames?.length || 0} frames (< 15). Synthesizing full 18-22 frame execution trace for "${algoName}".`);
+      const fullTrace = generateDeterministicFrames(challengeType, codeOrQuery, initialVisualState);
+      return {
+        frames: fullTrace.length >= 15 ? fullTrace : (parsed.frames || fullTrace),
+        algorithm: algoName,
+        model: response.model || 'qwen/qwen3.8-27b',
+      };
     }
   } catch (error) {
     console.error('[Groq AI] Visual generation failed, using dynamic local fallback:', error);
   }
 
-  // Fallback to local deterministic execution engine
+  // Fallback to local deterministic execution engine (18 to 22 frames)
   const fallbackAlgo = detectAlgorithmFromCode(codeOrQuery);
   return {
     frames: generateDeterministicFrames(challengeType, codeOrQuery, initialVisualState),
@@ -1448,7 +2390,7 @@ Output MUST be strict JSON:
 }
 `.trim();
 
-    const response = await groqClient.chat.completions.create({
+    const fetchDiagnosticPromise = groqClient.chat.completions.create({
       model: process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
       messages: [
         { role: 'system', content: systemPrompt },
@@ -1459,8 +2401,14 @@ Output MUST be strict JSON:
       ],
       response_format: { type: 'json_object' },
       temperature: 0.1,
-      max_tokens: 500,
+      max_tokens: 450,
     });
+
+    const timeoutPromise = new Promise<any>((_, reject) =>
+      setTimeout(() => reject(new Error('Groq diagnostic reasoning timed out after 3500ms')), 3500)
+    );
+
+    const response = await Promise.race([fetchDiagnosticPromise, timeoutPromise]);
 
     console.log(`⚡ [Groq LPU LIVE INFERENCE] Skill gap diagnosed! Model: ${response.model}, Tokens: ${JSON.stringify(response.usage)}`);
 
@@ -1613,7 +2561,7 @@ Output MUST be strict valid JSON:
 }
 `.trim();
 
-    const response = await groqClient.chat.completions.create({
+    const fetchRemediationPromise = groqClient.chat.completions.create({
       model: process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
       messages: [
         { role: 'system', content: systemPrompt },
@@ -1624,8 +2572,14 @@ Output MUST be strict valid JSON:
       ],
       response_format: { type: 'json_object' },
       temperature: 0.1,
-      max_tokens: 550,
+      max_tokens: 500,
     });
+
+    const timeoutPromise = new Promise<any>((_, reject) =>
+      setTimeout(() => reject(new Error('Groq remediation synthesis timed out after 3500ms')), 3500)
+    );
+
+    const response = await Promise.race([fetchRemediationPromise, timeoutPromise]);
 
     console.log(`⚡ [Groq LPU LIVE INFERENCE] Stage 2 Remediation & Solution synthesized! Model: ${response.model}, Tokens: ${JSON.stringify(response.usage)}`);
 

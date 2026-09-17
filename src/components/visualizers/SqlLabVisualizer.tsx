@@ -1,7 +1,7 @@
 'use client';
 
 // =====================================================================
-// CogniFlow AI: Chai SQLab Interactive Relational Engine Visualizer
+// CogniFlow AI: SQL Lab Interactive Relational Engine Visualizer
 // Completely Dynamic: Multi-Table In-Memory Execution, Real-Time Animated
 // Relational Canvas, Groq Cloud LPU AI Synthesis & Two-Stage AI Tutor
 // =====================================================================
@@ -379,7 +379,7 @@ export default function SqlLabVisualizer({
         <div>
           <div className="flex flex-wrap items-center gap-2 mb-1.5">
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D] flex items-center gap-1">
-              <Database className="w-3 h-3 text-[#10B981]" /> Chai SQLab Relational Engine
+              <Database className="w-3 h-3 text-[#10B981]" /> SQL Lab Relational Engine
             </span>
             {currentChallenge.lcNumber && (
               <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#6F7E77]">

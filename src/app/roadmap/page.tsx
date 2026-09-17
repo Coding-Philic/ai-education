@@ -21,6 +21,11 @@ import {
   Calendar,
   TrendingUp,
   Star,
+  BookOpen,
+  FileText,
+  PlayCircle,
+  Bell,
+  BellOff
 } from 'lucide-react';
 
 // ─────────────────────────────────────────
@@ -39,54 +44,54 @@ interface Roadmap {
 }
 
 // ─────────────────────────────────────────
-// Onboarding Questions
+// Onboarding Questions (Clean Minimal — No Emojis)
 // ─────────────────────────────────────────
 const QUESTIONS = [
   {
     id: 'track',
-    question: "Which track do you want to master? 🎯",
+    question: "Which track do you want to master?",
     options: [
-      { value: 'dsa', label: 'DSA (Data Structures & Algorithms)', icon: '⚡', desc: 'Arrays, Trees, Graphs, DP' },
-      { value: 'sql', label: 'SQL & Databases', icon: '🗄️', desc: 'Queries, Joins, Optimization' },
-      { value: 'system-design', label: 'System Design', icon: '🏗️', desc: 'Architecture, Scale, Resilience' },
+      { value: 'dsa', label: 'DSA (Data Structures & Algorithms)', desc: 'Arrays, Trees, Graphs, DP' },
+      { value: 'sql', label: 'SQL & Databases', desc: 'Queries, Joins, Optimization' },
+      { value: 'system-design', label: 'System Design', desc: 'Architecture, Scale, Resilience' },
     ],
   },
   {
     id: 'level',
-    question: "What's your current experience level? 📊",
+    question: "What's your current experience level?",
     options: [
-      { value: 'Beginner', label: 'Beginner', icon: '🌱', desc: 'Just starting out, learning basics' },
-      { value: 'Intermediate', label: 'Intermediate', icon: '🔥', desc: 'Know fundamentals, want to go deeper' },
-      { value: 'Advanced', label: 'Advanced', icon: '🚀', desc: 'Experienced, targeting FAANG-level' },
+      { value: 'Beginner', label: 'Beginner', desc: 'Just starting out, learning basics' },
+      { value: 'Intermediate', label: 'Intermediate', desc: 'Know fundamentals, want to go deeper' },
+      { value: 'Advanced', label: 'Advanced', desc: 'Experienced, targeting FAANG-level' },
     ],
   },
   {
     id: 'goal',
-    question: "What's your primary goal? 🏆",
+    question: "What's your primary goal?",
     options: [
-      { value: 'FAANG Interview', label: 'Crack FAANG/Big Tech Interview', icon: '🎯', desc: 'Google, Amazon, Meta, Microsoft' },
-      { value: 'Startup Job', label: 'Land a Startup Job', icon: '💼', desc: 'Practical skills for fast-paced env' },
-      { value: 'Competitive Programming', label: 'Competitive Programming', icon: '🏅', desc: 'ACM-ICPC, Codeforces, LeetCode' },
-      { value: 'General Upskilling', label: 'General Upskilling', icon: '📈', desc: 'Improve skills at my own pace' },
+      { value: 'FAANG Interview', label: 'Crack FAANG/Big Tech Interview', desc: 'Google, Amazon, Meta, Microsoft' },
+      { value: 'Startup Job', label: 'Land a Startup Job', desc: 'Practical skills for fast-paced env' },
+      { value: 'Competitive Programming', label: 'Competitive Programming', desc: 'ACM-ICPC, Codeforces, LeetCode' },
+      { value: 'General Upskilling', label: 'General Upskilling', desc: 'Improve skills at my own pace' },
     ],
   },
   {
     id: 'hours',
-    question: "How many hours per day can you dedicate? ⏱️",
+    question: "How many hours per day can you dedicate?",
     options: [
-      { value: '1', label: '1 hour/day', icon: '🌙', desc: 'Light, steady progress' },
-      { value: '2', label: '2 hours/day', icon: '⚡', desc: 'Balanced learning pace' },
-      { value: '4', label: '4 hours/day', icon: '🔥', desc: 'Intense, faster completion' },
-      { value: '6', label: '6+ hours/day', icon: '💪', desc: 'Bootcamp mode, maximum speed' },
+      { value: '1', label: '1 hour/day', desc: 'Light, steady progress' },
+      { value: '2', label: '2 hours/day', desc: 'Balanced learning pace' },
+      { value: '4', label: '4 hours/day', desc: 'Intense, faster completion' },
+      { value: '6', label: '6+ hours/day', desc: 'Bootcamp mode, maximum speed' },
     ],
   },
   {
     id: 'mood',
-    question: "How are you feeling today? Your plan adapts to your energy! 🌡️",
+    question: "How are you feeling today? Your plan adapts to your energy!",
     options: [
-      { value: 'tired', label: '😴 Tired / Low Energy', icon: '😴', desc: 'Lighter tasks, shorter sessions' },
-      { value: 'neutral', label: '😐 Neutral / Focused', icon: '😐', desc: 'Standard balanced roadmap' },
-      { value: 'motivated', label: '🔥 Motivated / High Energy', icon: '🔥', desc: 'Aggressive pace, more challenges' },
+      { value: 'tired', label: 'Tired / Low Energy', desc: 'Lighter tasks, shorter sessions' },
+      { value: 'neutral', label: 'Neutral / Focused', desc: 'Standard balanced roadmap' },
+      { value: 'motivated', label: 'Motivated / High Energy', desc: 'Aggressive pace, more challenges' },
     ],
   },
 ];
@@ -103,7 +108,20 @@ const DIFFICULTY_COLORS: Record<string, string> = {
   Advanced: 'bg-[#FFF1F2] text-[#E11D48] border-[#FECDD3]',
 };
 
-const TYPE_ICONS: Record<string, string> = { read: '📖', solve: '💻', practice: '✏️', watch: '🎥' };
+const renderTaskIcon = (type: string) => {
+  switch (type) {
+    case 'solve':
+      return <Code2 className="w-4 h-4 text-[#0284C7]" />;
+    case 'read':
+      return <BookOpen className="w-4 h-4 text-[#0D684D]" />;
+    case 'practice':
+      return <FileText className="w-4 h-4 text-[#D97706]" />;
+    case 'watch':
+      return <PlayCircle className="w-4 h-4 text-[#7C3AED]" />;
+    default:
+      return <Target className="w-4 h-4 text-[#6F7E77]" />;
+  }
+};
 
 // ─────────────────────────────────────────
 // XP State (stored in localStorage)
@@ -242,7 +260,7 @@ export default function RoadmapPage() {
       Notification.requestPermission().then(perm => {
         setRemindersEnabled(true);
         if (perm === 'granted') {
-          new Notification('CogniFlow AI: Daily Reminder Activated 🎯', {
+          new Notification('CogniFlow AI: Daily Reminder Activated', {
             body: 'Your AI learning co-pilot will nudge you daily at 09:00 AM to keep your streak alive!',
           });
         }
@@ -393,9 +411,9 @@ export default function RoadmapPage() {
                     <button
                       key={opt.value}
                       onClick={() => handleSelectAnswer(QUESTIONS[step].id, opt.value)}
-                      className="flex items-center gap-3 p-3.5 rounded-xl bg-white hover:bg-[#F5F2E5] border border-[#E5E1D3] hover:border-[#0D684D] text-left transition-all group shadow-xs cursor-pointer"
+                      className="flex items-center gap-3.5 p-3.5 rounded-xl bg-white hover:bg-[#F5F2E5] border border-[#E5E1D3] hover:border-[#0D684D] text-left transition-all group shadow-xs cursor-pointer"
                     >
-                      <span className="text-xl">{opt.icon}</span>
+                      <div className="w-2 h-2 rounded-full bg-[#0D684D] opacity-60 group-hover:opacity-100 shrink-0" />
                       <div>
                         <div className="text-sm font-semibold text-[#141A17] group-hover:text-[#0D382B]">{opt.label}</div>
                         <div className="text-xs text-[#6F7E77]">{opt.desc}</div>
@@ -480,7 +498,7 @@ export default function RoadmapPage() {
               className="px-4 py-2 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-all cursor-pointer disabled:opacity-50"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#34D399]" />
-              <span>{reRouting ? '⚡ Calibrating...' : '⚡ AI Dynamic Re-Route'}</span>
+              <span>{reRouting ? 'Calibrating...' : 'AI Dynamic Re-Route'}</span>
             </button>
 
             <button
@@ -491,7 +509,12 @@ export default function RoadmapPage() {
                   : 'bg-white border-[#E0DCCF] text-[#5E6D66] hover:text-[#141A17]'
               }`}
             >
-              <span>{remindersEnabled ? '🔔 Reminder ON (9 AM)' : '🔕 Set AI Reminder'}</span>
+              {remindersEnabled ? (
+                <Bell className="w-3.5 h-3.5 text-[#B45309]" />
+              ) : (
+                <BellOff className="w-3.5 h-3.5 text-[#6F7E77]" />
+              )}
+              <span>{remindersEnabled ? 'Reminder ON (9 AM)' : 'Set AI Reminder'}</span>
             </button>
 
             <button
@@ -544,7 +567,7 @@ export default function RoadmapPage() {
             roadmap.mood === 'motivated' ? 'bg-[#FFFBEB] text-[#B45309] border-[#FDE68A]' :
             'bg-[#FAF8EE] text-[#4E5C56] border-[#E5E1D3]'
           }`}>
-            {roadmap.mood === 'tired' ? '😴 Lighter Pace' : roadmap.mood === 'motivated' ? '🔥 Aggressive Pace' : '😐 Standard Pace'}
+            {roadmap.mood === 'tired' ? 'Lighter Pace' : roadmap.mood === 'motivated' ? 'Aggressive Pace' : 'Standard Pace'}
           </span>
           <span className="ml-auto text-[10px] text-[#8E9E98]">{roadmap.generatedBy}</span>
         </div>
@@ -645,7 +668,9 @@ export default function RoadmapPage() {
                           : 'bg-[#FAF8EE] border-[#E5E1D3] hover:border-[#D0CABA]'
                       }`}
                     >
-                      <span className="text-base">{TYPE_ICONS[task.type] || '📌'}</span>
+                      <div className="w-7 h-7 rounded-lg bg-white border border-[#E5E1D3] flex items-center justify-center shrink-0">
+                        {renderTaskIcon(task.type)}
+                      </div>
                       <div className="flex-1">
                         <span className={`font-medium ${task.completed ? 'line-through text-[#8E9E98]' : 'text-[#141A17]'}`}>
                           {task.title}
@@ -696,7 +721,7 @@ export default function RoadmapPage() {
       {completedTopics === topics.length && topics.length > 0 && (
         <div className="glass-panel p-6 rounded-2xl border border-[#D5E2D8] text-center space-y-3 bg-[#EFF5F0]">
           <Trophy className="w-10 h-10 text-[#D97706] mx-auto" />
-          <h2 className="text-xl font-bold text-[#141A17]">Roadmap Complete! 🎉</h2>
+          <h2 className="text-xl font-bold text-[#141A17]">Roadmap Complete!</h2>
           <p className="text-sm text-[#5E6D66]">You&apos;ve finished all {topics.length} topics. Total XP earned: <strong className="text-[#0D382B]">{totalXP}</strong></p>
           <button onClick={resetRoadmap} className="px-6 py-2.5 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold cursor-pointer">
             Start a New Track

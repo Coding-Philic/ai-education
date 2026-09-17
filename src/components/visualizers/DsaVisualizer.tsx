@@ -729,7 +729,7 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
         setRevealedHintLevel(1);
         setConsoleLogs(prev => addLog(prev, 'success', 'Stage 2: AI Hints & Benchmark Solution synthesized ✓'));
         if (resJson.data.isBuggy) {
-          setConsoleLogs(prev => addLog(prev, 'warn', '⚠️ AI Defect Doctor: Identified invariant violation in code'));
+          setConsoleLogs(prev => addLog(prev, 'warn', 'AI Defect Doctor: Identified invariant violation in code'));
         }
       }
     } catch (err) {
@@ -1159,7 +1159,7 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
             {/* Socratic Edge-Case Hint Banner */}
             {(activeFrame as any).edgeCaseHint && (
               <div className="mt-2.5 p-3 rounded-xl bg-amber-950/40 border border-amber-500/40 text-xs text-amber-200 flex items-start gap-2.5 leading-relaxed animate-fadeIn">
-                <span className="text-base leading-none">💡</span>
+                <Lightbulb className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-amber-300 font-bold">AI Pedagogical Hint: </strong>
                   <span>{(activeFrame as any).edgeCaseHint}</span>
@@ -1355,7 +1355,7 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
               className="mt-3 w-full py-3 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-2 transition-all disabled:opacity-60 cursor-pointer"
             >
               <Sparkles className="w-4 h-4 text-[#34D399]" />
-              <span>{loading ? '⚡ AI Analyzing...' : '▶  Run & Visualize (Any Algorithm)'}</span>
+              <span>{loading ? 'AI Analyzing...' : 'Run & Visualize (Any Algorithm)'}</span>
             </button>
           </div>
 

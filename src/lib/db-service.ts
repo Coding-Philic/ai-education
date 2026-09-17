@@ -42,7 +42,7 @@ const dbStore: InMemoryStore = {
     },
     {
       id: '10000000-0000-0000-0000-000000000002',
-      title: 'Chai SQLab & Relational Engine',
+      title: 'SQL Lab & Relational Engine',
       slug: 'sql-track',
       domain: 'sql',
       description: 'Master database execution: Visualize joins, table scans, index lookups, and EXPLAIN plans live.',
