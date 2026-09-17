@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 224 71% 4%;
+  --foreground: 213 31% 91%;
+  --border: 216 34% 17%;
+}
+
+body {
+  background-color: #080c14;
+  color: #f1f5f9;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  overflow-x: hidden;
+}
+
+/* Custom glowing borders & tech accents */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-glow {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.15);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #6366f1 0%, #06b6d4 50%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-purple {
+  background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #090d16;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}

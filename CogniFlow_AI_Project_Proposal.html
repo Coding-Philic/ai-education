@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CogniFlow AI - Project Proposal | Lenovo LEAP AI Hackathon 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+      @bottom-right {
+        content: counter(page);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 9pt;
+        color: #64748b;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.55;
+      font-size: 10pt;
+    }
+
+    .page {
+      page-break-after: always;
+      position: relative;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    /* Header Bar */
+    .top-banner {
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .badge-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 8pt;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-primary {
+      background: #eef2ff;
+      color: #4338ca;
+      border: 1px solid #c7d2fe;
+    }
+
+    .badge-green {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .badge-red {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    h1 {
+      font-size: 20pt;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .doc-subtitle {
+      font-size: 10pt;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    h2 {
+      font-size: 12.5pt;
+      font-weight: 800;
+      color: #0f172a;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-left: 4px solid #4f46e5;
+      padding-left: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    h3 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #312e81;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 9.5pt;
+      color: #334155;
+      margin-bottom: 8px;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-left: 18px;
+      margin-bottom: 10px;
+      font-size: 9.5pt;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    strong {
+      color: #0f172a;
+    }
+
+    .highlight-box {
+      background: #f8fafc;
+      border-left: 3px solid #6366f1;
+      padding: 10px 14px;
+      margin: 10px 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 9pt;
+      color: #1e293b;
+    }
+
+    .table-custom {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 8.5pt;
+    }
+
+    .table-custom th, .table-custom td {
+      border: 1px solid #cbd5e1;
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    .table-custom th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* Screenshots styling */
+    .screenshot-card {
+      margin-top: 14px;
+      margin-bottom: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      page-break-inside: avoid;
+    }
+
+    .screenshot-header {
+      background: #0f172a;
+      color: #38bdf8;
+      padding: 6px 12px;
+      font-size: 8.5pt;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .screenshot-header .tag {
+      background: #1e293b;
+      color: #94a3b8;
+      font-size: 7.5pt;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .screenshot-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .screenshot-caption {
+      padding: 8px 12px;
+      background: #f8fafc;
+      font-size: 8.5pt;
+      color: #475569;
+      line-height: 1.4;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding-top: 10px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 8pt;
+      color: #94a3b8;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== PAGE 1 ==================== -->
+  <div class="page">
+    <div class="top-banner">
+      <div class="badge-group">
+        <span class="badge badge-red">Lenovo LEAP AI Hackathon 2026</span>
+        <span class="badge badge-green">Theme: AI in Education &amp; Skilling</span>
+        <span class="badge badge-primary">Problem Statement 1</span>
+        <span class="badge badge-primary">AKTU Lucknow • BharatCares</span>
+      </div>
+      <h1>CogniFlow AI: Unified Real-Time Visual Learning &amp; Skill Gap Diagnostic Operating System</h1>
+      <div class="doc-subtitle">
+        Official Project Proposal &amp; Technical Prototype Submission
+      </div>
+    </div>
+
+    <h2>1. Project Objective</h2>
+    <p>
+      The primary objective of <strong>CogniFlow AI</strong> is to fundamentally transform computer science and software engineering education from a passive, text-heavy, rote-memorization discipline into an <strong>interactive, real-time visual learning operating system</strong>.
+    </p>
+    <p>
+      Traditional coding platforms (e.g., LeetCode, HackerRank, GeeksForGeeks, and video tutorials) present students with binary outcomes (<em>"Accepted"</em> or <em>"Wrong Answer"</em>) without revealing the underlying cognitive breakdown. CogniFlow AI solves this through five measurable pillars:
+    </p>
+    <ul>
+      <li><strong>Visualize Intangible Computing Mechanics:</strong> Provide synchronized, frame-by-frame visual animations of memory pointer jumps in Data Structures &amp; Algorithms (DSA), relational algebra execution pipelines in SQL, and network packet routing with fault failovers in Distributed System Design.</li>
+      <li><strong>Automate Cognitive Skill Gap Diagnosis (Problem Statement 1):</strong> Harness ultra-low latency Groq Cloud LPUs (&lt; 380ms) to mentally trace student code, isolate the foundational conceptual root cause (e.g., loop boundary invariant flaws, unindexed full table scans, or single points of failure), and compute a quantified concept severity score.</li>
+      <li><strong>Deliver Individualized Remediation Roadmaps:</strong> Dynamically generate a 3-step targeted visual drill and continuously update the student's live 5-Axis Skill Radar Chart based on their pacing and weaknesses.</li>
+      <li><strong>Drive Social Motivation via Real-Time Peer Presence:</strong> Stream live student milestones across AKTU engineering colleges via WebSockets to encourage peer accountability and healthy competitive spirit.</li>
+      <li><strong>Empower University Faculty (AKTU):</strong> Provide an enterprise Faculty Command Center with state-wide Cohort Skill Gap Heatmaps to identify systemic syllabus bottlenecks across colleges.</li>
+    </ul>
+
+    <h2>2. Problem Statement / Need for the Solution</h2>
+    <p>
+      Over 1.5 million students graduate from engineering programs in India each year. However, national employability studies (NASSCOM, Aspiring Minds) consistently demonstrate that <strong>fewer than 18% of computer science graduates can write logically sound, production-grade code</strong>.
+    </p>
+    <div class="highlight-box">
+      <strong>Core Need Addressed (Lenovo LEAP Problem Statement 1):</strong><br/>
+      <em>"Students struggle to identify their learning gaps and skills to improve. Learners need individualized study plans based on their pace and weaknesses."</em>
+    </div>
+    <p><strong>Why Existing Approaches Fail:</strong></p>
+    <ul>
+      <li><strong>Abstract Mental Execution:</strong> Computer science requires novices to mentally maintain memory addresses, pointers, and call stacks. Without visual feedback, students become overwhelmed and drop out.</li>
+      <li><strong>The "Illusion of Competence":</strong> Passively watching coding videos on YouTube creates a deceptive sense of comprehension. When faced with an empty editor, learners are unable to synthesize logic.</li>
+      <li><strong>Fragmented, Unintelligent Tools:</strong> Students practice DSA on one site, SQL on another, and read system design blogs separately, receiving zero cross-domain diagnostic analytics.</li>
+    </ul>
+    <p>
+      <strong>National Importance:</strong> By democratizing visual computing education with zero hardcoded curricula and sub-second Groq AI feedback, CogniFlow AI equips students in tier-2 and tier-3 colleges across Uttar Pradesh with industry-caliber engineering skills, directly accelerating the <strong>IndiaAI Mission</strong>.
+    </p>
+  </div>
+
+  <!-- ==================== PAGE 2 ==================== -->
+  <div class="page">
+    <h2>3. Key Features &amp; Functional Architecture</h2>
+    
+    <div class="highlight-box">
+      <strong>1. 3-in-1 Unified Multi-Domain Interactive Visualizer Engine:</strong>
+      <ul style="margin-top: 4px; margin-bottom: 0;">
+        <li><strong>Interactive DSA Memory Visualizer:</strong> Dynamic array &amp; tree pointer animations, scrubbable timeline bar, speed control (0.5x–2.0x), memory scope inspector, and code-to-line synchronized highlighting.</li>
+        <li><strong>Chai SQLab Relational Engine:</strong> Live SQL terminal with dynamic tables, animated Venn diagram intersections, and visual <code>EXPLAIN</code> query execution plan trees.</li>
+        <li><strong>Distributed System Design Simulator:</strong> Interactive canvas with Load Balancers, Microservices, Redis Caches, and Postgres Replicas simulating 20,000 RPS traffic with live Chaos Fault Injection.</li>
+      </ul>
+    </div>
+
+    <div class="highlight-box">
+      <strong>2. Groq Cloud LPU AI Skill Gap Diagnostic Engine:</strong>
+      <ul style="margin-top: 4px; margin-bottom: 0;">
+        <li>Sub-second inference (&lt; 380ms) utilizing <code>llama-3.3-70b-versatile</code> and <code>deepseek-r1-distill-llama-70b</code>.</li>
+        <li>Isolates the root conceptual misconception on every submission and provides a tailored 3-step remediation action plan.</li>
+        <li>Dynamically updates the student's <strong>5-Axis SVG Skill Radar Matrix</strong> (DSA Pointers, Trees/Recursion, DP, SQL Optimization, System Design).</li>
+      </ul>
+    </div>
+
+    <div class="highlight-box">
+      <strong>3. 100% Dynamic Architecture (Zero Hardcoding):</strong>
+      <ul style="margin-top: 4px; margin-bottom: 0;">
+        <li>All curriculum tracks, modules, challenges, visual frames, starter templates, and user stats are served dynamically from Supabase PostgreSQL.</li>
+      </ul>
+    </div>
+
+    <div class="highlight-box">
+      <strong>4. Real-Time Peer Motivation &amp; Collaboration:</strong>
+      <ul style="margin-top: 4px; margin-bottom: 0;">
+        <li><strong>Live Pulse Ticker:</strong> Real-time streaming bar showing peer achievements across colleges (<em>"Priya Verma (IET Lucknow) solved Two Sum II (+50 XP)"</em>).</li>
+        <li><strong>Live Presence Indicator:</strong> Real-time active student counter (<em>"142 engineers online now"</em>).</li>
+        <li><strong>Peer Community Hub:</strong> Students can share interactive visual replay snapshots, write proofs, upvote, and discuss solutions.</li>
+      </ul>
+    </div>
+
+    <div class="highlight-box">
+      <strong>5. Faculty &amp; Admin Command Center:</strong>
+      <ul style="margin-top: 4px; margin-bottom: 0;">
+        <li><strong>AKTU Cohort Skill Gap Heatmap:</strong> Visualizes aggregated student failure rates across topics state-wide to help professors adjust curricula.</li>
+        <li><strong>Dynamic Curriculum Creator CMS:</strong> Enables faculty to publish new challenges into the database instantly without redeploying code.</li>
+      </ul>
+    </div>
+
+    <h2>Technical Stack Specification</h2>
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>Subsystem</th>
+          <th>Technology</th>
+          <th>Implementation Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Frontend</strong></td>
+          <td>Next.js 14, React 18, TypeScript, Tailwind CSS</td>
+          <td>Server components, hardware-accelerated 60fps CSS animations</td>
+        </tr>
+        <tr>
+          <td><strong>AI Acceleration</strong></td>
+          <td>Groq Cloud LPU (Llama-3.3-70B, DeepSeek-R1)</td>
+          <td>Ultra-fast AST compilation &amp; cognitive misconception extraction</td>
+        </tr>
+        <tr>
+          <td><strong>Persistence</strong></td>
+          <td>Supabase (PostgreSQL 16)</td>
+          <td>Zero hardcoding, JSONB visual states, Row Level Security (RLS)</td>
+        </tr>
+        <tr>
+          <td><strong>Real-Time Mesh</strong></td>
+          <td>Node.js WebSocket Server (Socket.io)</td>
+          <td>Live presence registry, peer motivation broadcast, and room chat</td>
+        </tr>
+        <tr>
+          <td><strong>Security Middleware</strong></td>
+          <td>Custom Token-Bucket Limiter, Zod, JWT</td>
+          <td>Protection of upstream AI quota &amp; strict schema verification</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ==================== PAGE 3 ==================== -->
+  <div class="page">
+    <h2>4. Project Screenshots &amp; Application Interfaces</h2>
+    <p>
+      The complete, functional application is fully implemented, built, and verified. Below are high-resolution screenshots of the active running system:
+    </p>
+
+    <!-- Screenshot 1: Mission Control -->
+    <div class="screenshot-card">
+      <div class="screenshot-header">
+        <span>INTERFACE 1: MISSION CONTROL &amp; LIVE SKILL RADAR</span>
+        <span class="tag">http://localhost:3000</span>
+      </div>
+      <img src="proposal_assets/01_mission_control_skill_radar.png" class="screenshot-img" alt="Mission Control & Skill Radar">
+      <div class="screenshot-caption">
+        <strong>Figure 1:</strong> Mission Control Dashboard showing the <strong>5-Axis SVG Skill Radar Chart</strong>, active student stats (438 engineers, &lt;380ms Groq LPU latency), top <strong>Live Pulse Ticker</strong> broadcasting peer solves, and identified learning gaps with mastery percentages.
+      </div>
+    </div>
+
+    <!-- Screenshot 2: Dynamic Tracks -->
+    <div class="screenshot-card">
+      <div class="screenshot-header">
+        <span>INTERFACE 2: DYNAMIC CURRICULUM TRACKS (ZERO HARDCODED DATA)</span>
+        <span class="tag">http://localhost:3000/#tracks</span>
+      </div>
+      <img src="proposal_assets/02_dynamic_tracks.png" class="screenshot-img" alt="Dynamic Curriculum Tracks">
+      <div class="screenshot-caption">
+        <strong>Figure 2:</strong> Dynamic track catalog fetched live from Supabase PostgreSQL (DSA Visualizer, Chai SQLab Engine, and Distributed System Design Simulator), along with quicklinks to the Peer Community and Faculty Command Center.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE 4 ==================== -->
+  <div class="page">
+    <h2>4. Project Screenshots (Continued)</h2>
+
+    <!-- Screenshot 3: DSA Visualizer -->
+    <div class="screenshot-card">
+      <div class="screenshot-header">
+        <span>INTERFACE 3: INTERACTIVE DSA MEMORY &amp; POINTER VISUALIZER</span>
+        <span class="tag">http://localhost:3000/tracks/dsa</span>
+      </div>
+      <img src="proposal_assets/03_dsa_memory_visualizer.png" class="screenshot-img" alt="DSA Visualizer">
+      <div class="screenshot-caption">
+        <strong>Figure 3:</strong> DSA Interactive Visualizer demonstrating Two-Pointer array search with dynamic pointer badges (<code>left (p1)</code>, <code>right (p2)</code>), step timeline scrubber, synchronized Python code editor, and the <strong>AI Skill Gap Diagnosis Card</strong> delivering root-cause analysis and a 3-step individualized remediation drill.
+      </div>
+    </div>
+
+    <!-- Screenshot 4: SQLab -->
+    <div class="screenshot-card">
+      <div class="screenshot-header">
+        <span>INTERFACE 4: CHAI SQLAB INTERACTIVE RELATIONAL ENGINE</span>
+        <span class="tag">http://localhost:3000/tracks/sql</span>
+      </div>
+      <img src="proposal_assets/04_chai_sqlab.png" class="screenshot-img" alt="Chai SQLab">
+      <div class="screenshot-caption">
+        <strong>Figure 4:</strong> Chai SQLab interactive environment featuring the SQL terminal, live database table inspection (<code>students</code>, <code>enrollments</code>, <code>courses</code>), and tabs for Visual <code>EXPLAIN</code> query execution plans and animated Relational Venn Joins.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE 5 ==================== -->
+  <div class="page">
+    <h2>4. Project Screenshots (Continued)</h2>
+
+    <!-- Screenshot 5: System Design -->
+    <div class="screenshot-card">
+      <div class="screenshot-header">
+        <span>INTERFACE 5: DISTRIBUTED SYSTEM DESIGN &amp; CHAOS SIMULATOR</span>
+        <span class="tag">http://localhost:3000/tracks/system-design</span>
+      </div>
+      <img src="proposal_assets/05_system_design_simulator.png" class="screenshot-img" alt="System Design Simulator">
+      <div class="screenshot-caption">
+        <strong>Figure 5:</strong> Distributed System Design Simulator animating a 20,000 RPS packet stream across Ingress Load Balancers, Microservices, Redis Caches, and Postgres Replicas, equipped with an interactive <strong>Chaos Mode</strong> to simulate hardware crashes and test architectural resilience.
+      </div>
+    </div>
+
+    <h2>5. Impact, Scalability &amp; IndiaAI Alignment</h2>
+    <ul>
+      <li><strong>Pedagogical Impact:</strong> Replaces rote code memorization with deep structural intuition. Students understand <em>why</em> solutions work and <em>how</em> data moves in physical memory.</li>
+      <li><strong>State-Wide Scalability for AKTU:</strong> The stateless Next.js architecture backed by Supabase connection pooling and Groq's high-throughput LPUs can support tens of thousands of concurrent learners across Uttar Pradesh without server degradation.</li>
+      <li><strong>Democratizing Skilling:</strong> Provides tier-2 and tier-3 college students with the same interactive visualization and elite 1-on-1 AI tutoring previously restricted to expensive premium bootcamps.</li>
+    </ul>
+
+    <div class="footer-note">
+      <span>CogniFlow AI • Lenovo LEAP AI Hackathon 2026 Submission</span>
+      <span>Theme 1: AI in Education &amp; Skilling • AKTU Lucknow</span>
+    </div>
+  </div>
+
+</body>
+</html>
