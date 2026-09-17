@@ -6,7 +6,6 @@ import {
   Brain,
   Target,
   Clock,
-  BookOpen,
   Code2,
   Database,
   Network,
@@ -93,15 +92,15 @@ const QUESTIONS = [
 ];
 
 const TRACK_ICONS: Record<string, React.ReactNode> = {
-  dsa: <Code2 className="w-4 h-4" />,
-  sql: <Database className="w-4 h-4" />,
-  'system-design': <Network className="w-4 h-4" />,
+  dsa: <Code2 className="w-4 h-4 text-[#0D684D]" />,
+  sql: <Database className="w-4 h-4 text-[#0284C7]" />,
+  'system-design': <Network className="w-4 h-4 text-[#7C3AED]" />,
 };
 
 const DIFFICULTY_COLORS: Record<string, string> = {
-  Beginner: 'bg-emerald-950/60 text-emerald-400 border-emerald-800/60',
-  Intermediate: 'bg-amber-950/60 text-amber-400 border-amber-800/60',
-  Advanced: 'bg-rose-950/60 text-rose-400 border-rose-800/60',
+  Beginner: 'bg-[#EFF5F0] text-[#0D684D] border-[#D5E2D8]',
+  Intermediate: 'bg-[#FFFBEB] text-[#B45309] border-[#FDE68A]',
+  Advanced: 'bg-[#FFF1F2] text-[#E11D48] border-[#FECDD3]',
 };
 
 const TYPE_ICONS: Record<string, string> = { read: '📖', solve: '💻', practice: '✏️', watch: '🎥' };
@@ -309,49 +308,49 @@ export default function RoadmapPage() {
   // ─── Onboarding Chat View ───
   if (step <= QUESTIONS.length && !roadmap) {
     return (
-      <div className="max-w-2xl mx-auto space-y-6 pb-12">
+      <div className="max-w-2xl mx-auto space-y-6 pb-14">
         {/* Header */}
-        <div className="text-center space-y-3 pt-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-950/80 border border-indigo-500/40 text-xs font-semibold text-indigo-300">
-            <Brain className="w-3.5 h-3.5 text-cyan-400" />
+        <div className="text-center space-y-3 pt-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EFF5F0] border border-[#D5E2D8] text-xs font-semibold text-[#0D684D] shadow-xs">
+            <Brain className="w-3.5 h-3.5 text-[#0D684D]" />
             <span>AI Roadmap Generator</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">
-            Your Personal <span className="text-gradient">AI Learning Co-pilot</span>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#141A17] tracking-tight">
+            Your Personal <span className="text-[#0D684D] italic font-serif">AI Learning Co-pilot</span>
           </h1>
-          <p className="text-sm text-slate-400 max-w-md mx-auto">
-            Answer a few questions and AI will generate a custom roadmap adapted to your goal, level, and today's energy.
+          <p className="text-sm text-[#5E6D66] max-w-md mx-auto leading-relaxed">
+            Answer a few quick questions and Groq Cloud AI will generate a custom curriculum adapted to your goal, level, and today&apos;s energy.
           </p>
         </div>
 
         {/* Chat Window */}
-        <div ref={chatRef} className="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+        <div ref={chatRef} className="glass-panel rounded-2xl border border-[#E5E1D3] overflow-hidden shadow-xs">
           
           {/* Progress bar */}
-          <div className="h-1 bg-slate-800">
+          <div className="h-1.5 bg-[#EAE6D8]">
             <div
-              className="h-1 bg-gradient-to-r from-indigo-600 to-cyan-500 transition-all duration-500"
+              className="h-1.5 bg-[#0D382B] transition-all duration-500"
               style={{ width: `${(step / QUESTIONS.length) * 100}%` }}
             />
           </div>
 
           <div className="p-6 space-y-6">
             {/* Show previous answered questions */}
-            {QUESTIONS.slice(0, step).map((q, qi) => (
-              <div key={q.id} className="space-y-2">
+            {QUESTIONS.slice(0, step).map((q) => (
+              <div key={q.id} className="space-y-2.5">
                 {/* AI message */}
                 <div className="flex items-start gap-2.5">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-600 to-cyan-600 flex items-center justify-center shrink-0">
-                    <Sparkles className="w-3.5 h-3.5 text-white" />
+                  <div className="w-8 h-8 rounded-full bg-[#0D382B] flex items-center justify-center shrink-0 shadow-xs">
+                    <Sparkles className="w-4 h-4 text-[#34D399]" />
                   </div>
-                  <div className="bg-slate-900/80 rounded-2xl rounded-tl-none px-4 py-2.5 text-sm text-slate-200 border border-slate-800">
+                  <div className="bg-[#FAF8EE] rounded-2xl rounded-tl-none px-4 py-3 text-sm text-[#141A17] border border-[#E5E1D3] font-medium shadow-xs">
                     {q.question}
                   </div>
                 </div>
                 {/* User answer */}
                 {answers[q.id] && (
                   <div className="flex justify-end">
-                    <div className="bg-indigo-600/20 border border-indigo-500/40 rounded-2xl rounded-tr-none px-4 py-2.5 text-sm text-indigo-200 max-w-xs">
+                    <div className="bg-[#0D382B] text-white rounded-2xl rounded-tr-none px-4 py-2.5 text-sm font-semibold max-w-xs shadow-xs">
                       {q.options.find(o => o.value === answers[q.id])?.label || answers[q.id]}
                     </div>
                   </div>
@@ -362,16 +361,16 @@ export default function RoadmapPage() {
             {/* Loading state */}
             {loading && (
               <div className="flex items-start gap-2.5">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-600 to-cyan-600 flex items-center justify-center shrink-0">
-                  <Sparkles className="w-3.5 h-3.5 text-white animate-pulse" />
+                <div className="w-8 h-8 rounded-full bg-[#0D382B] flex items-center justify-center shrink-0 shadow-xs">
+                  <Sparkles className="w-4 h-4 text-[#34D399] animate-pulse" />
                 </div>
-                <div className="bg-slate-900/80 rounded-2xl rounded-tl-none px-4 py-3 border border-slate-800 flex items-center gap-2 text-xs text-slate-400">
+                <div className="bg-[#FAF8EE] rounded-2xl rounded-tl-none px-4 py-3 border border-[#E5E1D3] flex items-center gap-2.5 text-xs text-[#5E6D66]">
                   <div className="flex gap-1">
-                    <div className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" />
-                    <div className="w-2 h-2 rounded-full bg-cyan-500 animate-bounce" style={{ animationDelay: '0.15s' }} />
-                    <div className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: '0.3s' }} />
+                    <div className="w-2 h-2 rounded-full bg-[#0D382B] animate-bounce" />
+                    <div className="w-2 h-2 rounded-full bg-[#0D684D] animate-bounce" style={{ animationDelay: '0.15s' }} />
+                    <div className="w-2 h-2 rounded-full bg-[#10B981] animate-bounce" style={{ animationDelay: '0.3s' }} />
                   </div>
-                  <span>Groq AI is generating your personalized roadmap...</span>
+                  <span className="font-medium">Groq Cloud AI is generating your personalized roadmap...</span>
                 </div>
               </div>
             )}
@@ -380,28 +379,28 @@ export default function RoadmapPage() {
             {!loading && step < QUESTIONS.length && (
               <div className="space-y-3">
                 <div className="flex items-start gap-2.5">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-600 to-cyan-600 flex items-center justify-center shrink-0">
-                    <Sparkles className="w-3.5 h-3.5 text-white" />
+                  <div className="w-8 h-8 rounded-full bg-[#0D382B] flex items-center justify-center shrink-0 shadow-xs">
+                    <Sparkles className="w-4 h-4 text-[#34D399]" />
                   </div>
-                  <div className="bg-slate-900/80 rounded-2xl rounded-tl-none px-4 py-2.5 text-sm text-slate-200 border border-slate-800">
+                  <div className="bg-[#FAF8EE] rounded-2xl rounded-tl-none px-4 py-3 text-sm text-[#141A17] border border-[#E5E1D3] font-medium shadow-xs">
                     {QUESTIONS[step].question}
                   </div>
                 </div>
 
                 {/* Options */}
-                <div className="pl-10 grid gap-2">
+                <div className="pl-10 grid gap-2.5">
                   {QUESTIONS[step].options.map(opt => (
                     <button
                       key={opt.value}
                       onClick={() => handleSelectAnswer(QUESTIONS[step].id, opt.value)}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-indigo-500 text-left transition-all group"
+                      className="flex items-center gap-3 p-3.5 rounded-xl bg-white hover:bg-[#F5F2E5] border border-[#E5E1D3] hover:border-[#0D684D] text-left transition-all group shadow-xs cursor-pointer"
                     >
                       <span className="text-xl">{opt.icon}</span>
                       <div>
-                        <div className="text-sm font-semibold text-white group-hover:text-indigo-200">{opt.label}</div>
-                        <div className="text-xs text-slate-500">{opt.desc}</div>
+                        <div className="text-sm font-semibold text-[#141A17] group-hover:text-[#0D382B]">{opt.label}</div>
+                        <div className="text-xs text-[#6F7E77]">{opt.desc}</div>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-indigo-400 ml-auto transition-colors" />
+                      <ArrowRight className="w-4 h-4 text-[#8E9E98] group-hover:text-[#0D684D] ml-auto transition-colors" />
                     </button>
                   ))}
                 </div>
@@ -416,7 +415,7 @@ export default function RoadmapPage() {
             <div
               key={i}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                i < step ? 'bg-indigo-500 w-6' : i === step ? 'bg-cyan-400 w-4' : 'bg-slate-700 w-3'
+                i < step ? 'bg-[#0D382B] w-6' : i === step ? 'bg-[#10B981] w-4' : 'bg-[#D9D4C3] w-3'
               }`}
             />
           ))}
@@ -428,49 +427,49 @@ export default function RoadmapPage() {
   // ─── Roadmap View ───
   if (!roadmap || topics.length === 0) {
     return (
-      <div className="flex items-center justify-center py-32 text-slate-500">
+      <div className="flex items-center justify-center py-32 text-[#6F7E77]">
         <div className="text-center space-y-2">
-          <Brain className="w-8 h-8 mx-auto text-slate-600 animate-pulse" />
-          <p className="text-sm">Generating your roadmap...</p>
+          <Brain className="w-8 h-8 mx-auto text-[#0D684D] animate-pulse" />
+          <p className="text-sm font-medium">Generating your roadmap...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-6 pb-14">
       
       {/* XP Toast */}
       {xpToast.visible && (
         <div className="fixed top-20 right-6 z-50 animate-bounce">
-          <div className={`px-4 py-2 rounded-xl shadow-lg text-white text-sm font-bold flex items-center gap-2 ${
+          <div className={`px-4 py-2 rounded-full shadow-lg text-white text-xs font-bold flex items-center gap-2 ${
             xpToast.isDeduction
-              ? 'bg-rose-600 shadow-rose-600/30'
-              : 'bg-indigo-600 shadow-indigo-500/30'
+              ? 'bg-[#E11D48]'
+              : 'bg-[#0D382B]'
           }`}>
-            <Zap className="w-4 h-4" />
+            <Zap className="w-3.5 h-3.5" />
             {xpToast.isDeduction ? `-${xpToast.amount} XP (Accountability Penalty)` : `+${xpToast.amount} XP`}
           </div>
         </div>
       )}
 
       {/* Header Stats */}
-      <div className="glass-panel-glow p-5 rounded-2xl border border-indigo-500/30">
+      <div className="glass-panel p-6 rounded-2xl border border-[#E5E1D3] shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
               {TRACK_ICONS[roadmap.track]}
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#5E6D66]">
                 {roadmap.track} Roadmap — {roadmap.level}
               </span>
             </div>
-            <h1 className="text-xl font-extrabold text-white">
-              Goal: <span className="text-gradient">{roadmap.goal}</span>
+            <h1 className="text-2xl font-extrabold text-[#141A17]">
+              Goal: <span className="text-[#0D684D] italic font-serif">{roadmap.goal}</span>
             </h1>
-            <p className="text-xs text-slate-400 mt-1 flex items-center gap-3">
-              <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {roadmap.totalDays} days total</span>
-              <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {roadmap.dailyHours}h/day</span>
-              <span className="flex items-center gap-1"><Target className="w-3 h-3" /> Complete by {roadmap.projectedCompletion}</span>
+            <p className="text-xs text-[#5E6D66] mt-1 flex items-center gap-3">
+              <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-[#0D684D]" /> {roadmap.totalDays} days total</span>
+              <span className="flex items-center gap-1"><Clock className="w-3 h-3 text-[#0D684D]" /> {roadmap.dailyHours}h/day</span>
+              <span className="flex items-center gap-1"><Target className="w-3 h-3 text-[#0D684D]" /> Complete by {roadmap.projectedCompletion}</span>
             </p>
           </div>
 
@@ -478,18 +477,18 @@ export default function RoadmapPage() {
             <button
               onClick={handleDynamicReRoute}
               disabled={reRouting}
-              className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-cyan-600 hover:opacity-90 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-indigo-600/20 transition-all cursor-pointer disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-all cursor-pointer disabled:opacity-50"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{reRouting ? '⚡ AI Calibrating...' : '⚡ AI Dynamic Re-Route'}</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#34D399]" />
+              <span>{reRouting ? '⚡ Calibrating...' : '⚡ AI Dynamic Re-Route'}</span>
             </button>
 
             <button
               onClick={handleToggleReminder}
-              className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`px-3.5 py-2 rounded-full border text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                 remindersEnabled
-                  ? 'bg-amber-950/60 border-amber-500 text-amber-300'
-                  : 'bg-slate-900 border-slate-700 text-slate-400 hover:text-white'
+                  ? 'bg-[#FFFBEB] border-[#FDE68A] text-[#B45309]'
+                  : 'bg-white border-[#E0DCCF] text-[#5E6D66] hover:text-[#141A17]'
               }`}
             >
               <span>{remindersEnabled ? '🔔 Reminder ON (9 AM)' : '🔕 Set AI Reminder'}</span>
@@ -497,7 +496,7 @@ export default function RoadmapPage() {
 
             <button
               onClick={resetRoadmap}
-              className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 transition-colors cursor-pointer px-2 py-1"
+              className="flex items-center gap-1.5 text-xs text-[#8E9E98] hover:text-[#141A17] transition-colors cursor-pointer px-2 py-1"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               Reset
@@ -506,57 +505,59 @@ export default function RoadmapPage() {
         </div>
 
         {/* Stats row */}
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center">
-            <div className="text-xl font-bold font-mono text-indigo-400">{progressPct}%</div>
-            <div className="text-[10px] text-slate-500 uppercase">Progress</div>
+        <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="p-3.5 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3] text-center">
+            <div className="text-2xl font-bold font-mono text-[#0D382B]">{progressPct}%</div>
+            <div className="text-[10px] text-[#6F7E77] uppercase font-semibold">Progress</div>
           </div>
-          <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center">
-            <div className="text-xl font-bold font-mono text-emerald-400">{completedTasks}/{totalTasks}</div>
-            <div className="text-[10px] text-slate-500 uppercase">Tasks Done</div>
+          <div className="p-3.5 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3] text-center">
+            <div className="text-2xl font-bold font-mono text-[#0D684D]">{completedTasks}/{totalTasks}</div>
+            <div className="text-[10px] text-[#6F7E77] uppercase font-semibold">Tasks Done</div>
           </div>
-          <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center">
-            <div className="text-xl font-bold font-mono text-cyan-400">{xp}</div>
-            <div className="text-[10px] text-slate-500 uppercase">Total XP</div>
+          <div className="p-3.5 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3] text-center">
+            <div className="text-2xl font-bold font-mono text-[#B45309]">{xp}</div>
+            <div className="text-[10px] text-[#6F7E77] uppercase font-semibold">Total XP</div>
           </div>
-          <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center">
-            <div className="text-xl font-bold font-mono text-amber-400 flex items-center justify-center gap-1">
+          <div className="p-3.5 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3] text-center">
+            <div className="text-2xl font-bold font-mono text-[#E11D48] flex items-center justify-center gap-1">
               <Flame className="w-4 h-4" />{streak}
             </div>
-            <div className="text-[10px] text-slate-500 uppercase">Day Streak</div>
+            <div className="text-[10px] text-[#6F7E77] uppercase font-semibold">Day Streak</div>
           </div>
         </div>
 
         {/* Progress bar */}
         <div className="mt-4">
-          <div className="h-2 rounded-full bg-slate-800">
+          <div className="h-2 rounded-full bg-[#EAE6D8]">
             <div
-              className="h-2 rounded-full bg-gradient-to-r from-indigo-600 to-cyan-500 transition-all duration-700"
+              className="h-2 rounded-full bg-[#0D382B] transition-all duration-700"
               style={{ width: `${progressPct}%` }}
             />
           </div>
         </div>
 
         {/* Mood badge */}
-        <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+        <div className="mt-3 flex items-center gap-2 text-xs text-[#5E6D66]">
           <span>Mood-adapted plan:</span>
-          <span className={`px-2 py-0.5 rounded font-semibold border text-[10px] ${
-            roadmap.mood === 'tired' ? 'bg-blue-950/60 text-blue-400 border-blue-800/60' :
-            roadmap.mood === 'motivated' ? 'bg-amber-950/60 text-amber-400 border-amber-800/60' :
-            'bg-slate-900 text-slate-400 border-slate-700'
+          <span className={`px-2.5 py-0.5 rounded-full font-semibold border text-[10px] ${
+            roadmap.mood === 'tired' ? 'bg-[#F0F9FF] text-[#0284C7] border-[#BAE6FD]' :
+            roadmap.mood === 'motivated' ? 'bg-[#FFFBEB] text-[#B45309] border-[#FDE68A]' :
+            'bg-[#FAF8EE] text-[#4E5C56] border-[#E5E1D3]'
           }`}>
             {roadmap.mood === 'tired' ? '😴 Lighter Pace' : roadmap.mood === 'motivated' ? '🔥 Aggressive Pace' : '😐 Standard Pace'}
           </span>
-          <span className="ml-auto text-[10px] text-slate-600">{roadmap.generatedBy}</span>
+          <span className="ml-auto text-[10px] text-[#8E9E98]">{roadmap.generatedBy}</span>
         </div>
       </div>
 
       {/* Topics Timeline */}
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-indigo-400" />
-          <h2 className="text-base font-bold text-white">Learning Timeline</h2>
-          <span className="text-xs text-slate-500">({topics.length} topics)</span>
+          <div className="w-6 h-6 rounded-lg bg-[#EFF5F0] border border-[#D5E2D8] flex items-center justify-center text-[#0D684D]">
+            <TrendingUp className="w-3.5 h-3.5" />
+          </div>
+          <h2 className="text-base font-bold text-[#141A17]">Learning Timeline</h2>
+          <span className="text-xs text-[#6F7E77]">({topics.length} topics)</span>
         </div>
 
         {topics.map((topic, topicIdx) => {
@@ -570,86 +571,86 @@ export default function RoadmapPage() {
               key={topic.id}
               className={`glass-panel rounded-2xl border transition-all duration-300 ${
                 topicCompleted
-                  ? 'border-emerald-800/40 bg-emerald-950/10'
+                  ? 'border-[#D5E2D8] bg-[#F6FAF7]'
                   : isActive
-                  ? 'border-indigo-500/40 shadow-lg shadow-indigo-500/5'
-                  : 'border-slate-800 opacity-75'
+                  ? 'border-[#0D684D] shadow-sm'
+                  : 'border-[#E5E1D3]'
               }`}
             >
               {/* Topic Header */}
               <button
                 onClick={() => toggleTopic(topic.id)}
-                className="w-full p-4 flex items-center gap-3 text-left"
+                className="w-full p-4 flex items-center gap-3 text-left cursor-pointer"
               >
                 {/* Status icon */}
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
                   topicCompleted
-                    ? 'bg-emerald-600/20 border border-emerald-500'
+                    ? 'bg-[#EFF5F0] border border-[#D5E2D8]'
                     : isActive
-                    ? 'bg-indigo-600/20 border border-indigo-500 animate-pulse'
-                    : 'bg-slate-900 border border-slate-700'
+                    ? 'bg-[#0D382B] text-white'
+                    : 'bg-[#FAF8EE] border border-[#E5E1D3]'
                 }`}>
                   {topicCompleted
-                    ? <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    ? <CheckCircle2 className="w-4 h-4 text-[#059669]" />
                     : isActive
-                    ? <Star className="w-4 h-4 text-indigo-400" />
-                    : <Circle className="w-4 h-4 text-slate-600" />}
+                    ? <Star className="w-4 h-4 text-[#34D399]" />
+                    : <Circle className="w-4 h-4 text-[#8E9E98]" />}
                 </div>
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-bold text-white">{topic.name}</span>
-                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${DIFFICULTY_COLORS[topic.difficulty]}`}>
+                    <span className="text-sm font-bold text-[#141A17]">{topic.name}</span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${DIFFICULTY_COLORS[topic.difficulty]}`}>
                       {topic.difficulty}
                     </span>
                     {isActive && (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-950/60 border border-indigo-800/60 text-indigo-400">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#0D382B] text-white">
                         ← Today
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-3 mt-1 text-[11px] text-slate-500">
+                  <div className="flex items-center gap-3 mt-1 text-[11px] text-[#5E6D66]">
                     <span>{topic.estimatedDays} days</span>
                     <span>{tasksCompleted}/{topic.tasks.length} tasks</span>
-                    <span className="text-indigo-400 font-semibold">+{topic.xpReward} XP</span>
+                    <span className="text-[#0D684D] font-semibold">+{topic.xpReward} XP</span>
                   </div>
                 </div>
 
                 {/* Progress mini bar */}
                 <div className="hidden sm:flex items-center gap-2 w-24">
-                  <div className="flex-1 h-1.5 rounded-full bg-slate-800">
+                  <div className="flex-1 h-1.5 rounded-full bg-[#EAE6D8]">
                     <div
-                      className="h-1.5 rounded-full bg-gradient-to-r from-indigo-600 to-cyan-500 transition-all duration-500"
+                      className="h-1.5 rounded-full bg-[#0D382B] transition-all duration-500"
                       style={{ width: `${topicProgress}%` }}
                     />
                   </div>
-                  <span className="text-[10px] text-slate-500 w-7 text-right">{Math.round(topicProgress)}%</span>
+                  <span className="text-[10px] text-[#6F7E77] w-7 text-right font-mono">{Math.round(topicProgress)}%</span>
                 </div>
 
                 {topic.expanded
-                  ? <ChevronUp className="w-4 h-4 text-slate-500 shrink-0" />
-                  : <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />}
+                  ? <ChevronUp className="w-4 h-4 text-[#8E9E98] shrink-0" />
+                  : <ChevronDown className="w-4 h-4 text-[#8E9E98] shrink-0" />}
               </button>
 
               {/* Expanded Tasks */}
               {topic.expanded && (
-                <div className="px-4 pb-4 space-y-2 border-t border-slate-800/60 pt-3">
-                  <p className="text-xs text-slate-400 mb-3">{topic.description}</p>
+                <div className="px-4 pb-4 space-y-2 border-t border-[#EAE6D8] pt-3">
+                  <p className="text-xs text-[#5E6D66] mb-3">{topic.description}</p>
                   {topic.tasks.map(task => (
                     <div
                       key={task.id}
                       className={`flex items-center gap-3 p-3 rounded-xl border text-xs transition-all ${
                         task.completed
-                          ? 'bg-emerald-950/20 border-emerald-800/40 opacity-70'
-                          : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                          ? 'bg-[#EFF5F0] border-[#D5E2D8] opacity-80'
+                          : 'bg-[#FAF8EE] border-[#E5E1D3] hover:border-[#D0CABA]'
                       }`}
                     >
                       <span className="text-base">{TYPE_ICONS[task.type] || '📌'}</span>
                       <div className="flex-1">
-                        <span className={`font-medium ${task.completed ? 'line-through text-slate-500' : 'text-slate-200'}`}>
+                        <span className={`font-medium ${task.completed ? 'line-through text-[#8E9E98]' : 'text-[#141A17]'}`}>
                           {task.title}
                         </span>
-                        <div className="text-slate-600 text-[10px] mt-0.5">
+                        <div className="text-[#8E9E98] text-[10px] mt-0.5">
                           {task.type} • ~{task.estimatedMinutes} min
                         </div>
                       </div>
@@ -657,7 +658,7 @@ export default function RoadmapPage() {
                         {task.type === 'solve' && (
                           <a
                             href={roadmap.track === 'sql' ? '/tracks/sql' : roadmap.track === 'system-design' ? '/tracks/system-design' : '/tracks/dsa'}
-                            className="px-2 py-1 rounded-lg bg-cyan-950/60 hover:bg-cyan-900/80 border border-cyan-800/60 text-cyan-300 text-[10px] font-mono transition-colors"
+                            className="px-2.5 py-1 rounded-full bg-white border border-[#E0DCCF] text-[#0D684D] text-[10px] font-semibold hover:border-[#0D684D] transition-colors"
                           >
                             Visualizer ↗
                           </a>
@@ -666,20 +667,20 @@ export default function RoadmapPage() {
                           <>
                             <button
                               onClick={() => completeTask(topic.id, task.id)}
-                              className="px-2.5 py-1 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/50 text-indigo-200 text-[10px] font-bold transition-colors cursor-pointer"
+                              className="px-3 py-1 rounded-full bg-[#0D382B] text-white hover:bg-[#08261D] text-[10px] font-semibold transition-colors cursor-pointer"
                             >
                               Done +{task.type === 'solve' ? 15 : 10} XP
                             </button>
                             <button
                               onClick={() => skipTask(topic.id, task.id)}
                               title="Penalty: -10 XP for missing task"
-                              className="px-2 py-1 rounded-lg bg-rose-950/30 hover:bg-rose-950/60 border border-rose-800/40 text-rose-400 text-[10px] font-medium transition-colors cursor-pointer"
+                              className="px-2.5 py-1 rounded-full bg-[#FFF1F2] border border-[#FECDD3] text-[#E11D48] text-[10px] font-medium hover:bg-[#FFE4E6] transition-colors cursor-pointer"
                             >
                               Missed (-10 XP)
                             </button>
                           </>
                         ) : (
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-[#059669] shrink-0" />
                         )}
                       </div>
                     </div>
@@ -693,11 +694,11 @@ export default function RoadmapPage() {
 
       {/* Completion message */}
       {completedTopics === topics.length && topics.length > 0 && (
-        <div className="glass-panel-glow p-6 rounded-2xl border border-emerald-500/40 text-center space-y-3">
-          <Trophy className="w-10 h-10 text-amber-400 mx-auto" />
-          <h2 className="text-xl font-bold text-white">Roadmap Complete! 🎉</h2>
-          <p className="text-sm text-slate-400">You've finished all {topics.length} topics. Total XP earned: <strong className="text-amber-400">{totalXP}</strong></p>
-          <button onClick={resetRoadmap} className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 text-white text-sm font-bold">
+        <div className="glass-panel p-6 rounded-2xl border border-[#D5E2D8] text-center space-y-3 bg-[#EFF5F0]">
+          <Trophy className="w-10 h-10 text-[#D97706] mx-auto" />
+          <h2 className="text-xl font-bold text-[#141A17]">Roadmap Complete! 🎉</h2>
+          <p className="text-sm text-[#5E6D66]">You&apos;ve finished all {topics.length} topics. Total XP earned: <strong className="text-[#0D382B]">{totalXP}</strong></p>
+          <button onClick={resetRoadmap} className="px-6 py-2.5 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold cursor-pointer">
             Start a New Track
           </button>
         </div>

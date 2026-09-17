@@ -282,88 +282,48 @@ export default function SqlLabVisualizer({
   return (
     <div className="space-y-6">
       {/* ── Category Filter Pills & Search Drawer Bar ── */}
-      <div className="glass-panel p-3.5 rounded-2xl border border-slate-800/80 flex flex-wrap items-center justify-between gap-3 shadow-lg">
+      <div className="glass-panel p-3.5 rounded-2xl border border-[#E5E1D3] flex flex-wrap items-center justify-between gap-3 shadow-xs">
         {/* Category Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto py-1 max-w-full">
-          <button
-            onClick={() => setSelectedCategory('all')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border shrink-0 cursor-pointer ${
-              selectedCategory === 'all'
-                ? 'bg-cyan-500/20 border-cyan-400 text-cyan-200 shadow-md shadow-cyan-500/10'
-                : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            All SQL ({availableChallenges.length})
-          </button>
-          <button
-            onClick={() => setSelectedCategory('filtering')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border shrink-0 cursor-pointer ${
-              selectedCategory === 'filtering'
-                ? 'bg-emerald-500/20 border-emerald-400 text-emerald-200 shadow-md shadow-emerald-500/10'
-                : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            Filtering & Sorting (5)
-          </button>
-          <button
-            onClick={() => setSelectedCategory('joins')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border shrink-0 cursor-pointer ${
-              selectedCategory === 'joins'
-                ? 'bg-indigo-500/20 border-indigo-400 text-indigo-200 shadow-md shadow-indigo-500/10'
-                : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            Relational Joins (6)
-          </button>
-          <button
-            onClick={() => setSelectedCategory('aggregates')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border shrink-0 cursor-pointer ${
-              selectedCategory === 'aggregates'
-                ? 'bg-amber-500/20 border-amber-400 text-amber-200 shadow-md shadow-amber-500/10'
-                : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            Aggregates & GROUP BY (6)
-          </button>
-          <button
-            onClick={() => setSelectedCategory('subqueries')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border shrink-0 cursor-pointer ${
-              selectedCategory === 'subqueries'
-                ? 'bg-purple-500/20 border-purple-400 text-purple-200 shadow-md shadow-purple-500/10'
-                : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            Subqueries & CTEs (3)
-          </button>
-          <button
-            onClick={() => setSelectedCategory('window')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border shrink-0 cursor-pointer ${
-              selectedCategory === 'window'
-                ? 'bg-pink-500/20 border-pink-400 text-pink-200 shadow-md shadow-pink-500/10'
-                : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            Window Functions (2)
-          </button>
+          {[
+            { id: 'all', label: `All SQL (${availableChallenges.length})` },
+            { id: 'filtering', label: 'Filtering & Sorting (5)' },
+            { id: 'joins', label: 'Relational Joins (6)' },
+            { id: 'aggregates', label: 'Aggregates & GROUP BY (6)' },
+            { id: 'subqueries', label: 'Subqueries & CTEs (3)' },
+            { id: 'window', label: 'Window Functions (2)' },
+          ].map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id as SqlCategory)}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border shrink-0 cursor-pointer ${
+                selectedCategory === cat.id
+                  ? 'bg-[#0D382B] border-[#0D382B] text-white shadow-xs font-bold'
+                  : 'bg-white border-[#E5E1D3] text-[#5E6D66] hover:text-[#141A17] hover:border-[#D0CABA]'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
         </div>
 
         {/* Search & Drawer Toggle */}
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#8E9E98]" />
             <input
               type="text"
               placeholder="Search SQL or LC #..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 pr-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 w-44 md:w-56"
+              className="pl-8 pr-3 py-1.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-xs text-[#141A17] placeholder-[#8E9E98] focus:outline-none focus:border-[#0D684D] w-44 md:w-56"
             />
           </div>
           <button
             onClick={() => setShowDrawer(!showDrawer)}
-            className="px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-xs font-semibold text-slate-300 flex items-center gap-1.5 border border-slate-700 cursor-pointer"
+            className="px-3.5 py-1.5 rounded-full bg-white hover:bg-[#F5F2E5] text-xs font-semibold text-[#141A17] flex items-center gap-1.5 border border-[#E0DCCF] cursor-pointer shadow-xs"
           >
-            <Layers className="w-3.5 h-3.5 text-cyan-400" />
+            <Layers className="w-3.5 h-3.5 text-[#0D684D]" />
             <span>Curriculum ({filteredChallenges.length})</span>
           </button>
         </div>
@@ -415,26 +375,26 @@ export default function SqlLabVisualizer({
       )}
 
       {/* ── Challenge Header Banner ── */}
-      <div className="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="glass-panel p-5 rounded-2xl border border-[#E5E1D3] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">
         <div>
           <div className="flex flex-wrap items-center gap-2 mb-1.5">
-            <span className="text-xs font-semibold px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-400 flex items-center gap-1">
-              <Database className="w-3 h-3" /> Chai SQLab Relational Engine
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D] flex items-center gap-1">
+              <Database className="w-3 h-3 text-[#10B981]" /> Chai SQLab Relational Engine
             </span>
             {currentChallenge.lcNumber && (
-              <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-indigo-300">
+              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#6F7E77]">
                 LeetCode #{currentChallenge.lcNumber}
               </span>
             )}
-            <span className="text-xs font-semibold px-2 py-0.5 rounded bg-indigo-950/60 border border-indigo-800/50 text-indigo-300">
+            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D]">
               +{currentChallenge.xpReward} XP
             </span>
-            <span className="text-xs text-slate-400 font-mono">
+            <span className="text-xs text-[#6F7E77] font-mono">
               Available Tables: {tables.map((t: any) => t.name).join(', ')}
             </span>
           </div>
-          <h2 className="text-xl font-bold text-white tracking-tight">{currentChallenge.title}</h2>
-          <p className="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
+          <h2 className="text-xl font-bold text-[#141A17] tracking-tight">{currentChallenge.title}</h2>
+          <p className="text-xs text-[#5E6D66] mt-1 max-w-3xl leading-relaxed">
             {currentChallenge.problemStatement}
           </p>
         </div>
@@ -447,14 +407,14 @@ export default function SqlLabVisualizer({
               runLocalEngine(starter);
             }}
             title="Reset to starter SQL query"
-            className="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+            className="p-2.5 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#5E6D66] hover:text-[#141A17] transition-colors cursor-pointer shadow-xs"
           >
             <RotateCcw className="w-4 h-4" />
           </button>
           <button
             onClick={handleExecuteSql}
             disabled={isExecuting}
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 via-indigo-600 to-indigo-700 hover:opacity-95 text-white text-xs font-bold shadow-lg shadow-cyan-600/20 flex items-center gap-2 transition-all cursor-pointer disabled:opacity-50"
+            className="px-5 py-2.5 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold shadow-xs flex items-center gap-2 transition-all cursor-pointer disabled:opacity-50"
           >
             <Play className="w-3.5 h-3.5 fill-white" />
             <span>{isExecuting ? 'Synthesizing with Groq AI...' : 'Run Query & Explain'}</span>
@@ -462,21 +422,26 @@ export default function SqlLabVisualizer({
         </div>
       </div>
 
-      {/* ── SQL Terminal Bar ── */}
-      <div className="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-col h-[200px]">
-        <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+      {/* ── SQL Terminal Bar (Mac Mockup Card) ── */}
+      <div className="glass-panel-dark p-4 rounded-2xl border border-[#23302B] flex flex-col h-[200px] shadow-sm">
+        <div className="flex items-center justify-between pb-2 border-b border-[#1E2825]">
           <div className="flex items-center gap-2">
-            <Terminal className="w-4 h-4 text-cyan-400" />
-            <span className="text-xs font-bold text-slate-200">Interactive ANSI SQL Terminal</span>
+            <div className="flex gap-1.5 mr-1">
+              <div className="w-2.5 h-2.5 rounded-full bg-[#EF4444]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
+            </div>
+            <Terminal className="w-4 h-4 text-[#34D399]" />
+            <span className="text-xs font-bold text-white">Interactive ANSI SQL Terminal</span>
           </div>
-          <div className="flex items-center gap-2 text-[10px] font-mono text-slate-400">
+          <div className="flex items-center gap-2 text-[10px] font-mono text-[#7C8E86]">
             {aiModel ? (
-              <span className="px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-800/40 text-emerald-300 font-bold flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="px-2.5 py-0.5 rounded-full bg-[#131917] border border-[#23302B] text-[#34D399] font-bold flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse" />
                 Live Groq LPU: {aiModel} {aiInferenceLatency ? `(${aiInferenceLatency}ms)` : ''}
               </span>
             ) : (
-              <span className="px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-800/40 text-cyan-300">
+              <span className="px-2.5 py-0.5 rounded-full bg-[#131917] border border-[#23302B] text-[#A7F3D0]">
                 CogniFlow Relational Compiler
               </span>
             )}
@@ -489,7 +454,7 @@ export default function SqlLabVisualizer({
             setQuery(e.target.value);
             runLocalEngine(e.target.value);
           }}
-          className="w-full flex-1 mt-2.5 bg-slate-950 p-3 rounded-xl border border-slate-800/80 font-mono text-xs text-cyan-300 resize-none focus:outline-none focus:border-cyan-500 leading-relaxed tracking-wide"
+          className="w-full flex-1 mt-2.5 bg-transparent p-3 rounded-xl font-mono text-xs text-[#A7F3D0] resize-none focus:outline-none caret-[#34D399] leading-relaxed tracking-wide"
           placeholder="Write ANSI SQL (SELECT, FROM, JOIN, WHERE, GROUP BY, HAVING, ORDER BY)..."
           spellCheck={false}
         />
@@ -502,10 +467,10 @@ export default function SqlLabVisualizer({
           <div className="flex items-center gap-2 overflow-x-auto">
             <button
               onClick={() => setActiveTab('visualizer')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                 activeTab === 'visualizer'
-                  ? 'bg-gradient-to-r from-cyan-600 to-indigo-600 text-white shadow-lg shadow-cyan-600/30'
-                  : 'text-slate-400 hover:text-white bg-slate-900/60 border border-slate-800'
+                  ? 'bg-[#0D382B] text-white shadow-xs font-bold'
+                  : 'text-[#5E6D66] hover:text-[#141A17] bg-white border border-[#E5E1D3]'
               }`}
             >
               <Eye className="w-3.5 h-3.5" />
@@ -513,10 +478,10 @@ export default function SqlLabVisualizer({
             </button>
             <button
               onClick={() => setActiveTab('results')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                 activeTab === 'results'
-                  ? 'bg-cyan-600 text-white shadow-md shadow-cyan-600/30'
-                  : 'text-slate-400 hover:text-white bg-slate-900/60 border border-slate-800'
+                  ? 'bg-[#0D382B] text-white shadow-xs font-bold'
+                  : 'text-[#5E6D66] hover:text-[#141A17] bg-white border border-[#E5E1D3]'
               }`}
             >
               <Table2 className="w-3.5 h-3.5" />
@@ -524,10 +489,10 @@ export default function SqlLabVisualizer({
             </button>
             <button
               onClick={() => setActiveTab('venn')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                 activeTab === 'venn'
-                  ? 'bg-cyan-600 text-white shadow-md shadow-cyan-600/30'
-                  : 'text-slate-400 hover:text-white bg-slate-900/60 border border-slate-800'
+                  ? 'bg-[#0D382B] text-white shadow-xs font-bold'
+                  : 'text-[#5E6D66] hover:text-[#141A17] bg-white border border-[#E5E1D3]'
               }`}
             >
               <GitMerge className="w-3.5 h-3.5" />
@@ -535,10 +500,10 @@ export default function SqlLabVisualizer({
             </button>
             <button
               onClick={() => setActiveTab('query_plan')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                 activeTab === 'query_plan'
-                  ? 'bg-cyan-600 text-white shadow-md shadow-cyan-600/30'
-                  : 'text-slate-400 hover:text-white bg-slate-900/60 border border-slate-800'
+                  ? 'bg-[#0D382B] text-white shadow-xs font-bold'
+                  : 'text-[#5E6D66] hover:text-[#141A17] bg-white border border-[#E5E1D3]'
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
@@ -546,10 +511,10 @@ export default function SqlLabVisualizer({
             </button>
             <button
               onClick={() => setActiveTab('tables')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                 activeTab === 'tables'
-                  ? 'bg-cyan-600 text-white shadow-md shadow-cyan-600/30'
-                  : 'text-slate-400 hover:text-white bg-slate-900/60 border border-slate-800'
+                  ? 'bg-[#0D382B] text-white shadow-xs font-bold'
+                  : 'text-[#5E6D66] hover:text-[#141A17] bg-white border border-[#E5E1D3]'
               }`}
             >
               <Database className="w-3.5 h-3.5" />
@@ -558,8 +523,8 @@ export default function SqlLabVisualizer({
           </div>
 
           {/* AI Model Tag */}
-          <div className="hidden md:flex items-center gap-2 text-[10px] font-mono text-slate-400">
-            <span className="text-cyan-400 font-bold">Strategy:</span>
+          <div className="hidden md:flex items-center gap-2 text-[10px] font-mono text-[#5E6D66]">
+            <span className="text-[#0D684D] font-bold">Strategy:</span>
             <span>{aiAlgorithm || executionResult?.joinType || 'Relational Plan'}</span>
           </div>
         </div>
@@ -568,15 +533,11 @@ export default function SqlLabVisualizer({
         {activeTab === 'visualizer' && (
           <div className="space-y-4">
             {/* Step Controls Header */}
-            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex flex-wrap items-center justify-between gap-3">
+            <div className="p-3.5 rounded-2xl bg-[#FAF8EE] border border-[#E5E1D3] flex flex-wrap items-center justify-between gap-3 shadow-xs">
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsPlaying(!isPlaying)}
-                  className={`p-2 rounded-lg text-white font-bold transition-all cursor-pointer ${
-                    isPlaying
-                      ? 'bg-amber-600 hover:bg-amber-500 shadow-md shadow-amber-600/20'
-                      : 'bg-cyan-600 hover:bg-cyan-500 shadow-md shadow-cyan-600/20'
-                  }`}
+                  className="p-2 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white font-bold transition-all shadow-xs cursor-pointer"
                 >
                   {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-white" />}
                 </button>
@@ -586,7 +547,7 @@ export default function SqlLabVisualizer({
                     setIsPlaying(false);
                     setCurrentFrameIndex((p) => Math.max(0, p - 1));
                   }}
-                  className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 disabled:opacity-30 cursor-pointer"
+                  className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#4E5C56] disabled:opacity-30 cursor-pointer shadow-xs"
                 >
                   <ChevronLeft className="w-3.5 h-3.5" />
                 </button>
@@ -596,7 +557,7 @@ export default function SqlLabVisualizer({
                     setIsPlaying(false);
                     setCurrentFrameIndex((p) => Math.min(activeFrames.length - 1, p + 1));
                   }}
-                  className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 disabled:opacity-30 cursor-pointer"
+                  className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#4E5C56] disabled:opacity-30 cursor-pointer shadow-xs"
                 >
                   <ChevronRight className="w-3.5 h-3.5" />
                 </button>
@@ -605,26 +566,26 @@ export default function SqlLabVisualizer({
                     setIsPlaying(false);
                     setCurrentFrameIndex(0);
                   }}
-                  className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-slate-200 cursor-pointer"
+                  className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#4E5C56] hover:text-[#141A17] cursor-pointer shadow-xs"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                 </button>
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-xs font-mono text-cyan-300 font-bold">
+                <span className="text-xs font-mono text-[#0D684D] font-bold">
                   Step {currentFrameIndex + 1} of {activeFrames.length || 1}
                 </span>
-                <div className="flex items-center gap-1 text-[10px] font-mono text-slate-400">
+                <div className="flex items-center gap-1 text-[10px] font-mono text-[#6F7E77]">
                   <span>Speed:</span>
                   {[1, 2, 4].map((s) => (
                     <button
                       key={s}
                       onClick={() => setPlaybackSpeed(s)}
-                      className={`px-1.5 py-0.5 rounded cursor-pointer ${
+                      className={`px-2 py-0.5 rounded-full cursor-pointer transition-all ${
                         playbackSpeed === s
-                          ? 'bg-cyan-600 text-white font-bold'
-                          : 'bg-slate-900 text-slate-400 hover:text-slate-200'
+                          ? 'bg-[#0D382B] text-white font-bold'
+                          : 'bg-white text-[#6F7E77] border border-[#E5E1D3] hover:text-[#141A17]'
                       }`}
                     >
                       {s}x

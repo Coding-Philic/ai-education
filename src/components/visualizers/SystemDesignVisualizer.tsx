@@ -714,21 +714,21 @@ export default function SystemDesignVisualizer({
   return (
     <div className="space-y-6">
       {/* Top Header & Curriculum Bar */}
-      <div className="glass-panel p-4 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+      <div className="glass-panel p-4 rounded-2xl border border-[#E5E1D3] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-purple-600/30">
-            <Network className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-full bg-[#0D382B] flex items-center justify-center text-white shadow-xs">
+            <Network className="w-5 h-5 text-[#34D399]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-purple-950 border border-purple-800 text-purple-300">
+              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D]">
                 CogniFlow LPU Architecture Engine
               </span>
-              <span className="text-[11px] text-slate-400 font-mono">
+              <span className="text-[11px] text-[#6F7E77] font-mono">
                 {allChallenges.length} Enterprise Scenarios
               </span>
             </div>
-            <h1 className="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+            <h1 className="text-lg font-bold text-[#141A17] tracking-tight flex items-center gap-2">
               {currentChallenge.title}
             </h1>
           </div>
@@ -738,42 +738,42 @@ export default function SystemDesignVisualizer({
         <div className="flex flex-wrap items-center gap-2 shrink-0">
           <button
             onClick={() => setShowDrawer(!showDrawer)}
-            className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-purple-500 text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+            className="px-3.5 py-1.5 rounded-full bg-white border border-[#E0DCCF] text-[#141A17] text-xs font-semibold flex items-center gap-1.5 hover:bg-[#F5F2E5] transition-all cursor-pointer shadow-xs"
           >
-            <Compass className="w-3.5 h-3.5 text-purple-400" />
+            <Compass className="w-3.5 h-3.5 text-[#0D684D]" />
             <span>Curriculum Drawer</span>
           </button>
 
           <button
             onClick={() => setIsSimulating(!isSimulating)}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs ${
               isSimulating
-                ? 'bg-emerald-600/90 text-white shadow-emerald-600/20 shadow-lg'
-                : 'bg-slate-800 text-slate-400'
+                ? 'bg-[#0D382B] text-white'
+                : 'bg-white border border-[#E0DCCF] text-[#5E6D66]'
             }`}
           >
-            {isSimulating ? <Play className="w-3.5 h-3.5 animate-pulse" /> : <Pause className="w-3.5 h-3.5" />}
+            {isSimulating ? <Play className="w-3.5 h-3.5 fill-white animate-pulse" /> : <Pause className="w-3.5 h-3.5" />}
             <span>{isSimulating ? 'Traffic Flowing' : 'Paused'}</span>
           </button>
 
           <button
             onClick={handleLoadBenchmark}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold border flex items-center gap-1.5 transition-all cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border flex items-center gap-1.5 transition-all cursor-pointer shadow-xs ${
               benchmarkApplied
-                ? 'bg-emerald-950/80 border-emerald-500 text-emerald-300'
-                : 'bg-indigo-950/60 border-indigo-500/50 hover:border-indigo-400 text-indigo-200'
+                ? 'bg-[#EFF5F0] border-[#D5E2D8] text-[#0D684D]'
+                : 'bg-white border-[#E0DCCF] text-[#141A17] hover:bg-[#F5F2E5]'
             }`}
           >
-            <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" />
-            <span>{benchmarkApplied ? 'Benchmark Active' : 'Load Benchmark Architecture'}</span>
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#0D684D]" />
+            <span>{benchmarkApplied ? 'Benchmark Active' : 'Load Benchmark'}</span>
           </button>
 
           <button
             onClick={handleRunAiReview}
             disabled={analyzing}
-            className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-95 text-white text-xs font-bold shadow-lg shadow-purple-600/30 flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+            className="px-5 py-2 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold shadow-xs flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
           >
-            <Sparkles className="w-3.5 h-3.5" />
+            <Sparkles className="w-3.5 h-3.5 text-[#34D399]" />
             <span>{analyzing ? 'Groq Reviewing...' : 'AI Architecture Review'}</span>
           </button>
         </div>

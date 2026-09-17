@@ -789,43 +789,43 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
     <div className="space-y-4">
 
       {/* ── Mode Switcher: Visualization vs Practice Mode ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-2.5 bg-slate-950/90 rounded-xl border border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-2.5 bg-[#FAF8EE] rounded-2xl border border-[#E5E1D3]">
         <div className="flex items-center gap-2">
-          <div className="flex rounded-lg bg-slate-900 p-1 border border-slate-800">
+          <div className="flex items-center gap-1.5 bg-[#FAF8EE] p-1 rounded-full border border-[#E5E1D3]">
             <button
               onClick={() => setEditorMode('practice')}
-              className={`px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`px-3.5 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
                 editorMode === 'practice'
-                  ? 'bg-gradient-to-r from-indigo-600 to-cyan-600 text-white shadow-md shadow-indigo-600/30 font-bold'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-[#0D382B] text-white shadow-xs font-bold'
+                  : 'text-[#5E6D66] hover:text-[#141A17]'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
+              <Code2 className="w-3.5 h-3.5" />
               <span>Practice Mode (AI Compiler)</span>
             </button>
             <button
               onClick={() => setEditorMode('visualization')}
-              className={`px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`px-3.5 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
                 editorMode === 'visualization'
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30 font-bold'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-[#0D382B] text-white shadow-xs font-bold'
+                  : 'text-[#5E6D66] hover:text-[#141A17]'
               }`}
             >
-              <Eye className="w-3.5 h-3.5 text-indigo-300" />
+              <Sliders className="w-3.5 h-3.5" />
               <span>Visualization Mode</span>
             </button>
           </div>
         </div>
 
-        <div className="text-[11px] font-mono text-slate-400 hidden md:flex items-center gap-2 pr-2">
+        <div className="text-[11px] font-mono text-[#5E6D66] hidden md:flex items-center gap-2 pr-2">
           {editorMode === 'practice' ? (
-            <span className="text-cyan-400 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="text-[#0D684D] flex items-center gap-1.5 font-medium">
+              <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
               Write ANY code (Python, JS, Java, C++) → AI parses & animates exact numbers
             </span>
           ) : (
-            <span className="text-indigo-400 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-indigo-400" />
+            <span className="text-[#0D382B] flex items-center gap-1.5 font-medium">
+              <span className="w-2 h-2 rounded-full bg-[#0D684D]" />
               Pre-configured algorithmic benchmarks & step-by-step memory stepper
             </span>
           )}
@@ -843,15 +843,15 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border shrink-0 flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border shrink-0 flex items-center gap-1.5 cursor-pointer ${
                 isCatSelected
-                  ? 'bg-indigo-600 border-indigo-400 text-white shadow-md shadow-indigo-600/30 font-bold'
-                  : 'bg-slate-950/80 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                  ? 'bg-[#0D382B] border-[#0D382B] text-white shadow-xs font-bold'
+                  : 'bg-white border-[#E5E1D3] text-[#5E6D66] hover:text-[#141A17] hover:border-[#D0CABA]'
               }`}
             >
               <span>{cat.label}</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                isCatSelected ? 'bg-indigo-800 text-white' : 'bg-slate-800 text-slate-400'
+                isCatSelected ? 'bg-[#145341] text-white' : 'bg-[#FAF8EE] text-[#6F7E77] border border-[#E5E1D3]'
               }`}>
                 {count}
               </span>
@@ -861,22 +861,22 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
       </div>
 
       {/* ── Search Bar, Algorithm Chips & Custom Input Bar ── */}
-      <div className="glass-panel p-3.5 rounded-2xl border border-slate-800/80 space-y-3">
+      <div className="glass-panel p-4 rounded-2xl border border-[#E5E1D3] space-y-3 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           {/* Search Input */}
           <div className="relative flex-1">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-3.5 h-3.5 text-[#8E9E98] absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search 50+ algorithms (e.g. Reverse List, Tree, Coin Change, LC 206, Binary)..."
-              className="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-700/80 rounded-xl text-xs text-white placeholder-slate-500 font-mono focus:outline-none focus:border-indigo-400 transition-colors"
+              className="w-full pl-9 pr-4 py-2 bg-[#FAF8EE] border border-[#E5E1D3] rounded-full text-xs text-[#141A17] placeholder-[#8E9E98] font-mono focus:outline-none focus:border-[#0D684D] transition-colors"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-xs font-mono"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8E9E98] hover:text-[#141A17] text-xs font-mono"
               >
                 ✕
               </button>
@@ -884,15 +884,15 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            <span className="text-[11px] font-mono text-slate-500">
-              Showing <strong className="text-slate-300">{filteredChallenges.length}</strong> of {allChallenges.length || 1}
+            <span className="text-[11px] font-mono text-[#6F7E77]">
+              Showing <strong className="text-[#141A17]">{filteredChallenges.length}</strong> of {allChallenges.length || 1}
             </span>
             <button
               onClick={() => setShowCustomInput(!showCustomInput)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono border flex items-center gap-1.5 shrink-0 transition-all cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-mono border flex items-center gap-1.5 shrink-0 transition-all cursor-pointer ${
                 showCustomInput
-                  ? 'bg-cyan-950/60 border-cyan-500 text-cyan-300'
-                  : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
+                  ? 'bg-[#EFF5F0] border-[#0D684D] text-[#0D382B] font-semibold'
+                  : 'bg-white border-[#E5E1D3] text-[#5E6D66] hover:text-[#141A17]'
               }`}
             >
               <Sliders className="w-3.5 h-3.5" />
@@ -904,8 +904,8 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
         {/* Algorithm Selection Chips Carousel */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
           {filteredChallenges.length === 0 ? (
-            <div className="text-xs text-slate-500 font-mono py-2">
-              No matching algorithms found for "{searchQuery}".
+            <div className="text-xs text-[#8E9E98] font-mono py-2">
+              No matching algorithms found for &quot;{searchQuery}&quot;.
             </div>
           ) : (
             filteredChallenges.map((ch: any) => {
@@ -916,24 +916,24 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
                 <button
                   key={ch.id}
                   onClick={() => handleSelectChallenge(ch)}
-                  className={`px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border shrink-0 flex items-center gap-2 cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border shrink-0 flex items-center gap-2 cursor-pointer ${
                     isSelected
-                      ? 'bg-indigo-600/30 border-indigo-400 text-white shadow-md shadow-indigo-600/25 ring-1 ring-indigo-400/50'
-                      : 'bg-slate-900/90 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
+                      ? 'bg-[#EFF5F0] border-[#0D684D] text-[#0D382B] shadow-xs ring-1 ring-[#0D684D]/30 font-bold'
+                      : 'bg-white border-[#E5E1D3] text-[#4E5C56] hover:text-[#141A17] hover:border-[#D0CABA]'
                   }`}
                 >
                   {ch.lcNumber && (
-                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-800 border border-slate-700 text-slate-400">
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#6F7E77]">
                       LC {ch.lcNumber}
                     </span>
                   )}
                   <span>{shortTitle}</span>
-                  <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${
+                  <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full border ${
                     diff === 'Easy'
-                      ? 'bg-emerald-950/80 border-emerald-500/40 text-emerald-400'
+                      ? 'bg-[#EFF5F0] border-[#D5E2D8] text-[#0D684D]'
                       : diff === 'Hard'
-                      ? 'bg-rose-950/80 border-rose-500/40 text-rose-400'
-                      : 'bg-amber-950/80 border-amber-500/40 text-amber-400'
+                      ? 'bg-[#FFF1F2] border-[#FECDD3] text-[#E11D48]'
+                      : 'bg-[#FFFBEB] border-[#FDE68A] text-[#B45309]'
                   }`}>
                     {diff}
                   </span>
@@ -1026,29 +1026,29 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
       )}
 
       {/* Top Banner */}
-      <div className="glass-panel p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 border border-slate-800">
+      <div className="glass-panel p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 border border-[#E5E1D3] shadow-xs">
         <div>
-          <div className="flex items-center gap-2 flex-wrap mb-1">
-            <span className="text-xs font-semibold px-2 py-0.5 rounded bg-indigo-950 border border-indigo-800 text-indigo-400">DSA Visual Lab</span>
+          <div className="flex items-center gap-2 flex-wrap mb-1.5">
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D]">DSA Visual Lab</span>
             {detectedAlgo && (
-              <span className="text-xs font-bold px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-300 flex items-center gap-1">
-                <Cpu className="w-3 h-3" /> AI Detected: {detectedAlgo}
+              <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D] flex items-center gap-1">
+                <Cpu className="w-3 h-3 text-[#10B981]" /> AI Detected: {detectedAlgo}
               </span>
             )}
-            <span className="text-xs text-slate-400 font-mono">+{currentChallenge.xpReward} XP</span>
+            <span className="text-xs text-[#6F7E77] font-mono font-medium">+{currentChallenge.xpReward} XP</span>
           </div>
-          <h2 className="text-xl font-bold text-white tracking-tight">{displayedTitle}</h2>
-          <p className="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">{currentChallenge.problemStatement}</p>
+          <h2 className="text-xl font-bold text-[#141A17] tracking-tight">{displayedTitle}</h2>
+          <p className="text-xs text-[#5E6D66] mt-1 max-w-3xl leading-relaxed">{currentChallenge.problemStatement}</p>
         </div>
         {evaluationStatus !== 'idle' && (
-          <div className={`px-4 py-2 rounded-xl flex items-center gap-2 text-xs font-semibold border shrink-0 ${
+          <div className={`px-4 py-2 rounded-full flex items-center gap-2 text-xs font-semibold border shrink-0 ${
             evaluationStatus === 'passed'
-              ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300'
-              : 'bg-rose-950/40 border-rose-500/40 text-rose-300'
+              ? 'bg-[#EFF5F0] border-[#D5E2D8] text-[#0D684D]'
+              : 'bg-[#FFF1F2] border-[#FECDD3] text-[#E11D48]'
           }`}>
             {evaluationStatus === 'passed'
-              ? <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              : <AlertTriangle className="w-4 h-4 text-rose-400" />}
+              ? <CheckCircle2 className="w-4 h-4 text-[#059669]" />
+              : <AlertTriangle className="w-4 h-4 text-[#E11D48]" />}
             <span>{evaluationStatus === 'passed' ? 'Solution Verified ✓' : 'Gap Isolated — Review Below'}</span>
           </div>
         )}
@@ -1193,35 +1193,35 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
           <div className="glass-panel p-3.5 rounded-xl flex items-center justify-between border border-slate-800">
             <div className="flex items-center gap-1.5">
               <button onClick={() => { setCurrentStep(0); setIsPlaying(false); }} title="Reset"
-                className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 transition-colors">
+                className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#4E5C56] hover:text-[#141A17] transition-colors cursor-pointer shadow-xs">
                 <RotateCcw className="w-4 h-4" />
               </button>
               <button onClick={() => setCurrentStep(p => Math.max(0, p - 1))} disabled={currentStep === 0}
-                className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 disabled:opacity-40 transition-colors">
+                className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#4E5C56] hover:text-[#141A17] disabled:opacity-40 transition-colors cursor-pointer shadow-xs">
                 <SkipBack className="w-4 h-4" />
               </button>
               <button onClick={() => setIsPlaying(!isPlaying)}
-                className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium flex items-center gap-1.5 transition-all shadow-md shadow-indigo-600/30">
+                className="px-5 py-2 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white font-semibold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer">
                 {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white" />}
                 <span className="text-xs">{isPlaying ? 'Pause' : 'Play'}</span>
               </button>
               <button onClick={() => setCurrentStep(p => Math.min((frames.length || 1) - 1, p + 1))} disabled={currentStep >= (frames.length || 1) - 1}
-                className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 disabled:opacity-40 transition-colors">
+                className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#4E5C56] hover:text-[#141A17] disabled:opacity-40 transition-colors cursor-pointer shadow-xs">
                 <SkipForward className="w-4 h-4" />
               </button>
             </div>
             <div className="flex-1 mx-4 hidden sm:block">
-              <div className="h-1.5 rounded-full bg-slate-800">
-                <div className="h-1.5 rounded-full bg-gradient-to-r from-indigo-600 to-cyan-500 transition-all duration-300"
+              <div className="h-1.5 rounded-full bg-[#EAE6D8]">
+                <div className="h-1.5 rounded-full bg-[#0D382B] transition-all duration-300"
                   style={{ width: frames.length > 0 ? `${((currentStep + 1) / frames.length) * 100}%` : '0%' }} />
               </div>
             </div>
             <div className="flex items-center gap-2 text-xs">
-              <Sliders className="w-3.5 h-3.5 text-slate-400" />
-              <div className="flex rounded-lg bg-slate-900 p-0.5 border border-slate-800">
+              <Sliders className="w-3.5 h-3.5 text-[#6F7E77]" />
+              <div className="flex rounded-full bg-[#FAF8EE] p-0.5 border border-[#E5E1D3]">
                 {[0.5, 1.0, 2.0].map(s => (
                   <button key={s} onClick={() => setSpeed(s)}
-                    className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors ${speed === s ? 'bg-indigo-600 text-white font-bold' : 'text-slate-400 hover:text-white'}`}>
+                    className={`px-2.5 py-0.5 rounded-full text-[11px] font-mono transition-colors cursor-pointer ${speed === s ? 'bg-[#0D382B] text-white font-bold' : 'text-[#6F7E77] hover:text-[#141A17]'}`}>
                     {s}x
                   </button>
                 ))}
@@ -1229,18 +1229,18 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
             </div>
           </div>
 
-          {/* ── AI CONSOLE TERMINAL ── */}
-          <div className="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+          {/* ── AI CONSOLE TERMINAL (Mac Mockup Card) ── */}
+          <div className="glass-panel-dark rounded-2xl border border-[#23302B] overflow-hidden shadow-sm">
             {/* Terminal header */}
-            <div className="flex items-center justify-between px-4 py-2.5 bg-slate-900/80 border-b border-slate-800">
+            <div className="flex items-center justify-between px-4 py-2.5 bg-[#0F1413] border-b border-[#1E2825]">
               <div className="flex items-center gap-2">
                 <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-[#EF4444]" />
+                  <div className="w-3 h-3 rounded-full bg-[#F59E0B]" />
+                  <div className="w-3 h-3 rounded-full bg-[#10B981]" />
                 </div>
-                <Terminal className="w-3.5 h-3.5 text-slate-400 ml-2" />
-                <span className="text-xs font-mono font-semibold text-slate-300">AI Response Console</span>
+                <Terminal className="w-3.5 h-3.5 text-[#6F7E77] ml-2" />
+                <span className="text-xs font-mono font-semibold text-[#CBD5E1]">AI Response Console</span>
               </div>
               <div className="flex items-center gap-2">
                 {loading && (
@@ -1283,15 +1283,20 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
         {/* RIGHT: Code Editor + AI Diagnosis */}
         <div className="lg:col-span-5 space-y-4">
 
-          {/* Code Editor */}
-          <div className="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-col" style={{ height: '420px' }}>
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+          {/* Code Editor (Mac Dark Mockup Container) */}
+          <div className="glass-panel-dark p-4 rounded-2xl border border-[#23302B] flex flex-col shadow-sm" style={{ height: '420px' }}>
+            <div className="flex items-center justify-between pb-3 border-b border-[#1E2825]">
               <div className="flex items-center gap-2">
-                <Code2 className="w-4 h-4 text-indigo-400" />
-                <span className="text-xs font-bold text-slate-300">Code Editor</span>
-                <span className="text-[10px] text-slate-500">— paste any algorithm</span>
+                <div className="flex gap-1.5 mr-1">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#EF4444]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
+                </div>
+                <Code2 className="w-4 h-4 text-[#34D399]" />
+                <span className="text-xs font-bold text-white">Code Editor</span>
+                <span className="text-[10px] text-[#7C8E86]">— paste any algorithm</span>
               </div>
-              <div className="flex rounded-lg bg-slate-900 p-0.5 border border-slate-800">
+              <div className="flex rounded-full bg-[#1C2422] p-0.5 border border-[#283330]">
                 {LANGS.map(l => (
                   <button key={l} onClick={() => {
                     setLang(l);
@@ -1311,7 +1316,7 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
     RETURN FINAL_RESULT`);
                     }
                   }}
-                    className={`px-2.5 py-1 rounded text-[10px] font-mono transition-colors ${lang === l ? 'bg-indigo-600 text-white font-bold shadow-sm shadow-indigo-600/30' : 'text-slate-400 hover:text-white'}`}>
+                    className={`px-2.5 py-1 rounded-full text-[10px] font-mono transition-colors cursor-pointer ${lang === l ? 'bg-[#0D382B] text-white font-bold' : 'text-[#7C8E86] hover:text-white'}`}>
                     {LANG_LABELS[l]}
                   </button>
                 ))}
@@ -1319,16 +1324,16 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
             </div>
 
             {/* Editor with line numbers overlay */}
-            <div className="flex-1 mt-3 bg-slate-950 rounded-xl border border-slate-800 overflow-hidden relative">
+            <div className="flex-1 mt-3 bg-[#0A0E0D] rounded-xl border border-[#1E2825] overflow-hidden relative">
               {/* Line numbers + active-line highlight overlay */}
               <div aria-hidden className="absolute inset-0 overflow-hidden pointer-events-none z-10 font-mono text-xs leading-[1.6rem] pt-2 pl-2">
                 {codeLines.map((_, idx) => (
                   <div key={idx} className={`flex items-center h-[1.6rem] transition-colors duration-200 ${
                     idx === activeLine && frames.length > 0
-                      ? 'bg-cyan-500/15 border-l-2 border-cyan-400 -ml-2 pl-2'
+                      ? 'bg-emerald-500/20 border-l-2 border-[#10B981] -ml-2 pl-2'
                       : ''
                   }`}>
-                    <span className="w-7 shrink-0 text-right pr-3 text-slate-600 text-[10px] select-none">{idx + 1}</span>
+                    <span className="w-7 shrink-0 text-right pr-3 text-[#52645D] text-[10px] select-none">{idx + 1}</span>
                   </div>
                 ))}
               </div>
@@ -1338,7 +1343,7 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
                 onChange={e => setCode(e.target.value)}
                 spellCheck={false}
                 wrap="off"
-                className="absolute inset-0 w-full h-full resize-none bg-transparent font-mono text-xs text-indigo-200 leading-[1.6rem] pt-2 pl-10 pr-3 focus:outline-none caret-cyan-400 z-20 overflow-x-auto"
+                className="absolute inset-0 w-full h-full resize-none bg-transparent font-mono text-xs text-emerald-200 leading-[1.6rem] pt-2 pl-10 pr-3 focus:outline-none caret-[#34D399] z-20 overflow-x-auto"
                 placeholder={'# Paste or write any algorithm here\n# Binary Search, Two Pointer, Merge Sort, BFS, DP...\n# Click Run & Visualize below — AI traces every step!'}
               />
             </div>
@@ -1347,17 +1352,17 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
             <button
               onClick={handleRunCode}
               disabled={loading}
-              className="mt-3 w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 hover:opacity-95 text-white text-sm font-bold shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 transition-all disabled:opacity-60 cursor-pointer"
+              className="mt-3 w-full py-3 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-2 transition-all disabled:opacity-60 cursor-pointer"
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-4 h-4 text-[#34D399]" />
               <span>{loading ? '⚡ AI Analyzing...' : '▶  Run & Visualize (Any Algorithm)'}</span>
             </button>
           </div>
 
           {/* AI Pedagogical Remediation Panel: Defect Doctor, Progressive Hints & Optimal Solution */}
-          <div className="glass-panel p-5 rounded-2xl border border-slate-800 space-y-4 animate-fadeIn">
+          <div className="glass-panel p-5 rounded-2xl border border-[#E5E1D3] space-y-4 animate-fadeIn shadow-xs">
             {/* Header & Tabs */}
-            <div className="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-slate-800">
+            <div className="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-[#EAE6D8]">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-cyan-500/20">
                   <Sparkles className="w-4 h-4" />

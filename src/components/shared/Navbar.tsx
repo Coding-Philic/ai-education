@@ -61,30 +61,28 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 glass-panel border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 bg-[#FAF8EE]/90 backdrop-blur-md border-b border-[#E5E1D3] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         
         {/* Brand & Hackathon Badge */}
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 p-0.5 shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all">
-              <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
-              </div>
+            <div className="w-9 h-9 rounded-full bg-[#0D382B] flex items-center justify-center text-white shadow-xs group-hover:bg-[#08261D] transition-all">
+              <Sparkles className="w-4 h-4 text-[#34D399] group-hover:rotate-12 transition-transform" />
             </div>
             <div className="flex flex-col">
-              <span className="font-bold text-lg tracking-tight text-white flex items-center gap-1.5">
-                CogniFlow <span className="text-cyan-400 font-mono text-sm">AI</span>
+              <span className="font-bold text-base tracking-tight text-[#141A17] flex items-center gap-1.5">
+                CogniFlow <span className="text-[#0D684D] italic font-serif">AI</span>
               </span>
-              <span className="text-[10px] text-slate-400 font-medium tracking-wide flex items-center gap-1">
+              <span className="text-[10px] text-[#5E6D66] font-medium tracking-wide">
                 Lenovo LEAP AI Hackathon &apos;26
               </span>
             </div>
           </Link>
         </div>
 
-        {/* Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1">
+        {/* Navigation Links - Pill Navbar like WisprType */}
+        <nav className="hidden md:flex items-center gap-1.5 bg-[#F4F0E3]/70 p-1 rounded-full border border-[#E5E1D3]">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname.startsWith(item.href);
@@ -92,16 +90,20 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium transition-all ${
                   isActive
-                    ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-sm shadow-indigo-500/10'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                    ? 'bg-white text-[#0D382B] font-semibold shadow-xs border border-[#D5E2D8]'
+                    : 'text-[#4E5C56] hover:text-[#141A17] hover:bg-white/60'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-indigo-400' : 'text-slate-400'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#0D684D]' : 'text-[#6B7A74]'}`} />
                 <span>{item.label}</span>
                 {item.badge && (
-                  <span className="text-[9px] font-semibold bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded border border-amber-500/30">
+                  <span className={`text-[9px] font-semibold px-1.5 py-0.2 rounded-full ${
+                    item.badge === 'AI' 
+                      ? 'bg-[#EFF5F0] text-[#0D684D] border border-[#D5E2D8]'
+                      : 'bg-[#FFF8E6] text-[#B45309] border border-[#FDE68A]'
+                  }`}>
                     {item.badge}
                   </span>
                 )}
@@ -111,30 +113,30 @@ export default function Navbar() {
         </nav>
 
         {/* Right Controls: Real-time Presence, XP, and Role Toggle */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           {/* Live Online Counter */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
-            <Radio className="w-3 h-3 animate-pulse text-emerald-400" />
-            <span>{onlineCount} live</span>
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D] text-xs font-mono">
+            <Radio className="w-3 h-3 animate-pulse text-[#059669]" />
+            <span className="font-semibold">{onlineCount} live</span>
           </div>
 
           {/* XP & Streak Pills */}
-          <div className="hidden sm:flex items-center gap-2">
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs text-amber-300 font-medium">
-              <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400/20" />
+          <div className="hidden sm:flex items-center gap-1.5">
+            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white border border-[#E5E1D3] text-xs text-[#141A17] font-semibold shadow-xs">
+              <Zap className="w-3.5 h-3.5 text-[#D97706] fill-[#D97706]/20" />
               <span>{xp} XP</span>
             </div>
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs text-rose-400 font-medium">
-              <Flame className="w-3.5 h-3.5 text-rose-500 fill-rose-500/20" />
+            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white border border-[#E5E1D3] text-xs text-[#141A17] font-semibold shadow-xs">
+              <Flame className="w-3.5 h-3.5 text-[#E11D48] fill-[#E11D48]/20" />
               <span>{streak}d</span>
             </div>
           </div>
 
-          {/* Fast Role Switcher for Hackathon Jury Evaluation */}
+          {/* Fast Role Switcher (WisprType Pill Button) */}
           <button
             onClick={toggleRole}
             title="Click to toggle Student / Admin role"
-            className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/30 transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#0D382B] hover:bg-[#08261D] text-white shadow-xs hover:shadow-sm transition-all cursor-pointer"
           >
             <span>{userRole === 'admin' ? '🛡️ Admin Mode' : '🎓 Student Mode'}</span>
           </button>

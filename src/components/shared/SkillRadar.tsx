@@ -61,7 +61,7 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
   const weakAreas = axes.filter((a) => a.value < 60);
 
   return (
-    <div className="glass-panel p-5 rounded-2xl flex flex-col md:flex-row items-center gap-6 border border-slate-800">
+    <div className="glass-panel p-6 rounded-2xl flex flex-col md:flex-row items-center gap-6 border border-[#E5E1D3]">
       
       {/* SVG Radar Chart */}
       <div className="relative w-[260px] h-[260px] shrink-0">
@@ -72,10 +72,10 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
               key={idx}
               points={points}
               fill="none"
-              stroke="#334155"
+              stroke="#D9D4C3"
               strokeWidth="1"
               strokeDasharray={idx === 3 ? 'none' : '3,3'}
-              opacity="0.6"
+              opacity="0.8"
             />
           ))}
 
@@ -89,18 +89,18 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
                 y1={center}
                 x2={x}
                 y2={y}
-                stroke="#334155"
+                stroke="#D9D4C3"
                 strokeWidth="1"
-                opacity="0.6"
+                opacity="0.8"
               />
             );
           })}
 
-          {/* User Data Polygon */}
+          {/* User Data Polygon (Wispr Emerald) */}
           <polygon
             points={userPolygonPoints}
-            fill="rgba(99, 102, 241, 0.35)"
-            stroke="#6366f1"
+            fill="rgba(13, 104, 77, 0.18)"
+            stroke="#0D684D"
             strokeWidth="2.5"
             className="transition-all duration-700 ease-out"
           />
@@ -115,8 +115,8 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
                   cx={x}
                   cy={y}
                   r="4"
-                  fill="#06b6d4"
-                  stroke="#ffffff"
+                  fill="#0D382B"
+                  stroke="#FFFFFF"
                   strokeWidth="1.5"
                 />
                 <text
@@ -124,7 +124,7 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
                   y={labelPos.y}
                   textAnchor="middle"
                   alignmentBaseline="middle"
-                  className="text-[10px] fill-slate-300 font-medium"
+                  className="text-[10px] fill-[#4E5C56] font-semibold"
                 >
                   {axis.label} ({axis.value}%)
                 </text>
@@ -136,45 +136,47 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
 
       {/* Diagnostic Insights Panel */}
       <div className="flex-1 flex flex-col justify-center">
-        <div className="flex items-center gap-2 mb-2">
-          <TrendingUp className="w-4 h-4 text-indigo-400" />
-          <h3 className="text-sm font-semibold text-white tracking-tight">
+        <div className="flex items-center gap-2 mb-1.5">
+          <div className="w-6 h-6 rounded-lg bg-[#EFF5F0] border border-[#D5E2D8] flex items-center justify-center text-[#0D684D]">
+            <TrendingUp className="w-3.5 h-3.5" />
+          </div>
+          <h3 className="text-sm font-bold text-[#141A17] tracking-tight">
             AI Skill Gap Diagnostic Matrix (Problem Statement 1)
           </h3>
         </div>
-        <p className="text-xs text-slate-400 mb-4">
-          Groq AI continuously inspects your code submissions and query plans to isolate conceptual gaps.
+        <p className="text-xs text-[#5E6D66] mb-4">
+          Groq Cloud AI continuously inspects your code AST submissions and query plans to isolate conceptual gaps.
         </p>
 
         {weakAreas.length > 0 ? (
           <div className="space-y-2.5">
-            <div className="flex items-center gap-2 text-xs font-semibold text-amber-400">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-[#B45309]">
               <ShieldAlert className="w-3.5 h-3.5" />
               <span>{weakAreas.length} Conceptual Gaps Isolated:</span>
             </div>
             {weakAreas.map((gap) => (
               <div
                 key={gap.key}
-                className="p-2.5 rounded-lg bg-amber-950/20 border border-amber-800/40 text-xs flex items-center justify-between"
+                className="p-3 rounded-xl bg-[#FFFBEB] border border-[#FDE68A] text-xs flex items-center justify-between"
               >
                 <div>
-                  <span className="font-semibold text-amber-200">{gap.label}</span>
-                  <p className="text-[11px] text-slate-400">
+                  <span className="font-bold text-[#92400E]">{gap.label}</span>
+                  <p className="text-[11px] text-[#78350F] mt-0.5">
                     {gap.key === 'dynamicProgramming'
                       ? 'Sub-problem memoization & recurrence relation gaps detected.'
                       : 'Boundary invariant check omitted during recursion.'}
                   </p>
                 </div>
-                <span className="px-2 py-0.5 rounded bg-amber-900/60 text-amber-300 font-mono text-[10px] font-bold">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#FEF3C7] text-[#92400E] border border-[#FCD34D] font-mono text-[10px] font-bold">
                   {gap.value}% Mastery
                 </span>
               </div>
             ))}
           </div>
         ) : (
-          <div className="p-3 rounded-lg bg-emerald-950/20 border border-emerald-800/40 text-xs text-emerald-300 flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>All core domains meeting expected engineering benchmarks ($\ge 60\%$).</span>
+          <div className="p-3.5 rounded-xl bg-[#EFF5F0] border border-[#D5E2D8] text-xs text-[#0D684D] flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-[#059669] shrink-0" />
+            <span>All core domains meeting expected engineering benchmarks (≥ 60%).</span>
           </div>
         )}
       </div>
