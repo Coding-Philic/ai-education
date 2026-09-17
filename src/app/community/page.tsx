@@ -87,7 +87,7 @@ export default function CommunityPage() {
             </span>
           </div>
           <h1 className="text-2xl font-extrabold text-[#141A17] tracking-tight">Peer Community & Solution Playbacks</h1>
-          <p className="text-xs text-[#5E6D66] mt-1">
+          <p className="text-xs text-[#2B3632] mt-1 font-medium">
             Share visual execution traces, discuss algorithmic proofs, and learn collaboratively with students across Uttar Pradesh.
           </p>
         </div>
@@ -126,13 +126,13 @@ export default function CommunityPage() {
             <button
               type="button"
               onClick={() => setShowCreate(false)}
-              className="px-4 py-2 rounded-full text-xs text-[#6F7E77] hover:text-[#141A17]"
+              className="px-4 py-2 rounded-full text-xs text-[#4A5852] hover:text-[#141A17] font-semibold"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold shadow-xs"
+              className="px-5 py-2 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold shadow-xs cursor-pointer"
             >
               Post to Community
             </button>
@@ -142,7 +142,7 @@ export default function CommunityPage() {
 
       {/* Feed */}
       {loading ? (
-        <div className="text-center py-20 text-xs text-[#6F7E77] font-mono">Loading Community Activity...</div>
+        <div className="text-center py-20 text-xs text-[#3A4742] font-mono font-medium">Loading Community Activity...</div>
       ) : (
         <div className="space-y-4">
           {posts.map((post) => (
@@ -157,9 +157,9 @@ export default function CommunityPage() {
                   <div>
                     <div className="flex items-center gap-1.5">
                       <span className="text-xs font-bold text-[#141A17]">{post.username}</span>
-                      <span className="text-[10px] text-[#6F7E77] font-mono">• {post.collegeName}</span>
+                      <span className="text-[10px] text-[#4A5852] font-mono font-semibold">• {post.collegeName}</span>
                     </div>
-                    <span className="text-[10px] text-[#8E9E98] block">{post.createdAt}</span>
+                    <span className="text-[10px] text-[#5E6D66] block font-mono">{post.createdAt}</span>
                   </div>
                 </div>
 
@@ -173,7 +173,7 @@ export default function CommunityPage() {
               {/* Title & Body */}
               <div>
                 <h2 className="text-base font-bold text-[#141A17] tracking-tight">{post.title}</h2>
-                <p className="text-xs text-[#5E6D66] mt-1.5 leading-relaxed">{post.content}</p>
+                <p className="text-xs text-[#2B3632] mt-1.5 leading-relaxed font-medium">{post.content}</p>
               </div>
 
               {/* Visual Snapshot Metadata Card */}
@@ -183,7 +183,7 @@ export default function CommunityPage() {
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>Visual Trace Snapshot Attached</span>
                   </div>
-                  <span className="text-[10px] font-mono text-[#6F7E77]">
+                  <span className="text-[10px] font-mono text-[#4A5852] font-semibold">
                     {post.visualReplaySnapshot.optimalTime ? `Time: ${post.visualReplaySnapshot.optimalTime} | Space: ${post.visualReplaySnapshot.space}` : 'Interactive Replay'}
                   </span>
                 </div>
@@ -193,20 +193,20 @@ export default function CommunityPage() {
               <div className="pt-2 border-t border-[#EAE6D8] flex items-center gap-4 text-xs">
                 <button
                   onClick={() => handleUpvote(post.id)}
-                  className="flex items-center gap-1.5 text-[#5E6D66] hover:text-[#0D684D] transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 text-[#3A4742] hover:text-[#0D684D] transition-colors cursor-pointer font-medium"
                 >
                   <ThumbsUp className="w-3.5 h-3.5" />
                   <span className="font-mono font-bold text-[#141A17]">{post.upvotesCount}</span>
                   <span>Upvotes</span>
                 </button>
 
-                <div className="flex items-center gap-1.5 text-[#5E6D66]">
+                <div className="flex items-center gap-1.5 text-[#3A4742] font-medium">
                   <MessageSquare className="w-3.5 h-3.5" />
                   <span className="font-mono">{post.commentsCount || 0}</span>
                   <span>Comments</span>
                 </div>
 
-                <div className="flex items-center gap-1 text-[#8E9E98] text-[11px] ml-auto">
+                <div className="flex items-center gap-1 text-[#4A5852] text-[11px] ml-auto font-medium">
                   <Share2 className="w-3 h-3" />
                   <span>Share</span>
                 </div>

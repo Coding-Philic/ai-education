@@ -75,7 +75,7 @@ export default function AdminDashboardPage() {
   };
 
   if (loading) {
-    return <div className="text-center py-24 text-[#6F7E77] font-mono text-xs">Loading Admin Telemetry Engine...</div>;
+    return <div className="text-center py-24 text-[#3A4742] font-mono text-xs font-medium">Loading Admin Telemetry Engine...</div>;
   }
 
   return (
@@ -90,14 +90,14 @@ export default function AdminDashboardPage() {
             </span>
           </div>
           <h1 className="text-2xl font-extrabold text-[#141A17] tracking-tight">Admin & Cohort Command Center</h1>
-          <p className="text-xs text-[#5E6D66] mt-1">
+          <p className="text-xs text-[#2B3632] mt-1 font-medium">
             Monitor real-time student joins, evaluate batch-wide learning gaps, control curriculum, and inspect Groq AI token usage.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="p-3.5 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3] text-right">
-            <span className="text-[10px] text-[#6F7E77] block uppercase font-mono font-semibold">Live Sessions</span>
+            <span className="text-[10px] text-[#4A5852] block uppercase font-mono font-bold">Live Sessions</span>
             <span className="text-lg font-bold font-mono text-[#0D684D] flex items-center justify-end gap-1.5">
               <Radio className="w-3 h-3 animate-pulse text-[#059669]" />
               {metrics?.activeOnlineNow} Active
@@ -109,7 +109,7 @@ export default function AdminDashboardPage() {
       {/* Top 4 Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="glass-panel p-5 rounded-2xl border border-[#E5E1D3] shadow-xs">
-          <span className="text-[#6F7E77] text-xs font-semibold block">Total Registered Students</span>
+          <span className="text-[#4A5852] text-xs font-bold block">Total Registered Students</span>
           <span className="text-2xl font-bold font-mono text-[#141A17] mt-1 block">
             {metrics?.totalRegisteredStudents}
           </span>
@@ -117,27 +117,27 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-[#E5E1D3] shadow-xs">
-          <span className="text-[#6F7E77] text-xs font-semibold block">Total Challenges Solved</span>
+          <span className="text-[#4A5852] text-xs font-bold block">Total Challenges Solved</span>
           <span className="text-2xl font-bold font-mono text-[#0D382B] mt-1 block">
             {metrics?.challengesSolvedToday}
           </span>
-          <span className="text-[11px] text-[#6F7E77] mt-1 block font-mono">Accuracy: {metrics?.averageBatchAccuracy}</span>
+          <span className="text-[11px] text-[#4A5852] mt-1 block font-mono font-medium">Accuracy: {metrics?.averageBatchAccuracy}</span>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-[#E5E1D3] shadow-xs">
-          <span className="text-[#6F7E77] text-xs font-semibold block">Groq AI Tokens Consumed</span>
+          <span className="text-[#4A5852] text-xs font-bold block">Groq AI Tokens Consumed</span>
           <span className="text-2xl font-bold font-mono text-[#7C3AED] mt-1 block">
             {metrics?.groqTokenConsumptionToday?.toLocaleString()}
           </span>
-          <span className="text-[11px] text-[#6F7E77] mt-1 block font-mono">Llama-3.3-70B & Qwen LPU</span>
+          <span className="text-[11px] text-[#4A5852] mt-1 block font-mono font-medium">Llama-3.3-70B & Qwen LPU</span>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-[#E5E1D3] shadow-xs">
-          <span className="text-[#6F7E77] text-xs font-semibold block">Groq Avg Inference Speed</span>
+          <span className="text-[#4A5852] text-xs font-bold block">Groq Avg Inference Speed</span>
           <span className="text-2xl font-bold font-mono text-[#0D684D] mt-1 block">
             {metrics?.groqAvgLatencyMs}ms
           </span>
-          <span className="text-[11px] text-[#6F7E77] mt-1 block font-mono">Sub-second AST compilation</span>
+          <span className="text-[11px] text-[#4A5852] mt-1 block font-mono font-medium">Sub-second AST compilation</span>
         </div>
       </div>
 
@@ -152,25 +152,25 @@ export default function AdminDashboardPage() {
               Aggregated Cohort Skill Gap Heatmap (Problem Statement 1)
             </h2>
           </div>
-          <span className="text-xs text-[#6F7E77]">
+          <span className="text-xs text-[#3A4742] font-medium">
             Identifies state-wide curriculum syllabus gaps across AKTU colleges.
           </span>
         </div>
 
         <div className="overflow-x-auto rounded-xl border border-[#E5E1D3]">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#FAF8EE] text-[#5E6D66] font-mono border-b border-[#E5E1D3]">
+            <thead className="bg-[#FAF8EE] text-[#141A17] font-mono border-b border-[#E5E1D3]">
               <tr>
-                <th className="p-3.5">Topic / Conceptual Vulnerability</th>
-                <th className="p-3.5">Failure Rate</th>
-                <th className="p-3.5">Severity Level</th>
-                <th className="p-3.5">Students Affected</th>
+                <th className="p-3.5 font-bold">Topic / Conceptual Vulnerability</th>
+                <th className="p-3.5 font-bold">Failure Rate</th>
+                <th className="p-3.5 font-bold">Severity Level</th>
+                <th className="p-3.5 font-bold">Students Affected</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#EAE6D8] bg-white font-mono">
               {metrics?.cohortSkillGapHeatmap?.map((item: any, idx: number) => (
                 <tr key={idx} className="hover:bg-[#FAF8EE]/50 transition-colors">
-                  <td className="p-3.5 text-[#141A17] font-semibold">{item.topic}</td>
+                  <td className="p-3.5 text-[#141A17] font-bold">{item.topic}</td>
                   <td className="p-3.5 text-[#E11D48] font-bold">{item.failureRate}</td>
                   <td className="p-3.5">
                     <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
@@ -181,7 +181,7 @@ export default function AdminDashboardPage() {
                       {item.severity}
                     </span>
                   </td>
-                  <td className="p-3.5 text-[#5E6D66]">{item.affectedStudents} students</td>
+                  <td className="p-3.5 text-[#2B3632] font-medium">{item.affectedStudents} students</td>
                 </tr>
               ))}
             </tbody>
@@ -206,11 +206,11 @@ export default function AdminDashboardPage() {
               <div key={i} className="p-3.5 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3] text-xs flex items-center justify-between">
                 <div>
                   <span className="font-bold text-[#141A17] block">{col.name}</span>
-                  <span className="text-[11px] text-[#6F7E77] font-mono">{col.activeStudents} active learners</span>
+                  <span className="text-[11px] text-[#4A5852] font-mono font-medium">{col.activeStudents} active learners</span>
                 </div>
                 <div className="text-right font-mono">
                   <span className="text-[#0D684D] font-bold block">{col.solvedRate}</span>
-                  <span className="text-[10px] text-[#8E9E98]">solve rate</span>
+                  <span className="text-[10px] text-[#5E6D66] font-medium">solve rate</span>
                 </div>
               </div>
             ))}
@@ -226,7 +226,7 @@ export default function AdminDashboardPage() {
               </div>
               <h3 className="text-sm font-bold text-[#141A17]">Dynamic Curriculum Creator (No Hardcoding)</h3>
             </div>
-            <span className="text-[10px] text-[#6F7E77] font-mono font-semibold">CRUD / API Ingestion</span>
+            <span className="text-[10px] text-[#4A5852] font-mono font-bold">CRUD / API Ingestion</span>
           </div>
 
           {createStatus && (
@@ -238,7 +238,7 @@ export default function AdminDashboardPage() {
 
           <form onSubmit={handleCreateChallenge} className="space-y-3.5">
             <div>
-              <label className="text-[11px] font-bold text-[#5E6D66] block mb-1">Challenge Title</label>
+              <label className="text-[11px] font-bold text-[#141A17] block mb-1">Challenge Title</label>
               <input
                 type="text"
                 value={newTitle}
@@ -251,7 +251,7 @@ export default function AdminDashboardPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[11px] font-bold text-[#5E6D66] block mb-1">Domain</label>
+                <label className="text-[11px] font-bold text-[#141A17] block mb-1">Domain</label>
                 <select
                   value={newType}
                   onChange={(e) => setNewType(e.target.value)}
@@ -264,7 +264,7 @@ export default function AdminDashboardPage() {
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-[#5E6D66] block mb-1">XP Reward</label>
+                <label className="text-[11px] font-bold text-[#141A17] block mb-1">XP Reward</label>
                 <input
                   type="number"
                   value={newXp}
@@ -275,7 +275,7 @@ export default function AdminDashboardPage() {
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-[#5E6D66] block mb-1">Problem Statement</label>
+              <label className="text-[11px] font-bold text-[#141A17] block mb-1">Problem Statement</label>
               <textarea
                 value={newStatement}
                 onChange={(e) => setNewStatement(e.target.value)}

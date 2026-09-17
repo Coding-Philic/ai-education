@@ -148,7 +148,7 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
                   y={ly}
                   textAnchor={textAnchor}
                   dominantBaseline={dominantBaseline}
-                  className="text-[10px] fill-[#4E5C56] font-semibold select-none"
+                  className="text-[10px] fill-[#141A17] font-bold select-none"
                 >
                   {axis.label} ({axis.value}%)
                 </text>
@@ -168,7 +168,7 @@ export default function SkillRadar({ metrics }: SkillRadarProps) {
             AI Skill Gap Diagnostic Matrix (Problem Statement 1)
           </h3>
         </div>
-        <p className="text-xs text-[#5E6D66] mb-4">
+        <p className="text-xs text-[#3A4742] mb-4">
           Groq Cloud AI continuously inspects your code AST submissions and query plans to isolate conceptual gaps.
         </p>
 

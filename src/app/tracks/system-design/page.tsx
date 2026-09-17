@@ -28,15 +28,15 @@ export default function SystemDesignTrackPage() {
 
   if (loading) {
     return (
-      <div className="py-24 flex flex-col items-center justify-center gap-3 text-slate-400">
-        <Loader2 className="w-6 h-6 animate-spin text-purple-400" />
-        <span className="text-xs font-mono">Loading Dynamic System Design Canvas...</span>
+      <div className="py-24 flex flex-col items-center justify-center gap-3 text-[#3A4742]">
+        <Loader2 className="w-6 h-6 animate-spin text-[#0D684D]" />
+        <span className="text-xs font-mono font-medium">Loading Dynamic System Design Canvas...</span>
       </div>
     );
   }
 
   if (!activeChallenge) {
-    return <div className="text-center py-20 text-slate-400 text-sm">No System Design challenges found.</div>;
+    return <div className="text-center py-20 text-[#3A4742] text-sm font-medium">No System Design challenges found.</div>;
   }
 
   return (

@@ -781,21 +781,21 @@ export default function SystemDesignVisualizer({
 
       {/* Curriculum Drawer */}
       {showDrawer && (
-        <div className="glass-panel p-5 rounded-2xl border border-purple-500/30 bg-slate-950/95 space-y-4 shadow-2xl animate-in fade-in duration-200">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+        <div className="glass-panel p-5 rounded-2xl border border-[#E5E1D3] bg-[#FAF7EF] space-y-4 shadow-xl animate-in fade-in duration-200">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#EAE6D8] pb-3">
             <div className="flex items-center gap-2">
-              <Compass className="w-4 h-4 text-purple-400" />
-              <h3 className="text-sm font-bold text-white">System Design Scenarios Curriculum</h3>
+              <Compass className="w-4 h-4 text-[#0D684D]" />
+              <h3 className="text-sm font-bold text-[#141A17]">System Design Scenarios Curriculum</h3>
             </div>
             {/* Search Box */}
             <div className="relative w-full sm:w-64">
-              <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
+              <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-[#6F7E77]" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search scenarios (e.g. TinyURL, Kafka)..."
-                className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+                className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-white border border-[#E5E1D3] text-xs text-[#141A17] placeholder-[#7C8E86] focus:outline-none focus:border-[#0D684D] focus:ring-1 focus:ring-[#0D684D]"
               />
             </div>
           </div>
@@ -808,8 +808,8 @@ export default function SystemDesignVisualizer({
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                   selectedCategory === cat
-                    ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30'
-                    : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                    ? 'bg-[#0D382B] text-white shadow-xs font-bold'
+                    : 'bg-white text-[#3A4742] hover:text-[#141A17] border border-[#E5E1D3]'
                 }`}
               >
                 {cat}
@@ -832,27 +832,27 @@ export default function SystemDesignVisualizer({
                   }}
                   className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all cursor-pointer ${
                     isSelected
-                      ? 'bg-purple-950/60 border-purple-500 text-white shadow-lg shadow-purple-600/20 ring-1 ring-purple-500'
-                      : 'bg-slate-900/90 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-850'
+                      ? 'bg-[#EFF5F0] border-2 border-[#0D684D] text-[#141A17] shadow-xs'
+                      : 'bg-white border-[#E5E1D3] text-[#141A17] hover:border-[#0D684D]/40 hover:bg-[#FAF8EE]'
                   }`}
                 >
                   <div>
                     <div className="flex items-center justify-between gap-1 mb-1">
-                      <span className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider">
+                      <span className="text-[10px] font-mono text-[#0D684D] font-bold uppercase tracking-wider">
                         {init?.category?.split(' ')[0] || 'Web'}
                       </span>
-                      <span className="text-[10px] font-mono text-cyan-400 font-semibold">
+                      <span className="text-[10px] font-mono text-[#0D684D] font-semibold">
                         {(init?.targetRPS || 30000).toLocaleString()} RPS
                       </span>
                     </div>
-                    <h4 className="text-xs font-bold line-clamp-1">{ch.title}</h4>
-                    <p className="text-[11px] text-slate-400 line-clamp-2 mt-1 leading-relaxed">
+                    <h4 className="text-xs font-bold text-[#141A17] line-clamp-1">{ch.title}</h4>
+                    <p className="text-[11px] text-[#3A4742] line-clamp-2 mt-1 leading-relaxed">
                       {ch.problemStatement}
                     </p>
                   </div>
-                  <div className="mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px]">
-                    <span className="text-emerald-400 font-mono">+{ch.xpReward} XP</span>
-                    <span className="text-purple-400 font-semibold flex items-center gap-0.5">
+                  <div className="mt-2 pt-2 border-t border-[#EAE6D8] flex items-center justify-between text-[10px]">
+                    <span className="text-[#0D684D] font-mono font-bold">+{ch.xpReward} XP</span>
+                    <span className="text-[#0D684D] font-semibold flex items-center gap-0.5">
                       Launch <ChevronRight className="w-3 h-3" />
                     </span>
                   </div>
@@ -866,117 +866,117 @@ export default function SystemDesignVisualizer({
       {/* Live Engineering Telemetry & Odometer Gauges */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
         {/* Status Gauge */}
-        <div className="glass-panel p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-[11px] text-slate-400">
+        <div className="glass-panel p-3 rounded-xl border border-[#E5E1D3] flex flex-col justify-between shadow-xs bg-white">
+          <div className="flex items-center justify-between text-[11px] text-[#3A4742] font-semibold">
             <span>Cluster Health</span>
-            <Activity className="w-3.5 h-3.5 text-emerald-400" />
+            <Activity className="w-3.5 h-3.5 text-[#059669]" />
           </div>
           <div className="my-1 flex items-center gap-1.5">
             <span
               className={`w-2.5 h-2.5 rounded-full ${
                 telemetry.statusState === 'HEALTHY'
-                  ? 'bg-emerald-400 animate-ping'
+                  ? 'bg-emerald-500 animate-ping'
                   : telemetry.statusState === 'DEGRADED'
-                  ? 'bg-amber-400 animate-pulse'
+                  ? 'bg-amber-500 animate-pulse'
                   : 'bg-rose-500 animate-bounce'
               }`}
             />
             <span
               className={`text-sm font-bold tracking-tight ${
                 telemetry.statusState === 'HEALTHY'
-                  ? 'text-emerald-400'
+                  ? 'text-[#0D684D]'
                   : telemetry.statusState === 'DEGRADED'
-                  ? 'text-amber-400'
-                  : 'text-rose-400'
+                  ? 'text-[#B45309]'
+                  : 'text-[#BE123C]'
               }`}
             >
               {telemetry.statusState}
             </span>
           </div>
-          <span className="text-[10px] text-slate-500 font-mono">
+          <span className="text-[10px] text-[#5E6D66] font-mono">
             {nodes.length} Nodes Online
           </span>
         </div>
 
         {/* P99 Latency */}
-        <div className="glass-panel p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-[11px] text-slate-400">
+        <div className="glass-panel p-3 rounded-xl border border-[#E5E1D3] flex flex-col justify-between shadow-xs bg-white">
+          <div className="flex items-center justify-between text-[11px] text-[#3A4742] font-semibold">
             <span>P99 Latency</span>
-            <Gauge className="w-3.5 h-3.5 text-cyan-400" />
+            <Gauge className="w-3.5 h-3.5 text-[#0D684D]" />
           </div>
-          <div className="my-1 text-base font-extrabold text-cyan-400 font-mono">
+          <div className="my-1 text-base font-extrabold text-[#141A17] font-mono">
             {telemetry.p99LatencyMs}
           </div>
-          <span className="text-[10px] text-slate-500 font-mono">
+          <span className="text-[10px] text-[#5E6D66] font-mono">
             Budget: &lt; {(currentChallenge.initialVisualState as any)?.maxLatencyMs || 50}ms
           </span>
         </div>
 
         {/* Availability SLA */}
-        <div className="glass-panel p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-[11px] text-slate-400">
+        <div className="glass-panel p-3 rounded-xl border border-[#E5E1D3] flex flex-col justify-between shadow-xs bg-white">
+          <div className="flex items-center justify-between text-[11px] text-[#3A4742] font-semibold">
             <span>Availability SLA</span>
-            <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
+            <ShieldCheck className="w-3.5 h-3.5 text-[#4338CA]" />
           </div>
-          <div className="my-1 text-base font-extrabold text-indigo-300 font-mono">
+          <div className="my-1 text-base font-extrabold text-[#141A17] font-mono">
             {telemetry.sla}
           </div>
-          <span className="text-[10px] text-slate-500 font-mono">
+          <span className="text-[10px] text-[#5E6D66] font-mono">
             Four Nines Standard
           </span>
         </div>
 
         {/* Traffic RPS */}
-        <div className="glass-panel p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-[11px] text-slate-400">
+        <div className="glass-panel p-3 rounded-xl border border-[#E5E1D3] flex flex-col justify-between shadow-xs bg-white">
+          <div className="flex items-center justify-between text-[11px] text-[#3A4742] font-semibold">
             <span>Ingress Load</span>
-            <TrendingUp className="w-3.5 h-3.5 text-purple-400" />
+            <TrendingUp className="w-3.5 h-3.5 text-[#7C3AED]" />
           </div>
-          <div className="my-1 text-base font-extrabold text-purple-300 font-mono">
-            {trafficRps.toLocaleString()} <span className="text-xs text-slate-500">RPS</span>
+          <div className="my-1 text-base font-extrabold text-[#141A17] font-mono">
+            {trafficRps.toLocaleString()} <span className="text-xs text-[#5E6D66]">RPS</span>
           </div>
-          <span className="text-[10px] text-slate-500 font-mono">
+          <span className="text-[10px] text-[#5E6D66] font-mono">
             Adjustable Slider
           </span>
         </div>
 
         {/* Cache Hit % */}
-        <div className="glass-panel p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-[11px] text-slate-400">
+        <div className="glass-panel p-3 rounded-xl border border-[#E5E1D3] flex flex-col justify-between shadow-xs bg-white">
+          <div className="flex items-center justify-between text-[11px] text-[#3A4742] font-semibold">
             <span>Cache Hit Rate</span>
-            <Zap className="w-3.5 h-3.5 text-emerald-400" />
+            <Zap className="w-3.5 h-3.5 text-[#059669]" />
           </div>
-          <div className="my-1 text-base font-extrabold text-emerald-400 font-mono">
+          <div className="my-1 text-base font-extrabold text-[#0D684D] font-mono">
             {cacheHitRate}%
           </div>
-          <span className="text-[10px] text-slate-500 font-mono">
+          <span className="text-[10px] text-[#5E6D66] font-mono">
             Absorbs Read Bursts
           </span>
         </div>
 
         {/* DB IOPS */}
-        <div className="glass-panel p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-[11px] text-slate-400">
+        <div className="glass-panel p-3 rounded-xl border border-[#E5E1D3] flex flex-col justify-between shadow-xs bg-white">
+          <div className="flex items-center justify-between text-[11px] text-[#3A4742] font-semibold">
             <span>Database IOPS</span>
-            <Database className="w-3.5 h-3.5 text-rose-400" />
+            <Database className="w-3.5 h-3.5 text-[#BE123C]" />
           </div>
-          <div className="my-1 text-base font-extrabold text-rose-400 font-mono">
+          <div className="my-1 text-base font-extrabold text-[#141A17] font-mono">
             {telemetry.dbIops}
           </div>
-          <span className="text-[10px] text-slate-500 font-mono">
+          <span className="text-[10px] text-[#5E6D66] font-mono">
             Penetrating Reads + Writes
           </span>
         </div>
       </div>
 
       {/* Interactive Sliders & Chaos Bar */}
-      <div className="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div className="glass-panel p-4 rounded-2xl border border-[#E5E1D3] flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-xs bg-white">
         {/* Sliders */}
         <div className="flex flex-wrap items-center gap-6">
           {/* Traffic RPS Slider */}
           <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-              <Sliders className="w-3.5 h-3.5 text-purple-400" /> RPS:
+            <span className="text-xs font-semibold text-[#141A17] flex items-center gap-1.5">
+              <Sliders className="w-3.5 h-3.5 text-[#0D684D]" /> RPS:
             </span>
             <input
               type="range"
@@ -985,17 +985,17 @@ export default function SystemDesignVisualizer({
               step="1000"
               value={trafficRps}
               onChange={(e) => setTrafficRps(Number(e.target.value))}
-              className="w-28 sm:w-36 accent-purple-500 cursor-pointer"
+              className="w-28 sm:w-36 accent-[#0D684D] cursor-pointer"
             />
-            <span className="text-xs font-mono font-bold text-cyan-400 w-16">
+            <span className="text-xs font-mono font-bold text-[#0D684D] w-16">
               {trafficRps.toLocaleString()}
             </span>
           </div>
 
           {/* Cache Hit Rate Slider */}
           <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-              <Zap className="w-3.5 h-3.5 text-emerald-400" /> Cache Hit:
+            <span className="text-xs font-semibold text-[#141A17] flex items-center gap-1.5">
+              <Zap className="w-3.5 h-3.5 text-[#059669]" /> Cache Hit:
             </span>
             <input
               type="range"
@@ -1004,9 +1004,9 @@ export default function SystemDesignVisualizer({
               step="1"
               value={cacheHitRate}
               onChange={(e) => setCacheHitRate(Number(e.target.value))}
-              className="w-24 sm:w-32 accent-emerald-500 cursor-pointer"
+              className="w-24 sm:w-32 accent-[#0D684D] cursor-pointer"
             />
-            <span className="text-xs font-mono font-bold text-emerald-400 w-10">
+            <span className="text-xs font-mono font-bold text-[#0D684D] w-10">
               {cacheHitRate}%
             </span>
           </div>
@@ -1014,8 +1014,8 @@ export default function SystemDesignVisualizer({
 
         {/* Quick Chaos Buttons */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold text-slate-400 flex items-center gap-1 mr-1">
-            <Flame className="w-3.5 h-3.5 text-rose-400" /> Chaos Mode:
+          <span className="text-xs font-semibold text-[#3A4742] flex items-center gap-1 mr-1">
+            <Flame className="w-3.5 h-3.5 text-[#BE123C]" /> Chaos Mode:
           </span>
 
           <button
@@ -1023,7 +1023,7 @@ export default function SystemDesignVisualizer({
               const lb = nodes.find((n) => n.type === 'load_balancer');
               if (lb) toggleNodeCrash(lb.id);
             }}
-            className="px-2.5 py-1 rounded-lg bg-rose-950/70 border border-rose-800 text-rose-300 text-xs font-semibold hover:bg-rose-900 transition-colors cursor-pointer"
+            className="px-2.5 py-1 rounded-lg bg-[#FFF1F2] border border-[#FECDD3] text-[#BE123C] text-xs font-semibold hover:bg-[#FFE4E6] transition-colors cursor-pointer"
           >
             Crash Ingress LB
           </button>
@@ -1033,7 +1033,7 @@ export default function SystemDesignVisualizer({
               const cache = nodes.find((n) => n.type === 'cache');
               if (cache) toggleNodeCrash(cache.id);
             }}
-            className="px-2.5 py-1 rounded-lg bg-amber-950/70 border border-amber-800 text-amber-300 text-xs font-semibold hover:bg-amber-900 transition-colors cursor-pointer"
+            className="px-2.5 py-1 rounded-lg bg-[#FFFBEB] border border-[#FDE68A] text-[#B45309] text-xs font-semibold hover:bg-[#FEF3C7] transition-colors cursor-pointer"
           >
             Kill Cache (Stampede)
           </button>
@@ -1043,7 +1043,7 @@ export default function SystemDesignVisualizer({
               const db = nodes.find((n) => n.type === 'database');
               if (db) toggleNodeCrash(db.id);
             }}
-            className="px-2.5 py-1 rounded-lg bg-rose-950/70 border border-rose-800 text-rose-300 text-xs font-semibold hover:bg-rose-900 transition-colors cursor-pointer"
+            className="px-2.5 py-1 rounded-lg bg-[#FFF1F2] border border-[#FECDD3] text-[#BE123C] text-xs font-semibold hover:bg-[#FFE4E6] transition-colors cursor-pointer"
           >
             Kill Primary DB
           </button>
@@ -1055,7 +1055,7 @@ export default function SystemDesignVisualizer({
               setNodes((prev) => prev.map((n) => ({ ...n, status: 'healthy' })));
               setVisualFrames(generateLocalVisualFrames(nodes, trafficRps, cacheHitRate));
             }}
-            className="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 text-xs font-semibold hover:bg-slate-700 transition-colors cursor-pointer flex items-center gap-1"
+            className="px-2.5 py-1 rounded-lg bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D] text-xs font-semibold hover:bg-[#E2EDE4] transition-colors cursor-pointer flex items-center gap-1"
           >
             <RotateCcw className="w-3 h-3" />
             <span>Heal All</span>
@@ -1064,52 +1064,52 @@ export default function SystemDesignVisualizer({
       </div>
 
       {/* Component Palette Toolbox */}
-      <div className="glass-panel p-3 rounded-xl border border-slate-800 flex items-center justify-between gap-2 overflow-x-auto">
-        <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider shrink-0 flex items-center gap-1 mr-1">
-          <Plus className="w-3.5 h-3.5 text-purple-400" /> Toolbox Palette:
+      <div className="glass-panel p-3 rounded-xl border border-[#E5E1D3] flex items-center justify-between gap-2 overflow-x-auto shadow-xs bg-white">
+        <span className="text-[11px] font-mono text-[#3A4742] uppercase tracking-wider shrink-0 flex items-center gap-1 mr-1 font-bold">
+          <Plus className="w-3.5 h-3.5 text-[#0D684D]" /> Toolbox Palette:
         </span>
 
         <div className="flex items-center gap-2">
           <button
             onClick={() => handleAddNode('load_balancer', 'Nginx Ingress (Replica)')}
-            className="px-2.5 py-1 rounded-lg bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 text-xs font-semibold hover:border-cyan-400 transition-all shrink-0 cursor-pointer flex items-center gap-1"
+            className="px-2.5 py-1 rounded-lg bg-white border border-[#E0DCCF] text-[#141A17] text-xs font-semibold hover:bg-[#FAF8EE] hover:border-[#0D382B] shadow-xs transition-all shrink-0 cursor-pointer flex items-center gap-1"
           >
-            <Network className="w-3 h-3" /> + Load Balancer
+            <Network className="w-3 h-3 text-[#0D684D]" /> + Load Balancer
           </button>
 
           <button
             onClick={() => handleAddNode('service', `API Microservice #${nodes.filter((n) => n.type === 'service').length + 1}`)}
-            className="px-2.5 py-1 rounded-lg bg-indigo-950/60 border border-indigo-500/40 text-indigo-300 text-xs font-semibold hover:border-indigo-400 transition-all shrink-0 cursor-pointer flex items-center gap-1"
+            className="px-2.5 py-1 rounded-lg bg-white border border-[#E0DCCF] text-[#141A17] text-xs font-semibold hover:bg-[#FAF8EE] hover:border-[#0D382B] shadow-xs transition-all shrink-0 cursor-pointer flex items-center gap-1"
           >
-            <Server className="w-3 h-3" /> + Microservice Pod
+            <Server className="w-3 h-3 text-[#0D684D]" /> + Microservice Pod
           </button>
 
           <button
             onClick={() => handleAddNode('cache', 'Redis Cluster (LRU)')}
-            className="px-2.5 py-1 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-semibold hover:border-emerald-400 transition-all shrink-0 cursor-pointer flex items-center gap-1"
+            className="px-2.5 py-1 rounded-lg bg-white border border-[#E0DCCF] text-[#141A17] text-xs font-semibold hover:bg-[#FAF8EE] hover:border-[#0D382B] shadow-xs transition-all shrink-0 cursor-pointer flex items-center gap-1"
           >
-            <Zap className="w-3 h-3" /> + Redis Cache
+            <Zap className="w-3 h-3 text-[#B45309]" /> + Redis Cache
           </button>
 
           <button
             onClick={() => handleAddNode('queue', 'Kafka Event Bus')}
-            className="px-2.5 py-1 rounded-lg bg-purple-950/60 border border-purple-500/40 text-purple-300 text-xs font-semibold hover:border-purple-400 transition-all shrink-0 cursor-pointer flex items-center gap-1"
+            className="px-2.5 py-1 rounded-lg bg-white border border-[#E0DCCF] text-[#141A17] text-xs font-semibold hover:bg-[#FAF8EE] hover:border-[#0D382B] shadow-xs transition-all shrink-0 cursor-pointer flex items-center gap-1"
           >
-            <Layers className="w-3 h-3" /> + Kafka Queue
+            <Layers className="w-3 h-3 text-[#7C3AED]" /> + Kafka Queue
           </button>
 
           <button
             onClick={() => handleAddNode('database', 'Postgres Read Replica')}
-            className="px-2.5 py-1 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-300 text-xs font-semibold hover:border-rose-400 transition-all shrink-0 cursor-pointer flex items-center gap-1"
+            className="px-2.5 py-1 rounded-lg bg-white border border-[#E0DCCF] text-[#141A17] text-xs font-semibold hover:bg-[#FAF8EE] hover:border-[#0D382B] shadow-xs transition-all shrink-0 cursor-pointer flex items-center gap-1"
           >
-            <Database className="w-3 h-3" /> + Read Replica
+            <Database className="w-3 h-3 text-[#BE123C]" /> + Read Replica
           </button>
 
           <button
             onClick={() => handleAddNode('cdn', 'Cloudflare Edge CDN')}
-            className="px-2.5 py-1 rounded-lg bg-sky-950/60 border border-sky-500/40 text-sky-300 text-xs font-semibold hover:border-sky-400 transition-all shrink-0 cursor-pointer flex items-center gap-1"
+            className="px-2.5 py-1 rounded-lg bg-white border border-[#E0DCCF] text-[#141A17] text-xs font-semibold hover:bg-[#FAF8EE] hover:border-[#0D382B] shadow-xs transition-all shrink-0 cursor-pointer flex items-center gap-1"
           >
-            <Cloud className="w-3 h-3" /> + CDN Edge
+            <Cloud className="w-3 h-3 text-[#0284C7]" /> + CDN Edge
           </button>
         </div>
       </div>
@@ -1403,17 +1403,17 @@ export default function SystemDesignVisualizer({
 
       {/* Groq Cloud AI Architecture Review Report */}
       {aiCritique && (
-        <div className="glass-panel p-6 rounded-2xl border border-purple-500/40 space-y-5 shadow-2xl animate-in fade-in duration-300">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+        <div className="glass-panel p-6 rounded-2xl border border-[#E5E1D3] space-y-5 shadow-xs animate-in fade-in duration-300">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#EAE6D8] pb-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-purple-600/30 border border-purple-500/50 flex items-center justify-center text-purple-400">
+              <div className="w-9 h-9 rounded-xl bg-[#EFF5F0] border border-[#D5E2D8] flex items-center justify-center text-[#0D684D]">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white">
+                <h3 className="text-sm font-bold text-[#141A17]">
                   Groq Cloud LPU Architectural Resilience Report
                 </h3>
-                <span className="text-[11px] text-slate-400 font-mono">
+                <span className="text-[11px] text-[#4A5852] font-mono">
                   Engine: {aiCritique.model}
                 </span>
               </div>
@@ -1421,12 +1421,12 @@ export default function SystemDesignVisualizer({
 
             <div className="flex items-center gap-3">
               <div className="text-right">
-                <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">
+                <span className="text-[10px] font-mono text-[#5E6D66] uppercase tracking-wider block font-semibold">
                   Resilience Score
                 </span>
                 <span
                   className={`text-xl font-extrabold font-mono ${
-                    aiCritique.score >= 80 ? 'text-emerald-400' : aiCritique.score >= 50 ? 'text-amber-400' : 'text-rose-400'
+                    aiCritique.score >= 80 ? 'text-[#0D684D]' : aiCritique.score >= 50 ? 'text-[#D97706]' : 'text-[#E11D48]'
                   }`}
                 >
                   {aiCritique.score} / 100
@@ -1434,8 +1434,8 @@ export default function SystemDesignVisualizer({
               </div>
               <div className="w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-xs font-mono"
                    style={{
-                     borderColor: aiCritique.score >= 80 ? '#10b981' : aiCritique.score >= 50 ? '#f59e0b' : '#f43f5e',
-                     color: aiCritique.score >= 80 ? '#10b981' : aiCritique.score >= 50 ? '#f59e0b' : '#f43f5e',
+                     borderColor: aiCritique.score >= 80 ? '#0D684D' : aiCritique.score >= 50 ? '#D97706' : '#E11D48',
+                     color: aiCritique.score >= 80 ? '#0D684D' : aiCritique.score >= 50 ? '#D97706' : '#E11D48',
                    }}>
                 {aiCritique.score}%
               </div>
@@ -1443,33 +1443,33 @@ export default function SystemDesignVisualizer({
           </div>
 
           {/* Executive Summary */}
-          <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800/80 text-xs text-slate-200 leading-relaxed">
+          <div className="p-4 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3] text-xs text-[#141A17] leading-relaxed">
             {aiCritique.summary}
           </div>
 
           {/* CAP Theorem Breakdown */}
-          <div className="p-3.5 rounded-xl bg-indigo-950/40 border border-indigo-500/40 text-xs space-y-1">
-            <span className="font-bold text-indigo-300 flex items-center gap-1.5">
-              <Info className="w-3.5 h-3.5 text-indigo-400" /> CAP Theorem & Distributed Consistency Analysis
+          <div className="p-4 rounded-xl bg-[#F0F9FF] border border-[#BAE6FD] text-xs space-y-1">
+            <span className="font-bold text-[#0369A1] flex items-center gap-1.5">
+              <Info className="w-3.5 h-3.5 text-[#0284C7]" /> CAP Theorem & Distributed Consistency Analysis
             </span>
-            <p className="text-slate-300 leading-relaxed text-[11px]">
+            <p className="text-[#1E293B] leading-relaxed text-[11px]">
               {aiCritique.capBreakdown}
             </p>
           </div>
 
           {/* Architectural Recommendations */}
           <div className="space-y-2 pt-1">
-            <span className="text-xs font-bold text-purple-400 uppercase tracking-wider block">
+            <span className="text-xs font-bold text-[#0D684D] uppercase tracking-wider block">
               Targeted Production Recommendations
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {aiCritique.recommendations.map((rec: string, i: number) => (
                 <div
                   key={i}
-                  className="flex items-start gap-2.5 text-xs text-slate-300 p-3 rounded-xl bg-slate-900/60 border border-slate-800/80"
+                  className="flex items-start gap-2.5 text-xs text-[#141A17] p-3 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3]"
                 >
-                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span className="leading-relaxed">{rec}</span>
+                  <ShieldCheck className="w-4 h-4 text-[#0D684D] shrink-0 mt-0.5" />
+                  <span className="leading-relaxed font-medium">{rec}</span>
                 </div>
               ))}
             </div>
@@ -1477,10 +1477,10 @@ export default function SystemDesignVisualizer({
 
           {/* Socratic Hints & Solution Accordion */}
           {remediationData && (
-            <div className="pt-4 border-t border-slate-800 space-y-4">
+            <div className="pt-4 border-t border-[#EAE6D8] space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-white flex items-center gap-2">
-                  <HelpCircle className="w-4 h-4 text-purple-400" />
+                <span className="text-xs font-bold text-[#141A17] flex items-center gap-2">
+                  <HelpCircle className="w-4 h-4 text-[#0D684D]" />
                   Socratic Architectural Guidance & Benchmark Fix
                 </span>
                 <div className="flex items-center gap-1">
@@ -1488,10 +1488,10 @@ export default function SystemDesignVisualizer({
                     <button
                       key={level}
                       onClick={() => setActiveHintLevel(level)}
-                      className={`px-2.5 py-1 rounded text-xs font-bold transition-all cursor-pointer ${
+                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                         activeHintLevel === level
-                          ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30'
-                          : 'bg-slate-800 text-slate-400 hover:text-white'
+                          ? 'bg-[#0D382B] text-white shadow-xs'
+                          : 'bg-white border border-[#E0DCCF] text-[#4A5852] hover:text-[#141A17]'
                       }`}
                     >
                       Hint {level}
@@ -1502,8 +1502,8 @@ export default function SystemDesignVisualizer({
 
               {/* Active Hint Content */}
               {remediationData.hints?.[activeHintLevel - 1] && (
-                <div className="p-3.5 rounded-xl bg-purple-950/30 border border-purple-800/40 text-xs text-purple-200 leading-relaxed">
-                  <span className="font-bold text-purple-300 block mb-1">
+                <div className="p-4 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3] text-xs text-[#141A17] leading-relaxed">
+                  <span className="font-bold text-[#0D684D] block mb-1">
                     Level {activeHintLevel}: {remediationData.hints[activeHintLevel - 1].title}
                   </span>
                   {remediationData.hints[activeHintLevel - 1].hint}
@@ -1512,24 +1512,24 @@ export default function SystemDesignVisualizer({
 
               {/* Benchmark Solution Overview */}
               {remediationData.solution && (
-                <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                <div className="p-4 rounded-xl bg-[#EFF5F0] border border-[#D5E2D8] space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-emerald-400">
+                    <span className="text-xs font-bold text-[#0D684D]">
                       Production Benchmark Architecture Solution
                     </span>
                     <button
                       onClick={handleLoadBenchmark}
-                      className="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
+                      className="px-3 py-1 rounded-lg bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1 shadow-xs"
                     >
-                      <Check className="w-3 h-3" /> Apply Topology
+                      <Check className="w-3 h-3 text-[#34D399]" /> Apply Topology
                     </button>
                   </div>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-xs text-[#141A17] leading-relaxed font-medium">
                     {remediationData.solution.explanation}
                   </p>
-                  <div className="flex items-center gap-4 text-[11px] font-mono text-slate-400 pt-1">
-                    <span>Target Latency: <strong className="text-cyan-400">{remediationData.solution.timeComplexity}</strong></span>
-                    <span>Availability: <strong className="text-emerald-400">{remediationData.solution.spaceComplexity}</strong></span>
+                  <div className="flex items-center gap-4 text-[11px] font-mono text-[#4A5852] pt-1">
+                    <span>Target Latency: <strong className="text-[#0D684D]">{remediationData.solution.timeComplexity}</strong></span>
+                    <span>Availability: <strong className="text-[#0D684D]">{remediationData.solution.spaceComplexity}</strong></span>
                   </div>
                 </div>
               )}

@@ -331,7 +331,7 @@ export default function SqlLabVisualizer({
 
       {/* ── Curriculum Drawer (when open) ── */}
       {showDrawer && (
-        <div className="glass-panel p-4 rounded-2xl border border-cyan-500/30 bg-slate-950/90 shadow-2xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-72 overflow-y-auto">
+        <div className="glass-panel p-4 rounded-2xl border border-[#E5E1D3] bg-[#FAF7EF] shadow-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-72 overflow-y-auto">
           {filteredChallenges.map((ch) => {
             const isSelected = currentChallenge.id === ch.id;
             return (
@@ -343,30 +343,30 @@ export default function SqlLabVisualizer({
                 }}
                 className={`p-2.5 rounded-xl text-left transition-all border flex flex-col justify-between cursor-pointer ${
                   isSelected
-                    ? 'bg-cyan-950/70 border-cyan-400 text-white shadow-md shadow-cyan-600/20'
-                    : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 text-slate-300'
+                    ? 'bg-[#EFF5F0] border-2 border-[#0D684D] text-[#141A17] shadow-xs'
+                    : 'bg-white border-[#E5E1D3] hover:border-[#0D684D]/40 hover:bg-[#FAF8EE] text-[#141A17]'
                 }`}
               >
                 <div className="flex items-center justify-between gap-1 mb-1">
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-cyan-400 font-bold">
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#FAF7EF] border border-[#E5E1D3] text-[#0D684D] font-bold">
                     {ch.lcNumber ? `LC ${ch.lcNumber}` : 'SQL'}
                   </span>
                   <span
                     className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${
                       ch.difficultyTag === 'Easy'
-                        ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/40'
+                        ? 'bg-[#EFF5F0] text-[#0D684D] border border-[#D5E2D8]'
                         : ch.difficultyTag === 'Medium'
-                        ? 'bg-amber-950/60 text-amber-400 border border-amber-800/40'
-                        : 'bg-red-950/60 text-red-400 border border-red-800/40'
+                        ? 'bg-[#FFFBEB] text-[#B45309] border border-[#FDE68A]'
+                        : 'bg-[#FFF1F2] text-[#E11D48] border border-[#FECDD3]'
                     }`}
                   >
                     {ch.difficultyTag}
                   </span>
                 </div>
-                <div className="text-xs font-bold truncate">{ch.title.split('(')[0]}</div>
-                <div className="text-[10px] text-slate-500 mt-1 flex items-center justify-between">
+                <div className="text-xs font-bold truncate text-[#141A17]">{ch.title.split('(')[0]}</div>
+                <div className="text-[10px] text-[#4A5852] mt-1 flex items-center justify-between">
                   <span className="capitalize">{ch.category}</span>
-                  <span className="text-cyan-400 font-mono">+{ch.xpReward} XP</span>
+                  <span className="text-[#0D684D] font-mono font-semibold">+{ch.xpReward} XP</span>
                 </div>
               </button>
             );
@@ -503,7 +503,7 @@ export default function SqlLabVisualizer({
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                 activeTab === 'query_plan'
                   ? 'bg-[#0D382B] text-white shadow-xs font-bold'
-                  : 'text-[#5E6D66] hover:text-[#141A17] bg-white border border-[#E5E1D3]'
+                  : 'text-[#3A4742] hover:text-[#141A17] bg-white border border-[#E5E1D3]'
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
@@ -514,7 +514,7 @@ export default function SqlLabVisualizer({
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                 activeTab === 'tables'
                   ? 'bg-[#0D382B] text-white shadow-xs font-bold'
-                  : 'text-[#5E6D66] hover:text-[#141A17] bg-white border border-[#E5E1D3]'
+                  : 'text-[#3A4742] hover:text-[#141A17] bg-white border border-[#E5E1D3]'
               }`}
             >
               <Database className="w-3.5 h-3.5" />
@@ -523,9 +523,9 @@ export default function SqlLabVisualizer({
           </div>
 
           {/* AI Model Tag */}
-          <div className="hidden md:flex items-center gap-2 text-[10px] font-mono text-[#5E6D66]">
+          <div className="hidden md:flex items-center gap-2 text-[10px] font-mono text-[#3A4742]">
             <span className="text-[#0D684D] font-bold">Strategy:</span>
-            <span>{aiAlgorithm || executionResult?.joinType || 'Relational Plan'}</span>
+            <span className="font-semibold">{aiAlgorithm || executionResult?.joinType || 'Relational Plan'}</span>
           </div>
         </div>
 
@@ -547,7 +547,7 @@ export default function SqlLabVisualizer({
                     setIsPlaying(false);
                     setCurrentFrameIndex((p) => Math.max(0, p - 1));
                   }}
-                  className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#4E5C56] disabled:opacity-30 cursor-pointer shadow-xs"
+                  className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#141A17] disabled:opacity-30 cursor-pointer shadow-xs"
                 >
                   <ChevronLeft className="w-3.5 h-3.5" />
                 </button>
@@ -557,7 +557,7 @@ export default function SqlLabVisualizer({
                     setIsPlaying(false);
                     setCurrentFrameIndex((p) => Math.min(activeFrames.length - 1, p + 1));
                   }}
-                  className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#4E5C56] disabled:opacity-30 cursor-pointer shadow-xs"
+                  className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#141A17] disabled:opacity-30 cursor-pointer shadow-xs"
                 >
                   <ChevronRight className="w-3.5 h-3.5" />
                 </button>
@@ -566,7 +566,7 @@ export default function SqlLabVisualizer({
                     setIsPlaying(false);
                     setCurrentFrameIndex(0);
                   }}
-                  className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#4E5C56] hover:text-[#141A17] cursor-pointer shadow-xs"
+                  className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#141A17] hover:text-[#0D382B] cursor-pointer shadow-xs"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                 </button>
@@ -576,7 +576,7 @@ export default function SqlLabVisualizer({
                 <span className="text-xs font-mono text-[#0D684D] font-bold">
                   Step {currentFrameIndex + 1} of {activeFrames.length || 1}
                 </span>
-                <div className="flex items-center gap-1 text-[10px] font-mono text-[#6F7E77]">
+                <div className="flex items-center gap-1 text-[10px] font-mono text-[#3A4742] font-semibold">
                   <span>Speed:</span>
                   {[1, 2, 4].map((s) => (
                     <button
@@ -585,7 +585,7 @@ export default function SqlLabVisualizer({
                       className={`px-2 py-0.5 rounded-full cursor-pointer transition-all ${
                         playbackSpeed === s
                           ? 'bg-[#0D382B] text-white font-bold'
-                          : 'bg-white text-[#6F7E77] border border-[#E5E1D3] hover:text-[#141A17]'
+                          : 'bg-white text-[#3A4742] border border-[#E5E1D3] hover:text-[#141A17] font-semibold'
                       }`}
                     >
                       {s}x
@@ -809,11 +809,11 @@ export default function SqlLabVisualizer({
         {activeTab === 'results' && (
           <div className="space-y-3">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-                <Table2 className="w-4 h-4 text-emerald-400" /> Complete Result Set
+              <span className="text-xs font-bold text-[#141A17] flex items-center gap-1.5">
+                <Table2 className="w-4 h-4 text-[#0D684D]" /> Complete Result Set
               </span>
               {executionResult && (
-                <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-800/40">
+                <span className="text-[11px] font-mono text-[#0D684D] bg-[#EFF5F0] px-2 py-0.5 rounded border border-[#D5E2D8] font-semibold">
                   {executionResult.rowsReturned} rows in {executionResult.runtimeMs}ms
                 </span>
               )}
@@ -849,8 +849,8 @@ export default function SqlLabVisualizer({
                 </table>
               </div>
             ) : (
-              <div className="py-12 text-center text-xs text-slate-500">
-                Click &quot;Run Query & Explain&quot; to execute SQL and inspect result set.
+              <div className="py-12 text-center text-xs text-[#4A5852]">
+                Click &quot;Run Query &amp; Explain&quot; to execute SQL and inspect result set.
               </div>
             )}
           </div>
@@ -999,22 +999,22 @@ export default function SqlLabVisualizer({
       </div>
 
       {/* ── STAGE 2: GROQ AI SOCRATIC GUIDANCE & REMEDIATION PANEL ── */}
-      <div className="glass-panel p-5 rounded-2xl border border-indigo-500/30 bg-slate-950/60 shadow-xl space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+      <div className="glass-panel p-5 rounded-2xl border border-[#E5E1D3] bg-white shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#EAE6D8]">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-indigo-950 border border-indigo-700/50">
-              <Sparkles className="w-4 h-4 text-cyan-400" />
+            <div className="p-1.5 rounded-lg bg-[#EFF5F0] border border-[#D5E2D8]">
+              <Sparkles className="w-4 h-4 text-[#0D684D]" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                CogniFlow AI Remediation & Socratic Guidance
+              <h3 className="text-sm font-bold text-[#141A17] flex items-center gap-2">
+                CogniFlow AI Remediation &amp; Socratic Guidance
                 {isRemediationLoading && (
-                  <span className="text-[10px] font-mono text-cyan-400 animate-pulse bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/40">
+                  <span className="text-[10px] font-mono text-[#0D684D] animate-pulse bg-[#EFF5F0] px-2 py-0.5 rounded border border-[#D5E2D8] font-semibold">
                     Synthesizing with Groq LPU...
                   </span>
                 )}
               </h3>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-[#4A5852]">
                 Automated relational defect diagnosis, progressive hints, and benchmark solution
               </p>
             </div>
@@ -1023,7 +1023,7 @@ export default function SqlLabVisualizer({
           {/* Quick Action: 1-Click Load Canonical Solution */}
           <button
             onClick={handleLoadOptimalSolution}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white text-xs font-bold shadow-md shadow-emerald-600/20 flex items-center gap-1.5 cursor-pointer shrink-0 transition-all"
+            className="px-4 py-2 rounded-xl bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold shadow-xs flex items-center gap-1.5 cursor-pointer shrink-0 transition-all"
           >
             {hasCopiedSolution ? <Check className="w-3.5 h-3.5" /> : <Zap className="w-3.5 h-3.5 fill-white" />}
             <span>{hasCopiedSolution ? 'Loaded & Executing!' : 'Load Canonical Query & Run'}</span>
@@ -1034,17 +1034,17 @@ export default function SqlLabVisualizer({
         <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
           {/* Defect Diagnosis (Why it breaks / Works) - 6 cols */}
           <div className="md:col-span-6 space-y-3">
-            <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-slate-300">
-                <HelpCircle className="w-3.5 h-3.5 text-cyan-400" />
+            <div className="p-4 rounded-xl bg-[#FAF7EF] border border-[#E5E1D3] space-y-2">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[#141A17]">
+                <HelpCircle className="w-3.5 h-3.5 text-[#0D684D]" />
                 <span>Relational Invariant Diagnosis:</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-[#2B3632] leading-relaxed">
                 {remediationAdvice?.bugExplanation ||
                   'Click "Run Query & Explain" to receive real-time pedagogical diagnosis on join invariants, null semantics, and grouping correctness.'}
               </p>
               {remediationAdvice?.solution && (
-                <div className="flex items-center gap-3 pt-2 text-[10px] font-mono text-slate-400 border-t border-slate-800">
+                <div className="flex items-center gap-3 pt-2 text-[10px] font-mono text-[#4A5852] border-t border-[#E5E1D3] font-semibold">
                   <span>Time: {remediationAdvice.solution.timeComplexity}</span>
                   <span>•</span>
                   <span>Space: {remediationAdvice.solution.spaceComplexity}</span>
@@ -1053,10 +1053,10 @@ export default function SqlLabVisualizer({
             </div>
 
             {/* Socratic Hints (Level 1, 2, 3) */}
-            <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2.5">
+            <div className="p-4 rounded-xl bg-[#FAF7EF] border border-[#E5E1D3] space-y-2.5">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-300">
-                  <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                <div className="flex items-center gap-1.5 text-xs font-bold text-[#141A17]">
+                  <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
                   <span>Progressive Socratic Hints:</span>
                 </div>
                 <div className="flex gap-1">
@@ -1064,10 +1064,10 @@ export default function SqlLabVisualizer({
                     <button
                       key={lvl}
                       onClick={() => setActiveHintLevel(lvl)}
-                      className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold cursor-pointer transition-colors ${
+                      className={`px-2.5 py-0.5 rounded text-[10px] font-mono font-bold cursor-pointer transition-all ${
                         activeHintLevel === lvl
-                          ? 'bg-amber-500 text-slate-950'
-                          : 'bg-slate-800 text-slate-400 hover:text-white'
+                          ? 'bg-[#0D382B] text-white shadow-xs'
+                          : 'bg-white text-[#4A5852] border border-[#E5E1D3] hover:text-[#141A17]'
                       }`}
                     >
                       Hint {lvl}
@@ -1077,19 +1077,19 @@ export default function SqlLabVisualizer({
               </div>
 
               {remediationAdvice?.hints && remediationAdvice.hints.length > 0 ? (
-                <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/80 text-xs">
-                  <span className="font-bold text-amber-300 block mb-1">
+                <div className="p-3 rounded-lg bg-white border border-[#E5E1D3] text-xs shadow-xs">
+                  <span className="font-bold text-[#0D684D] block mb-1">
                     Level {activeHintLevel}:{' '}
                     {remediationAdvice.hints[activeHintLevel - 1]?.title || 'Invariant Clue'}
                   </span>
-                  <p className="text-slate-300 leading-relaxed text-[11px]">
+                  <p className="text-[#2B3632] leading-relaxed text-[11px]">
                     {remediationAdvice.hints[activeHintLevel - 1]?.hint ||
                       'Consider whether unmatched rows should be preserved using a LEFT JOIN or pruned using an INNER JOIN.'}
                   </p>
                 </div>
               ) : (
-                <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/80 text-xs text-slate-400">
-                  Click &quot;Run Query & Explain&quot; to synthesize progressive Socratic hints dynamically.
+                <div className="p-3 rounded-lg bg-white border border-[#E5E1D3] text-xs text-[#5E6D66]">
+                  Click &quot;Run Query &amp; Explain&quot; to synthesize progressive Socratic hints dynamically.
                 </div>
               )}
             </div>
@@ -1097,29 +1097,29 @@ export default function SqlLabVisualizer({
 
           {/* Benchmark Optimal Query Solution Code - 6 cols */}
           <div className="md:col-span-6 space-y-2">
-            <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col h-full">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-300">
-                  <Code2 className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="p-4 rounded-xl bg-[#FAF7EF] border border-[#E5E1D3] flex flex-col h-full">
+              <div className="flex items-center justify-between pb-2 border-b border-[#EAE6D8] mb-2">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-[#141A17]">
+                  <Code2 className="w-3.5 h-3.5 text-[#0D684D]" />
                   <span>Canonical Optimal Query Solution</span>
                 </div>
                 <button
                   onClick={handleLoadOptimalSolution}
-                  className="text-[10px] font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 cursor-pointer"
+                  className="text-[10px] font-mono text-[#0D684D] hover:underline font-bold flex items-center gap-1 cursor-pointer"
                 >
                   <Copy className="w-3 h-3" />
                   <span>Load Into Editor</span>
                 </button>
               </div>
 
-              <pre className="p-3 rounded-lg bg-slate-950 border border-slate-800/80 font-mono text-xs text-emerald-300 overflow-x-auto leading-relaxed flex-1">
+              <pre className="p-3 rounded-lg bg-[#0F1413] border border-[#23302B] font-mono text-xs text-[#34D399] overflow-x-auto leading-relaxed flex-1 shadow-inner">
                 {remediationAdvice?.solution?.code ||
                   (currentChallenge.benchmarkSolution as any)?.sql ||
                   currentChallenge.starterCode?.sql}
               </pre>
 
               {remediationAdvice?.solution?.explanation && (
-                <p className="text-[11px] text-slate-400 mt-2 leading-relaxed">
+                <p className="text-[11px] text-[#2B3632] mt-2 leading-relaxed">
                   {remediationAdvice.solution.explanation}
                 </p>
               )}

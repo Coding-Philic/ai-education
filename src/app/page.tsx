@@ -68,7 +68,7 @@ export default function HomePage() {
         </h1>
 
         {/* Hero Subtitle */}
-        <p className="text-base sm:text-lg text-[#5E6D66] max-w-2xl mx-auto leading-relaxed font-normal">
+        <p className="text-base sm:text-lg text-[#2B3632] max-w-2xl mx-auto leading-relaxed font-medium">
           CogniFlow AI is an interactive visual education platform powered by Groq Cloud LPU. 
           Write any code, SQL query, or architecture topology — watch memory pointers, relational scans, and distributed packets animate in real-time.
         </p>
@@ -136,7 +136,7 @@ export default function HomePage() {
             </div>
           </div>
           
-          <div className="text-center mt-3 text-[11px] font-mono text-[#6F7E77] uppercase tracking-widest">
+          <div className="text-center mt-3 text-[11px] font-mono text-[#4A5852] uppercase tracking-widest font-semibold">
             HOLD ANY CHALLENGE • EXECUTE • YOUR DATA STRUCTURES ANIMATE
           </div>
         </div>
@@ -144,15 +144,15 @@ export default function HomePage() {
         {/* 3 Metric Bento Cards */}
         <div className="pt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto text-left">
           <div className="glass-panel p-4 rounded-xl border border-[#E5E1D3]">
-            <span className="text-[#6F7E77] text-xs font-medium block">AI Inference Latency</span>
+            <span className="text-[#4A5852] text-xs font-semibold block">AI Inference Latency</span>
             <span className="text-xl font-bold font-mono text-[#0D684D] mt-0.5 block">&lt; 380ms LPU</span>
           </div>
           <div className="glass-panel p-4 rounded-xl border border-[#E5E1D3]">
-            <span className="text-[#6F7E77] text-xs font-medium block">Curriculum Data</span>
+            <span className="text-[#4A5852] text-xs font-semibold block">Curriculum Data</span>
             <span className="text-xl font-bold font-mono text-[#141A17] mt-0.5 block">100% Dynamic DB</span>
           </div>
           <div className="glass-panel p-4 rounded-xl border border-[#E5E1D3]">
-            <span className="text-[#6F7E77] text-xs font-medium block">Skill Gap Catch Rate</span>
+            <span className="text-[#4A5852] text-xs font-semibold block">Skill Gap Catch Rate</span>
             <span className="text-xl font-bold font-mono text-[#0D684D] mt-0.5 block">96.8% Accuracy</span>
           </div>
         </div>
@@ -171,7 +171,7 @@ export default function HomePage() {
                 Your Live Skill Mastery & Gap Analysis
               </h2>
             </div>
-            <span className="text-xs text-[#5E6D66]">
+            <span className="text-xs text-[#3A4742]">
               Student: <strong className="text-[#141A17]">{userProfile.fullName}</strong> ({userProfile.collegeName})
             </span>
           </div>
@@ -186,7 +186,7 @@ export default function HomePage() {
           <div>
             <div className="text-[11px] font-bold text-[#0D684D] uppercase tracking-wider mb-1">CURRICULUM TRACKS</div>
             <h2 className="text-2xl font-extrabold text-[#141A17] tracking-tight">Interactive Visual Tracks</h2>
-            <p className="text-xs text-[#5E6D66] mt-0.5">
+            <p className="text-xs text-[#3A4742] mt-0.5">
               Fetched dynamically from PostgreSQL with real-time progress tracking.
             </p>
           </div>
@@ -218,16 +218,16 @@ export default function HomePage() {
                   <h3 className="text-lg font-bold text-[#141A17] tracking-tight mb-2">
                     {track.title}
                   </h3>
-                  <p className="text-xs text-[#5E6D66] leading-relaxed mb-4">
+                  <p className="text-xs text-[#2B3632] leading-relaxed mb-4 font-medium">
                     {track.description}
                   </p>
 
                   {/* Modules breakdown */}
                   <div className="space-y-2 py-2 border-t border-[#EAE6D8]">
                     {track.modules?.map((mod) => (
-                      <div key={mod.id} className="flex items-center justify-between text-[11px] text-[#3A4742]">
+                      <div key={mod.id} className="flex items-center justify-between text-[11px] text-[#2B3632]">
                         <span className="truncate pr-2 font-medium">↳ {mod.title}</span>
-                        <span className="text-[#7C8E86] font-mono text-[10px] shrink-0">
+                        <span className="text-[#4A5852] font-mono text-[10px] shrink-0 font-semibold">
                           {mod.challenges?.length || 1} challenges
                         </span>
                       </div>
@@ -258,15 +258,15 @@ export default function HomePage() {
             <h2 className="text-lg font-bold text-[#141A17]">AI Roadmap Generator</h2>
             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D]">NEW</span>
           </div>
-          <p className="text-xs text-[#5E6D66] max-w-lg leading-relaxed">
+          <p className="text-xs text-[#2B3632] max-w-lg leading-relaxed font-medium">
             Don&apos;t know where to start? AI asks you 5 questions — your target goal, experience level, and today&apos;s energy — then generates a
             <strong className="text-[#141A17]"> personalized, adaptive study roadmap</strong> with daily tasks, XP rewards, and smart re-routing if you fall behind.
           </p>
           <div className="flex flex-wrap gap-2 text-[10px] pt-1">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#4E5C56]">Mood-adaptive pacing</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#4E5C56]">Adaptive Streaks</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#4E5C56]">AI dynamic re-routes</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#4E5C56]">DSA / SQL / System Design</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#141A17] font-semibold">Mood-adaptive pacing</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#141A17] font-semibold">Adaptive Streaks</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#141A17] font-semibold">AI dynamic re-routes</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8EE] border border-[#E5E1D3] text-[#141A17] font-semibold">DSA / SQL / System Design</span>
           </div>
         </div>
         <Link
@@ -288,7 +288,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-sm font-bold text-[#141A17]">Peer Community & Replay Hub</h3>
             </div>
-            <p className="text-xs text-[#5E6D66] max-w-sm leading-relaxed">
+            <p className="text-xs text-[#2B3632] max-w-sm leading-relaxed font-medium">
               Inspect shared visual execution traces, discuss algorithmic proofs, and fork solutions.
             </p>
           </div>
@@ -308,7 +308,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-sm font-bold text-[#141A17]">AKTU Faculty Command Center</h3>
             </div>
-            <p className="text-xs text-[#5E6D66] max-w-sm leading-relaxed">
+            <p className="text-xs text-[#2B3632] max-w-sm leading-relaxed font-medium">
               Live student join metrics, college breakdown, cohort skill gap heatmaps, and curriculum CMS.
             </p>
           </div>

@@ -336,7 +336,7 @@ export default function RoadmapPage() {
           <h1 className="text-3xl sm:text-4xl font-extrabold text-[#141A17] tracking-tight">
             Your Personal <span className="text-[#0D684D] italic font-serif">AI Learning Co-pilot</span>
           </h1>
-          <p className="text-sm text-[#5E6D66] max-w-md mx-auto leading-relaxed">
+          <p className="text-sm text-[#2B3632] max-w-md mx-auto leading-relaxed font-medium">
             Answer a few quick questions and Groq Cloud AI will generate a custom curriculum adapted to your goal, level, and today&apos;s energy.
           </p>
         </div>
@@ -382,13 +382,13 @@ export default function RoadmapPage() {
                 <div className="w-8 h-8 rounded-full bg-[#0D382B] flex items-center justify-center shrink-0 shadow-xs">
                   <Sparkles className="w-4 h-4 text-[#34D399] animate-pulse" />
                 </div>
-                <div className="bg-[#FAF8EE] rounded-2xl rounded-tl-none px-4 py-3 border border-[#E5E1D3] flex items-center gap-2.5 text-xs text-[#5E6D66]">
+                <div className="bg-[#FAF8EE] rounded-2xl rounded-tl-none px-4 py-3 border border-[#E5E1D3] flex items-center gap-2.5 text-xs text-[#2B3632]">
                   <div className="flex gap-1">
                     <div className="w-2 h-2 rounded-full bg-[#0D382B] animate-bounce" />
                     <div className="w-2 h-2 rounded-full bg-[#0D684D] animate-bounce" style={{ animationDelay: '0.15s' }} />
                     <div className="w-2 h-2 rounded-full bg-[#10B981] animate-bounce" style={{ animationDelay: '0.3s' }} />
                   </div>
-                  <span className="font-medium">Groq Cloud AI is generating your personalized roadmap...</span>
+                  <span className="font-semibold text-[#141A17]">Groq Cloud AI is generating your personalized roadmap...</span>
                 </div>
               </div>
             )}
@@ -416,9 +416,9 @@ export default function RoadmapPage() {
                       <div className="w-2 h-2 rounded-full bg-[#0D684D] opacity-60 group-hover:opacity-100 shrink-0" />
                       <div>
                         <div className="text-sm font-semibold text-[#141A17] group-hover:text-[#0D382B]">{opt.label}</div>
-                        <div className="text-xs text-[#6F7E77]">{opt.desc}</div>
+                        <div className="text-xs text-[#3A4742] font-medium">{opt.desc}</div>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-[#8E9E98] group-hover:text-[#0D684D] ml-auto transition-colors" />
+                      <ArrowRight className="w-4 h-4 text-[#4A5852] group-hover:text-[#0D684D] ml-auto transition-colors" />
                     </button>
                   ))}
                 </div>
@@ -477,14 +477,14 @@ export default function RoadmapPage() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               {TRACK_ICONS[roadmap.track]}
-              <span className="text-xs font-bold uppercase tracking-wider text-[#5E6D66]">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#3A4742]">
                 {roadmap.track} Roadmap — {roadmap.level}
               </span>
             </div>
             <h1 className="text-2xl font-extrabold text-[#141A17]">
               Goal: <span className="text-[#0D684D] italic font-serif">{roadmap.goal}</span>
             </h1>
-            <p className="text-xs text-[#5E6D66] mt-1 flex items-center gap-3">
+            <p className="text-xs text-[#2B3632] mt-1 flex items-center gap-3 font-medium">
               <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-[#0D684D]" /> {roadmap.totalDays} days total</span>
               <span className="flex items-center gap-1"><Clock className="w-3 h-3 text-[#0D684D]" /> {roadmap.dailyHours}h/day</span>
               <span className="flex items-center gap-1"><Target className="w-3 h-3 text-[#0D684D]" /> Complete by {roadmap.projectedCompletion}</span>
@@ -506,20 +506,20 @@ export default function RoadmapPage() {
               className={`px-3.5 py-2 rounded-full border text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                 remindersEnabled
                   ? 'bg-[#FFFBEB] border-[#FDE68A] text-[#B45309]'
-                  : 'bg-white border-[#E0DCCF] text-[#5E6D66] hover:text-[#141A17]'
+                  : 'bg-white border-[#E0DCCF] text-[#3A4742] hover:text-[#141A17]'
               }`}
             >
               {remindersEnabled ? (
                 <Bell className="w-3.5 h-3.5 text-[#B45309]" />
               ) : (
-                <BellOff className="w-3.5 h-3.5 text-[#6F7E77]" />
+                <BellOff className="w-3.5 h-3.5 text-[#4A5852]" />
               )}
               <span>{remindersEnabled ? 'Reminder ON (9 AM)' : 'Set AI Reminder'}</span>
             </button>
 
             <button
               onClick={resetRoadmap}
-              className="flex items-center gap-1.5 text-xs text-[#8E9E98] hover:text-[#141A17] transition-colors cursor-pointer px-2 py-1"
+              className="flex items-center gap-1.5 text-xs text-[#4A5852] hover:text-[#141A17] transition-colors cursor-pointer px-2 py-1 font-semibold"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               Reset
@@ -531,21 +531,21 @@ export default function RoadmapPage() {
         <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="p-3.5 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3] text-center">
             <div className="text-2xl font-bold font-mono text-[#0D382B]">{progressPct}%</div>
-            <div className="text-[10px] text-[#6F7E77] uppercase font-semibold">Progress</div>
+            <div className="text-[10px] text-[#3A4742] uppercase font-bold">Progress</div>
           </div>
           <div className="p-3.5 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3] text-center">
             <div className="text-2xl font-bold font-mono text-[#0D684D]">{completedTasks}/{totalTasks}</div>
-            <div className="text-[10px] text-[#6F7E77] uppercase font-semibold">Tasks Done</div>
+            <div className="text-[10px] text-[#3A4742] uppercase font-bold">Tasks Done</div>
           </div>
           <div className="p-3.5 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3] text-center">
             <div className="text-2xl font-bold font-mono text-[#B45309]">{xp}</div>
-            <div className="text-[10px] text-[#6F7E77] uppercase font-semibold">Total XP</div>
+            <div className="text-[10px] text-[#3A4742] uppercase font-bold">Total XP</div>
           </div>
           <div className="p-3.5 rounded-xl bg-[#FAF8EE] border border-[#E5E1D3] text-center">
             <div className="text-2xl font-bold font-mono text-[#E11D48] flex items-center justify-center gap-1">
               <Flame className="w-4 h-4" />{streak}
             </div>
-            <div className="text-[10px] text-[#6F7E77] uppercase font-semibold">Day Streak</div>
+            <div className="text-[10px] text-[#3A4742] uppercase font-bold">Day Streak</div>
           </div>
         </div>
 
@@ -560,16 +560,16 @@ export default function RoadmapPage() {
         </div>
 
         {/* Mood badge */}
-        <div className="mt-3 flex items-center gap-2 text-xs text-[#5E6D66]">
+        <div className="mt-3 flex items-center gap-2 text-xs text-[#2B3632] font-medium">
           <span>Mood-adapted plan:</span>
           <span className={`px-2.5 py-0.5 rounded-full font-semibold border text-[10px] ${
             roadmap.mood === 'tired' ? 'bg-[#F0F9FF] text-[#0284C7] border-[#BAE6FD]' :
             roadmap.mood === 'motivated' ? 'bg-[#FFFBEB] text-[#B45309] border-[#FDE68A]' :
-            'bg-[#FAF8EE] text-[#4E5C56] border-[#E5E1D3]'
+            'bg-[#FAF8EE] text-[#141A17] border-[#E5E1D3]'
           }`}>
             {roadmap.mood === 'tired' ? 'Lighter Pace' : roadmap.mood === 'motivated' ? 'Aggressive Pace' : 'Standard Pace'}
           </span>
-          <span className="ml-auto text-[10px] text-[#8E9E98]">{roadmap.generatedBy}</span>
+          <span className="ml-auto text-[10px] text-[#4A5852] font-semibold">{roadmap.generatedBy}</span>
         </div>
       </div>
 
@@ -580,7 +580,7 @@ export default function RoadmapPage() {
             <TrendingUp className="w-3.5 h-3.5" />
           </div>
           <h2 className="text-base font-bold text-[#141A17]">Learning Timeline</h2>
-          <span className="text-xs text-[#6F7E77]">({topics.length} topics)</span>
+          <span className="text-xs text-[#3A4742] font-semibold">({topics.length} topics)</span>
         </div>
 
         {topics.map((topic, topicIdx) => {
@@ -632,10 +632,10 @@ export default function RoadmapPage() {
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-3 mt-1 text-[11px] text-[#5E6D66]">
+                  <div className="flex items-center gap-3 mt-1 text-[11px] text-[#3A4742] font-medium">
                     <span>{topic.estimatedDays} days</span>
                     <span>{tasksCompleted}/{topic.tasks.length} tasks</span>
-                    <span className="text-[#0D684D] font-semibold">+{topic.xpReward} XP</span>
+                    <span className="text-[#0D684D] font-bold">+{topic.xpReward} XP</span>
                   </div>
                 </div>
 
@@ -647,18 +647,18 @@ export default function RoadmapPage() {
                       style={{ width: `${topicProgress}%` }}
                     />
                   </div>
-                  <span className="text-[10px] text-[#6F7E77] w-7 text-right font-mono">{Math.round(topicProgress)}%</span>
+                  <span className="text-[10px] text-[#3A4742] w-7 text-right font-mono font-bold">{Math.round(topicProgress)}%</span>
                 </div>
 
                 {topic.expanded
-                  ? <ChevronUp className="w-4 h-4 text-[#8E9E98] shrink-0" />
-                  : <ChevronDown className="w-4 h-4 text-[#8E9E98] shrink-0" />}
+                  ? <ChevronUp className="w-4 h-4 text-[#4A5852] shrink-0" />
+                  : <ChevronDown className="w-4 h-4 text-[#4A5852] shrink-0" />}
               </button>
 
               {/* Expanded Tasks */}
               {topic.expanded && (
                 <div className="px-4 pb-4 space-y-2 border-t border-[#EAE6D8] pt-3">
-                  <p className="text-xs text-[#5E6D66] mb-3">{topic.description}</p>
+                  <p className="text-xs text-[#2B3632] mb-3 font-medium">{topic.description}</p>
                   {topic.tasks.map(task => (
                     <div
                       key={task.id}
@@ -672,10 +672,10 @@ export default function RoadmapPage() {
                         {renderTaskIcon(task.type)}
                       </div>
                       <div className="flex-1">
-                        <span className={`font-medium ${task.completed ? 'line-through text-[#8E9E98]' : 'text-[#141A17]'}`}>
+                        <span className={`font-semibold ${task.completed ? 'line-through text-[#8E9E98]' : 'text-[#141A17]'}`}>
                           {task.title}
                         </span>
-                        <div className="text-[#8E9E98] text-[10px] mt-0.5">
+                        <div className="text-[#4A5852] text-[10px] mt-0.5 font-medium">
                           {task.type} • ~{task.estimatedMinutes} min
                         </div>
                       </div>
@@ -722,7 +722,7 @@ export default function RoadmapPage() {
         <div className="glass-panel p-6 rounded-2xl border border-[#D5E2D8] text-center space-y-3 bg-[#EFF5F0]">
           <Trophy className="w-10 h-10 text-[#D97706] mx-auto" />
           <h2 className="text-xl font-bold text-[#141A17]">Roadmap Complete!</h2>
-          <p className="text-sm text-[#5E6D66]">You&apos;ve finished all {topics.length} topics. Total XP earned: <strong className="text-[#0D382B]">{totalXP}</strong></p>
+          <p className="text-sm text-[#2B3632] font-medium">You&apos;ve finished all {topics.length} topics. Total XP earned: <strong className="text-[#0D382B]">{totalXP}</strong></p>
           <button onClick={resetRoadmap} className="px-6 py-2.5 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold cursor-pointer">
             Start a New Track
           </button>

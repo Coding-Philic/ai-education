@@ -129,19 +129,19 @@ function renderLinkedList(elements: any[], pointers: Record<string, number>, hig
                   ? 'bg-emerald-950/70 border-2 border-emerald-400 text-emerald-200 shadow-lg shadow-emerald-500/30 scale-105'
                   : isHighlighted
                   ? 'bg-amber-500/20 border-2 border-amber-400 text-amber-200 shadow-md'
-                  : 'bg-slate-900 border border-slate-700 text-slate-200'
+                  : 'bg-white border-2 border-[#E5E1D3] text-[#141A17] shadow-xs'
               }`}>
-                <span className="text-sm font-bold">{String(val)}</span>
-                <span className="text-[10px] text-slate-500 border-l border-slate-700 pl-2">next</span>
+                <span className="text-sm font-bold text-[#141A17]">{String(val)}</span>
+                <span className="text-[10px] text-[#4A5852] border-l border-[#E5E1D3] pl-2 font-semibold">next</span>
               </div>
-              <span className="text-[9px] font-mono text-slate-500 mt-1">[{idx}]</span>
+              <span className="text-[9px] font-mono text-[#4A5852] font-semibold mt-1">[{idx}]</span>
             </div>
             {idx < nodes.length - 1 ? (
-              <div className="text-cyan-400 font-mono text-lg pt-4">→</div>
+              <div className="text-[#0D684D] font-mono text-lg pt-4 font-bold">→</div>
             ) : (
-              <div className="flex items-center pt-4 text-slate-600 font-mono text-xs">
-                <span className="text-cyan-400 text-lg mr-1">→</span>
-                <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] text-slate-500">NULL</span>
+              <div className="flex items-center pt-4 text-[#4A5852] font-mono text-xs">
+                <span className="text-[#0D684D] text-lg mr-1 font-bold">→</span>
+                <span className="px-2 py-0.5 rounded bg-[#FAF8EE] border border-[#E5E1D3] text-[10px] text-[#4A5852] font-bold">NULL</span>
               </div>
             )}
           </React.Fragment>
@@ -155,13 +155,13 @@ function renderStack(elements: any[], pointers: Record<string, number>, highligh
   const stack = elements || [];
   return (
     <div className="flex flex-col items-center py-4 w-full animate-fadeIn">
-      <div className="text-[11px] font-mono text-slate-400 mb-2 flex items-center gap-1.5">
+      <div className="text-[11px] font-mono text-[#3A4742] font-semibold mb-2 flex items-center gap-1.5">
         <span>Stack Top (LIFO)</span>
-        <span className="text-amber-400 font-bold">↓</span>
+        <span className="text-[#B45309] font-bold">↓</span>
       </div>
       <div className="w-64 min-h-[160px] max-h-[260px] border-b-4 border-x-2 border-indigo-500/60 rounded-b-2xl p-3 flex flex-col-reverse gap-2 bg-slate-950/80 overflow-y-auto shadow-inner shadow-indigo-950/50">
         {stack.length === 0 ? (
-          <div className="h-28 flex items-center justify-center text-xs font-mono text-slate-600">
+          <div className="h-28 flex items-center justify-center text-xs font-mono text-slate-400">
             [ Empty Stack Container ]
           </div>
         ) : (
@@ -180,7 +180,7 @@ function renderStack(elements: any[], pointers: Record<string, number>, highligh
                 }`}
               >
                 <span className="font-bold text-sm">{String(elem)}</span>
-                <span className="text-[9px] font-mono text-slate-500">
+                <span className="text-[9px] font-mono text-slate-400">
                   {isTop ? 'TOP [index ' + idx + ']' : 'index ' + idx}
                 </span>
               </div>
@@ -188,7 +188,7 @@ function renderStack(elements: any[], pointers: Record<string, number>, highligh
           })
         )}
       </div>
-      <div className="text-[10px] font-mono text-slate-500 mt-2">
+      <div className="text-[10px] font-mono text-[#4A5852] font-semibold mt-2">
         Stack Depth: {stack.length} elements
       </div>
     </div>
@@ -439,11 +439,11 @@ function renderGraphNodes(elements: any[], pointers: Record<string, number>, hig
                 ? 'bg-purple-600/30 border-2 border-purple-400 text-purple-200 shadow-lg shadow-purple-500/40 scale-110'
                 : isHighlighted
                 ? 'bg-emerald-500/25 border-2 border-emerald-400 text-emerald-200 shadow-md shadow-emerald-500/30'
-                : 'bg-slate-900 border border-slate-700 text-slate-300'
+                : 'bg-white border-2 border-[#E5E1D3] text-[#141A17] shadow-xs'
             }`}>
               {typeof node === 'object' ? JSON.stringify(node) : `V(${String(node)})`}
             </div>
-            <span className="text-[9px] font-mono text-slate-500 mt-1">
+            <span className="text-[9px] font-mono text-[#3A4742] mt-1 font-bold">
               {isHighlighted ? '● Visited' : '○ Unvisited'}
             </span>
           </div>
@@ -457,9 +457,9 @@ function renderDPTable(elements: any[], pointers: Record<string, number>, highli
   const table = elements && elements.length > 0 ? elements : [0, 1, 1, 2, 3, 5, 8];
   return (
     <div className="flex flex-col items-center py-4 w-full overflow-x-auto animate-fadeIn">
-      <div className="text-[11px] font-mono text-slate-400 mb-3 flex items-center gap-2">
+      <div className="text-[11px] font-mono text-[#3A4742] font-semibold mb-3 flex items-center gap-2">
         <span>Memoization Table:</span>
-        <span className="text-cyan-400 font-bold font-mono">dp[0..{Math.max(0, table.length - 1)}]</span>
+        <span className="text-[#0D684D] font-bold font-mono">dp[0..{Math.max(0, table.length - 1)}]</span>
       </div>
       <div className="flex items-center gap-2 flex-wrap justify-center max-w-full px-2">
         {table.map((val, idx) => {
@@ -467,13 +467,13 @@ function renderDPTable(elements: any[], pointers: Record<string, number>, highli
           const isHighlighted = highlighted?.includes(idx);
           return (
             <div key={idx} className="flex flex-col items-center">
-              <span className="text-[9px] font-mono text-slate-500 mb-1">dp[{idx}]</span>
+              <span className="text-[9px] font-mono text-[#4A5852] font-semibold mb-1">dp[{idx}]</span>
               <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-mono font-bold text-sm transition-all duration-300 ${
                 isCurrent
-                  ? 'bg-cyan-500/20 border-2 border-cyan-400 text-cyan-200 shadow-lg shadow-cyan-500/30 scale-105'
+                  ? 'bg-[#EFF5F0] border-2 border-[#0D684D] text-[#0D684D] shadow-md scale-105'
                   : isHighlighted
-                  ? 'bg-indigo-500/20 border border-indigo-400 text-indigo-200'
-                  : 'bg-slate-900 border border-slate-800 text-slate-300'
+                  ? 'bg-[#EEF2FF] border border-[#6366F1] text-[#4338CA]'
+                  : 'bg-white border border-[#D5D0BF] text-[#141A17] shadow-xs'
               }`}>
                 {val !== null && val !== undefined ? String(val) : '—'}
               </div>
@@ -950,10 +950,10 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
 
       {/* Collapsible Custom Input Drawer */}
       {showCustomInput && (
-        <div className="glass-panel p-4 rounded-xl border border-cyan-800/40 bg-slate-950/70 space-y-3 animate-fadeIn">
+        <div className="glass-panel p-4 rounded-xl border border-[#E5E1D3] bg-[#FAF7EF] space-y-3 animate-fadeIn">
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <div className="flex-1 w-full">
-              <label className="text-[10px] font-mono text-slate-400 uppercase block mb-1">
+              <label className="text-[10px] font-mono text-[#3A4742] uppercase block mb-1 font-semibold">
                 Custom Input Array (comma-separated):
               </label>
               <input
@@ -961,11 +961,11 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
                 value={customArrayStr}
                 onChange={e => setCustomArrayStr(e.target.value)}
                 placeholder="10, 22, 35, 47, 50, 63, 75, 88, 99"
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white font-mono focus:outline-none focus:border-cyan-400"
+                className="w-full px-3 py-2 bg-white border border-[#E5E1D3] rounded-lg text-xs text-[#141A17] font-mono focus:outline-none focus:border-[#0D684D] focus:ring-1 focus:ring-[#0D684D]"
               />
             </div>
             <div className="w-full sm:w-36">
-              <label className="text-[10px] font-mono text-slate-400 uppercase block mb-1">
+              <label className="text-[10px] font-mono text-[#3A4742] uppercase block mb-1 font-semibold">
                 Target Value:
               </label>
               <input
@@ -973,13 +973,13 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
                 value={customTargetStr}
                 onChange={e => setCustomTargetStr(e.target.value)}
                 placeholder="47"
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white font-mono focus:outline-none focus:border-cyan-400"
+                className="w-full px-3 py-2 bg-white border border-[#E5E1D3] rounded-lg text-xs text-[#141A17] font-mono focus:outline-none focus:border-[#0D684D] focus:ring-1 focus:ring-[#0D684D]"
               />
             </div>
             <div className="pt-4 sm:pt-4 w-full sm:w-auto">
               <button
                 onClick={handleApplyCustomInputs}
-                className="w-full px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-lg shadow-md shadow-cyan-600/20 transition-all cursor-pointer"
+                className="w-full px-4 py-2 bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold rounded-lg shadow-xs transition-all cursor-pointer"
               >
                 Apply & Trace
               </button>
@@ -987,14 +987,14 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
           </div>
           
           {/* Quick Presets */}
-          <div className="flex items-center gap-2 flex-wrap text-[11px] text-slate-400 pt-1">
-            <span className="font-mono">Quick Presets:</span>
+          <div className="flex items-center gap-2 flex-wrap text-[11px] text-[#3A4742] pt-1">
+            <span className="font-mono font-semibold">Quick Presets:</span>
             <button
               onClick={() => {
                 setCustomArrayStr('10, 22, 35, 47, 50, 63, 75, 88, 99');
                 setCustomTargetStr('47');
               }}
-              className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 font-mono text-[10px]"
+              className="px-2 py-0.5 rounded bg-white hover:bg-[#FAF8EE] border border-[#E5E1D3] text-[#0D684D] font-mono text-[10px] font-medium transition-colors"
             >
               Binary Search [10..99]
             </button>
@@ -1003,7 +1003,7 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
                 setCustomArrayStr('2, 7, 11, 15');
                 setCustomTargetStr('9');
               }}
-              className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 font-mono text-[10px]"
+              className="px-2 py-0.5 rounded bg-white hover:bg-[#FAF8EE] border border-[#E5E1D3] text-[#0D684D] font-mono text-[10px] font-medium transition-colors"
             >
               Two Sum [2, 7, 11, 15]
             </button>
@@ -1012,7 +1012,7 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
                 setCustomArrayStr('64, 34, 25, 12, 22, 11, 90');
                 setCustomTargetStr('');
               }}
-              className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-amber-300 font-mono text-[10px]"
+              className="px-2 py-0.5 rounded bg-white hover:bg-[#FAF8EE] border border-[#E5E1D3] text-[#0D684D] font-mono text-[10px] font-medium transition-colors"
             >
               Bubble Sort [64, 34..]
             </button>
@@ -1021,7 +1021,7 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
                 setCustomArrayStr('2, 1, 5, 1, 3, 2');
                 setCustomTargetStr('3');
               }}
-              className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-emerald-300 font-mono text-[10px]"
+              className="px-2 py-0.5 rounded bg-white hover:bg-[#FAF8EE] border border-[#E5E1D3] text-[#0D684D] font-mono text-[10px] font-medium transition-colors"
             >
               Sliding Window (k=3)
             </button>
@@ -1067,23 +1067,23 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
           <div className="glass-panel-glow p-6 rounded-2xl relative overflow-visible min-h-[320px] transition-all duration-300">
             <div className="flex items-center justify-between mb-5 flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <Eye className="w-4 h-4 text-cyan-400" />
-                <span className="text-xs font-bold text-slate-200 uppercase tracking-wider">AI Visual Trace Canvas</span>
+                <Eye className="w-4 h-4 text-[#0D684D]" />
+                <span className="text-xs font-bold text-[#141A17] uppercase tracking-wider">AI Visual Trace Canvas</span>
               </div>
-              <div className="flex items-center gap-2.5 text-xs font-mono text-slate-400">
-                <span className="px-2.5 py-0.5 rounded-lg bg-indigo-950/70 border border-indigo-700/60 text-indigo-300 font-semibold flex items-center gap-1.5 text-[11px]">
-                  {currentStructureType === 'LINKED_LIST' && <GitBranch className="w-3.5 h-3.5 text-emerald-400" />}
-                  {currentStructureType === 'STACK' && <Layers className="w-3.5 h-3.5 text-amber-400" />}
-                  {currentStructureType === 'TREE' && <Binary className="w-3.5 h-3.5 text-cyan-400" />}
-                  {currentStructureType === 'GRAPH' && <Network className="w-3.5 h-3.5 text-purple-400" />}
-                  {currentStructureType === 'DP_TABLE' && <Hash className="w-3.5 h-3.5 text-indigo-400" />}
-                  {currentStructureType === 'ARRAY' && <Eye className="w-3.5 h-3.5 text-cyan-400" />}
+              <div className="flex items-center gap-2.5 text-xs font-mono text-[#4A5852]">
+                <span className="px-2.5 py-0.5 rounded-lg bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D] font-semibold flex items-center gap-1.5 text-[11px]">
+                  {currentStructureType === 'LINKED_LIST' && <GitBranch className="w-3.5 h-3.5 text-[#0D684D]" />}
+                  {currentStructureType === 'STACK' && <Layers className="w-3.5 h-3.5 text-[#B45309]" />}
+                  {currentStructureType === 'TREE' && <Binary className="w-3.5 h-3.5 text-[#0D684D]" />}
+                  {currentStructureType === 'GRAPH' && <Network className="w-3.5 h-3.5 text-[#7C3AED]" />}
+                  {currentStructureType === 'DP_TABLE' && <Hash className="w-3.5 h-3.5 text-[#4338CA]" />}
+                  {currentStructureType === 'ARRAY' && <Eye className="w-3.5 h-3.5 text-[#0D684D]" />}
                   <span>{currentStructureType.replace('_', ' ')}</span>
                 </span>
                 {animCat !== 'generic' && (
-                  <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-300">{animCat}</span>
+                  <span className="px-2 py-0.5 rounded bg-[#FAF7EF] border border-[#E5E1D3] text-[#141A17] font-semibold">{animCat}</span>
                 )}
-                <span>Frame {frames.length > 0 ? currentStep + 1 : 0} / {frames.length}</span>
+                <span className="font-semibold text-[#141A17]">Frame {frames.length > 0 ? currentStep + 1 : 0} / {frames.length}</span>
               </div>
             </div>
 
@@ -1116,14 +1116,14 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
                           </div>
                           <div className={`px-2.5 py-2 min-w-[3.2rem] h-12 sm:h-14 rounded-xl flex items-center justify-center text-sm sm:text-base font-bold font-mono transition-all duration-400 ${
                             pointingKeys.length > 0
-                              ? 'bg-indigo-600/30 border-2 border-cyan-400 text-cyan-200 shadow-lg shadow-cyan-500/25 scale-110'
+                              ? 'bg-[#EFF5F0] border-2 border-[#0D684D] text-[#0D684D] shadow-md scale-110'
                               : isHighlighted
-                              ? 'bg-amber-500/20 border-2 border-amber-400 text-amber-200 shadow-lg shadow-amber-400/20 scale-105'
-                              : 'bg-slate-900 border border-slate-700 text-slate-300'
+                              ? 'bg-[#FFFBEB] border-2 border-[#F59E0B] text-[#B45309] shadow-md scale-105'
+                              : 'bg-white border border-[#D5D0BF] text-[#141A17] shadow-xs'
                           }`}>
                             {displayVal}
                           </div>
-                          <span className="text-[10px] font-mono text-slate-500 mt-1.5">[{idx}]</span>
+                          <span className="text-[10px] font-mono text-[#5E6D66] font-semibold mt-1.5">[{idx}]</span>
                         </div>
                       );
                     })}
@@ -1132,14 +1132,14 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
                   {/* Binary search range bar */}
                   {animCat === 'search' && (
                     <div className="w-full px-4 mt-2">
-                      <div className="flex items-center gap-2 text-[10px] text-slate-400 mb-1">
+                      <div className="flex items-center gap-2 text-[10px] text-[#4A5852] mb-1 font-semibold">
                         <span>Search range:</span>
-                        <span className="text-cyan-400 font-mono">
+                        <span className="text-[#0D684D] font-mono font-bold">
                           [{pointers.lo ?? pointers.left ?? 0} → {pointers.hi ?? pointers.right ?? activeElements.length - 1}]
                         </span>
                       </div>
-                      <div className="h-2 rounded-full bg-slate-800">
-                        <div className="h-2 rounded-full bg-gradient-to-r from-cyan-600 to-indigo-600 transition-all duration-500"
+                      <div className="h-2 rounded-full bg-[#EAE6D8]">
+                        <div className="h-2 rounded-full bg-gradient-to-r from-[#0D684D] to-[#10B981] transition-all duration-500"
                           style={{
                             marginLeft: `${((pointers.lo ?? pointers.left ?? 0) / (activeElements.length || 1)) * 100}%`,
                             width: `${(((pointers.hi ?? pointers.right ?? (activeElements.length - 1)) - (pointers.lo ?? pointers.left ?? 0) + 1) / (activeElements.length || 1)) * 100}%`,
@@ -1152,49 +1152,49 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
             </div>
 
             {/* Step Explanation */}
-            <div className="mt-4 p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-slate-300 flex items-start gap-2.5 leading-relaxed">
-              <Sparkles className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+            <div className="mt-4 p-3.5 rounded-xl bg-[#FAF7EF] border border-[#E5E1D3] text-xs text-[#141A17] flex items-start gap-2.5 leading-relaxed shadow-xs">
+              <Sparkles className="w-4 h-4 text-[#0D684D] shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white">Step {currentStep + 1}: </strong>
-                <span>{activeFrame.explanation || 'Analyzing...'}</span>
+                <strong className="text-[#0D684D] font-bold">Step {currentStep + 1}: </strong>
+                <span className="text-[#2B3632]">{activeFrame.explanation || 'Analyzing...'}</span>
               </div>
             </div>
 
             {/* Socratic Edge-Case Hint Banner */}
             {(activeFrame as any).edgeCaseHint && (
-              <div className="mt-2.5 p-3 rounded-xl bg-amber-950/40 border border-amber-500/40 text-xs text-amber-200 flex items-start gap-2.5 leading-relaxed animate-fadeIn">
-                <Lightbulb className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <div className="mt-2.5 p-3 rounded-xl bg-[#FFFBEB] border border-[#FDE68A] text-xs text-[#92400E] flex items-start gap-2.5 leading-relaxed animate-fadeIn">
+                <Lightbulb className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-amber-300 font-bold">AI Pedagogical Hint: </strong>
-                  <span>{(activeFrame as any).edgeCaseHint}</span>
+                  <strong className="text-[#B45309] font-bold">AI Pedagogical Hint: </strong>
+                  <span className="text-[#78350F]">{(activeFrame as any).edgeCaseHint}</span>
                 </div>
               </div>
             )}
 
             {/* Variable Inspector */}
             <div className="mt-4">
-              <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-2">Variable Inspector</div>
+              <div className="text-[10px] font-mono text-[#4A5852] uppercase tracking-wider mb-2 font-bold">Variable Inspector</div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {Object.entries(allVars).slice(0, 9).map(([key, val]) => {
                   const ptColor = pointerKeys.includes(key) ? POINTER_COLORS[pointerKeys.indexOf(key) % POINTER_COLORS.length] : null;
                   return (
-                    <div key={key} className={`p-2.5 rounded-lg border transition-all duration-300 ${ptColor ? `${ptColor.bg} ${ptColor.border}` : 'bg-slate-950/60 border-slate-800/80'}`}>
-                      <span className={`text-[10px] font-mono uppercase block ${ptColor ? ptColor.text : 'text-slate-500'}`}>{key}</span>
-                      <span className={`text-sm font-mono font-bold ${ptColor ? ptColor.text : 'text-slate-200'}`}>
+                    <div key={key} className={`p-2.5 rounded-lg border transition-all duration-300 ${ptColor ? `${ptColor.bg} ${ptColor.border}` : 'bg-[#FAF7EF] border-[#E5E1D3]'}`}>
+                      <span className={`text-[10px] font-mono uppercase block font-semibold ${ptColor ? ptColor.text : 'text-[#5E6D66]'}`}>{key}</span>
+                      <span className={`text-sm font-mono font-bold ${ptColor ? ptColor.text : 'text-[#141A17]'}`}>
                         {typeof val === 'object' ? JSON.stringify(val) : String(val ?? '—')}
                       </span>
                     </div>
                   );
                 })}
                 {Object.keys(allVars).length === 0 && (
-                  <div className="col-span-3 text-xs text-slate-500 py-2">Run code to see live variable states</div>
+                  <div className="col-span-3 text-xs text-[#5E6D66] py-2">Run code to see live variable states</div>
                 )}
               </div>
             </div>
           </div>
 
           {/* Playback Controls */}
-          <div className="glass-panel p-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+          <div className="glass-panel p-3.5 rounded-xl flex items-center justify-between border border-[#E5E1D3] shadow-xs">
             <div className="flex items-center gap-1.5">
               <button onClick={() => { setCurrentStep(0); setIsPlaying(false); }} title="Reset"
                 className="p-2 rounded-full bg-white hover:bg-[#F5F2E5] border border-[#E0DCCF] text-[#4E5C56] hover:text-[#141A17] transition-colors cursor-pointer shadow-xs">
@@ -1397,47 +1397,47 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
                 {loading
                   ? 'AI Analyzing...'
                   : editorMode === 'practice'
-                  ? 'Run & Visualize with AI (Practice Mode)'
-                  : 'Run & Step Benchmark (Visualization Mode)'}
+                  ? 'Run Code & Generate Trace'
+                  : 'Run & Visualize Algorithm'}
               </span>
             </button>
           </div>
 
           {/* AI Pedagogical Remediation Panel: Defect Doctor, Progressive Hints & Optimal Solution */}
-          <div className="glass-panel p-5 rounded-2xl border border-[#E5E1D3] space-y-4 animate-fadeIn shadow-xs">
+          <div className="glass-panel p-5 rounded-2xl border border-[#E5E1D3] space-y-4 animate-fadeIn shadow-xs bg-white">
             {/* Header & Tabs */}
             <div className="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-[#EAE6D8]">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-cyan-500/20">
+                <div className="w-7 h-7 rounded-lg bg-[#EFF5F0] border border-[#D5E2D8] flex items-center justify-center text-[#0D684D] shadow-xs">
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                  <h4 className="text-xs font-bold text-[#141A17] uppercase tracking-wider flex items-center gap-2">
                     <span>AI Invariant Core & Tutor</span>
                     {remediationLoading && (
-                      <span className="text-[10px] font-mono font-normal text-cyan-400 animate-pulse flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" /> Analyzing...
+                      <span className="text-[10px] font-mono font-semibold text-[#0D684D] animate-pulse flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#0D684D] animate-ping" /> Analyzing...
                       </span>
                     )}
                   </h4>
-                  <p className="text-[10px] text-slate-400">Live defect diagnosis, progressive clues & optimal code</p>
+                  <p className="text-[10px] text-[#4A5852]">Live defect diagnosis, progressive clues & optimal code</p>
                 </div>
               </div>
 
               {/* Navigation Tabs */}
-              <div className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+              <div className="flex items-center gap-1 bg-[#FAF7EF] p-1 rounded-xl border border-[#E5E1D3]">
                 <button
                   onClick={() => setRemediationTab('hints')}
                   className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                     remediationTab === 'hints'
-                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-[#0D382B] text-white shadow-xs font-bold'
+                      : 'text-[#4A5852] hover:text-[#141A17]'
                   }`}
                 >
                   <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
                   <span>AI Hints</span>
                   {remediation?.hints && (
-                    <span className="px-1.5 py-0.2 rounded-full bg-slate-800 text-[9px] font-mono text-cyan-300">
+                    <span className={`px-1.5 py-0.2 rounded-full text-[9px] font-mono ${remediationTab === 'hints' ? 'bg-[#08261D] text-white' : 'bg-white text-[#0D684D] border border-[#E5E1D3]'}`}>
                       {remediation.hints.length}
                     </span>
                   )}
@@ -1447,8 +1447,8 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
                   onClick={() => setRemediationTab('solution')}
                   className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                     remediationTab === 'solution'
-                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-[#0D382B] text-white shadow-xs font-bold'
+                      : 'text-[#4A5852] hover:text-[#141A17]'
                   }`}
                 >
                   <Code2 className="w-3.5 h-3.5 text-emerald-400" />
@@ -1459,8 +1459,8 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
                   onClick={() => setRemediationTab('breakdown')}
                   className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                     remediationTab === 'breakdown'
-                      ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-[#0D382B] text-white shadow-xs font-bold'
+                      : 'text-[#4A5852] hover:text-[#141A17]'
                   }`}
                 >
                   <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
@@ -1471,12 +1471,12 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
 
             {/* Why this code breaks (Defect Diagnosis Alert) */}
             {remediation && remediation.isBuggy && (
-              <div className="p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/40 text-rose-200 text-xs space-y-1.5 animate-fadeIn">
-                <div className="flex items-center gap-2 font-bold text-rose-300">
-                  <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
+              <div className="p-3.5 rounded-xl bg-[#FFF1F2] border border-[#FECDD3] text-[#9F1239] text-xs space-y-1.5 animate-fadeIn">
+                <div className="flex items-center gap-2 font-bold text-[#BE123C]">
+                  <AlertTriangle className="w-4 h-4 text-[#E11D48] shrink-0" />
                   <span>Why This Code Breaks (AI Defect Diagnosis)</span>
                 </div>
-                <p className="text-[11.5px] text-rose-200/90 leading-relaxed font-sans pl-6">
+                <p className="text-[11.5px] text-[#9F1239] leading-relaxed font-sans pl-6">
                   {remediation.bugExplanation}
                 </p>
               </div>
@@ -1484,11 +1484,11 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
 
             {/* If correct/passing */}
             {remediation && !remediation.isBuggy && (
-              <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30 text-emerald-200 text-xs flex items-start gap-2 animate-fadeIn">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+              <div className="p-3 rounded-xl bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D] text-xs flex items-start gap-2 animate-fadeIn">
+                <CheckCircle2 className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-emerald-300 font-semibold">Solution Invariants Verified ✓ </strong>
-                  <span className="text-[11.5px] text-emerald-200/90">{remediation.bugExplanation}</span>
+                  <strong className="text-[#0D684D] font-bold">Solution Invariants Verified ✓ </strong>
+                  <span className="text-[11.5px] text-[#145341]">{remediation.bugExplanation}</span>
                 </div>
               </div>
             )}
@@ -1496,12 +1496,12 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
             {/* Loading Shimmer */}
             {remediationLoading && (
               <div className="py-6 flex flex-col items-center justify-center space-y-3">
-                <div className="w-8 h-8 rounded-full border-2 border-cyan-400 border-t-transparent animate-spin" />
-                <div className="text-xs text-slate-400 font-mono flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full border-2 border-[#0D684D] border-t-transparent animate-spin" />
+                <div className="text-xs text-[#3A4742] font-mono flex items-center gap-2 font-semibold">
                   <span>AI Tutor synthesizing progressive hints & optimal code in {lang}...</span>
                 </div>
-                <div className="w-48 h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-cyan-500 to-indigo-500 rounded-full animate-pulse w-3/4" />
+                <div className="w-48 h-1.5 rounded-full bg-[#EAE6D8] overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#0D684D] to-[#10B981] rounded-full animate-pulse w-3/4" />
                 </div>
               </div>
             )}
@@ -1509,11 +1509,11 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
             {/* Tab 1: AI Progressive Hints */}
             {!remediationLoading && remediationTab === 'hints' && (
               <div className="space-y-3 animate-fadeIn">
-                <div className="text-[11px] text-slate-400 flex items-center justify-between">
+                <div className="text-[11px] text-[#3A4742] flex items-center justify-between font-semibold">
                   <span>Progressive Socratic Hints (learn step-by-step):</span>
                   <button
                     onClick={() => setRevealedHintLevel(3)}
-                    className="text-[10px] text-cyan-400 hover:underline cursor-pointer font-mono"
+                    className="text-[10px] text-[#0D684D] hover:underline cursor-pointer font-mono font-bold"
                   >
                     Reveal All Hints
                   </button>
@@ -1523,18 +1523,18 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
                   remediation.hints.map((h, i) => {
                     const isRevealed = h.level <= revealedHintLevel;
                     const levelBadge = h.level === 1
-                      ? { bg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40', label: 'Hint 1: Conceptual Direction' }
+                      ? { bg: 'bg-[#EFF5F0] text-[#0D684D] border-[#D5E2D8]', label: 'Hint 1: Conceptual Direction' }
                       : h.level === 2
-                      ? { bg: 'bg-amber-500/20 text-amber-300 border-amber-500/40', label: 'Hint 2: Edge Case & Invariants' }
-                      : { bg: 'bg-purple-500/20 text-purple-300 border-purple-500/40', label: 'Hint 3: Concrete Algorithmic Step' };
+                      ? { bg: 'bg-[#FFFBEB] text-[#B45309] border-[#FDE68A]', label: 'Hint 2: Edge Case & Invariants' }
+                      : { bg: 'bg-[#EEF2FF] text-[#4338CA] border-[#C7D2FE]', label: 'Hint 3: Concrete Algorithmic Step' };
 
                     return (
                       <div
                         key={i}
                         className={`p-3.5 rounded-xl border transition-all duration-300 ${
                           isRevealed
-                            ? 'bg-slate-900/80 border-slate-700/80 shadow-sm'
-                            : 'bg-slate-950/40 border-slate-800/60 opacity-60'
+                            ? 'bg-[#FAF7EF] border-[#E5E1D3] shadow-xs'
+                            : 'bg-[#F5F2E5]/50 border-[#E5E1D3] opacity-70'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1.5">
@@ -1544,25 +1544,25 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
                           {!isRevealed && (
                             <button
                               onClick={() => setRevealedHintLevel(h.level)}
-                              className="px-2 py-0.5 rounded bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-400/50 text-cyan-200 text-[10px] font-mono cursor-pointer transition-all flex items-center gap-1"
+                              className="px-2 py-0.5 rounded bg-white hover:bg-[#FAF8EE] border border-[#E5E1D3] text-[#0D684D] text-[10px] font-mono font-bold cursor-pointer transition-all flex items-center gap-1 shadow-xs"
                             >
                               <Eye className="w-3 h-3" /> Reveal Hint {h.level}
                             </button>
                           )}
                         </div>
                         {isRevealed ? (
-                          <p className="text-xs text-slate-200 leading-relaxed font-sans">{h.hint}</p>
+                          <p className="text-xs text-[#141A17] leading-relaxed font-sans">{h.hint}</p>
                         ) : (
-                          <p className="text-xs text-slate-500 font-mono italic">
-                            [ Click 'Reveal Hint {h.level}' when you want a targeted clue ]
+                          <p className="text-xs text-[#5E6D66] font-mono italic">
+                            [ Click &apos;Reveal Hint {h.level}&apos; when you want a targeted clue ]
                           </p>
                         )}
                       </div>
                     );
                   })
                 ) : (
-                  <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-800 text-center text-xs text-slate-500">
-                    Click 'Run & Visualize' to receive AI hints for your code.
+                  <div className="p-4 rounded-xl bg-[#FAF7EF] border border-[#E5E1D3] text-center text-xs text-[#4A5852]">
+                    Click &apos;Run &amp; Visualize&apos; to receive AI hints for your code.
                   </div>
                 )}
               </div>
@@ -1573,17 +1573,17 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
               <div className="space-y-3 animate-fadeIn">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono text-slate-400 uppercase">Language:</span>
-                    <span className="px-2 py-0.5 rounded bg-indigo-950/80 border border-indigo-700/70 text-indigo-300 font-mono text-[10px] font-bold uppercase">
+                    <span className="text-[10px] font-mono text-[#4A5852] uppercase font-bold">Language:</span>
+                    <span className="px-2 py-0.5 rounded bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D] font-mono text-[10px] font-bold uppercase">
                       {remediation?.solution?.language || lang}
                     </span>
                     {remediation?.solution?.timeComplexity && (
-                      <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-300 font-mono text-[10px]">
+                      <span className="px-2 py-0.5 rounded bg-[#FAF7EF] border border-[#E5E1D3] text-[#141A17] font-mono text-[10px] font-semibold">
                         Time: {remediation.solution.timeComplexity}
                       </span>
                     )}
                     {remediation?.solution?.spaceComplexity && (
-                      <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-300 font-mono text-[10px]">
+                      <span className="px-2 py-0.5 rounded bg-[#FAF7EF] border border-[#E5E1D3] text-[#141A17] font-mono text-[10px] font-semibold">
                         Space: {remediation.solution.spaceComplexity}
                       </span>
                     )}
@@ -1599,9 +1599,9 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
                           setTimeout(() => setCopiedSolution(false), 2000);
                         }
                       }}
-                      className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-[11px] font-medium flex items-center gap-1 cursor-pointer transition-all"
+                      className="px-2.5 py-1 rounded-lg bg-white hover:bg-[#FAF8EE] border border-[#E5E1D3] text-[#141A17] text-[11px] font-semibold flex items-center gap-1 cursor-pointer transition-all shadow-xs"
                     >
-                      {copiedSolution ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      {copiedSolution ? <Check className="w-3.5 h-3.5 text-[#059669]" /> : <Copy className="w-3.5 h-3.5" />}
                       <span>{copiedSolution ? 'Copied' : 'Copy'}</span>
                     </button>
 
@@ -1615,32 +1615,32 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
                           runAlgorithm(remediation.solution.code, currentChallenge);
                         }
                       }}
-                      className="px-3 py-1 rounded-lg bg-gradient-to-r from-emerald-600 to-cyan-600 hover:opacity-90 text-white text-[11px] font-bold shadow-md shadow-emerald-700/30 flex items-center gap-1.5 cursor-pointer transition-all"
+                      className="px-3 py-1 rounded-lg bg-[#0D382B] hover:bg-[#08261D] text-white text-[11px] font-semibold shadow-xs flex items-center gap-1.5 cursor-pointer transition-all"
                     >
                       <Play className="w-3 h-3 fill-current" />
-                      <span>Load Solution & Trace</span>
+                      <span>Load Solution &amp; Trace</span>
                     </button>
                   </div>
                 </div>
 
                 {solutionLoadedAlert && (
-                  <div className="p-2 rounded-lg bg-emerald-950/70 border border-emerald-500/60 text-emerald-200 text-xs font-mono flex items-center gap-2 animate-fadeIn">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <div className="p-2 rounded-lg bg-[#EFF5F0] border border-[#D5E2D8] text-[#0D684D] text-xs font-mono flex items-center gap-2 animate-fadeIn font-semibold">
+                    <CheckCircle2 className="w-4 h-4 text-[#059669] shrink-0" />
                     <span>✓ Solution loaded into Code Editor! AI is now animating the optimal trace.</span>
                   </div>
                 )}
 
                 {/* Code container */}
-                <div className="relative rounded-xl border border-slate-800 bg-slate-950/90 p-3 overflow-x-auto max-h-64 shadow-inner">
-                  <pre className="font-mono text-xs text-cyan-200 leading-relaxed">
+                <div className="relative rounded-xl border border-[#23302B] bg-[#0F1413] p-3 overflow-x-auto max-h-64 shadow-inner">
+                  <pre className="font-mono text-xs text-[#34D399] leading-relaxed">
                     <code>{remediation?.solution?.code || (currentChallenge.starterCode as any)?.[lang] || '# Solution ready upon running code'}</code>
                   </pre>
                 </div>
 
                 {/* Explanation */}
                 {remediation?.solution?.explanation && (
-                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 leading-relaxed font-sans">
-                    <strong className="text-white block mb-1">Algorithm Explanation:</strong>
+                  <div className="p-3 rounded-xl bg-[#FAF7EF] border border-[#E5E1D3] text-xs text-[#2B3632] leading-relaxed font-sans shadow-xs">
+                    <strong className="text-[#141A17] block mb-1 font-bold">Algorithm Explanation:</strong>
                     <span>{remediation.solution.explanation}</span>
                   </div>
                 )}
@@ -1653,32 +1653,32 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
                 {skillGap ? (
                   <>
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-white">{skillGap.gapCategory}</span>
-                      <span className="text-xs font-mono text-cyan-400">
+                      <span className="text-xs font-bold text-[#141A17]">{skillGap.gapCategory}</span>
+                      <span className="text-xs font-mono text-[#0D684D] font-bold">
                         Mastery: {100 - (skillGap.conceptSeverityScore || 0)}%
                       </span>
                     </div>
-                    <div className="h-2 rounded-full bg-slate-800">
+                    <div className="h-2 rounded-full bg-[#EAE6D8]">
                       <div
-                        className="h-2 rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-700"
+                        className="h-2 rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-500 transition-all duration-700"
                         style={{ width: `${100 - (skillGap.conceptSeverityScore || 0)}%` }}
                       />
                     </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">{skillGap.rootCauseAnalysis}</p>
+                    <p className="text-xs text-[#2B3632] leading-relaxed">{skillGap.rootCauseAnalysis}</p>
                     {skillGap.adaptiveStudyPlan?.map((step, idx) => (
-                      <div key={idx} className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800 text-xs flex items-start gap-2">
-                        <span className="w-4 h-4 rounded-full bg-indigo-600/30 text-indigo-300 flex items-center justify-center font-mono text-[10px] shrink-0 font-bold">
+                      <div key={idx} className="p-2.5 rounded-lg bg-[#FAF7EF] border border-[#E5E1D3] text-xs flex items-start gap-2 shadow-xs">
+                        <span className="w-4 h-4 rounded-full bg-[#EFF5F0] text-[#0D684D] border border-[#D5E2D8] flex items-center justify-center font-mono text-[10px] shrink-0 font-bold">
                           {step.stepOrder}
                         </span>
                         <div>
-                          <strong className="text-white font-medium">{step.action}: </strong>
-                          <span className="text-slate-400">{step.recommendation}</span>
+                          <strong className="text-[#141A17] font-semibold">{step.action}: </strong>
+                          <span className="text-[#3A4742]">{step.recommendation}</span>
                         </div>
                       </div>
                     ))}
                   </>
                 ) : (
-                  <p className="text-xs text-slate-500">Run any algorithm to view skill gap breakdown.</p>
+                  <p className="text-xs text-[#5E6D66]">Run any algorithm to view skill gap breakdown.</p>
                 )}
               </div>
             )}
