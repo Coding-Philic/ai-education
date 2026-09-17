@@ -1,4 +1,4 @@
-# 🚀 CogniFlow AI: The Real-Time Visual AI Education & Skill Gap Operating System
+# 🚀 CogniFlow AI: The Real-Time Visual AI Education & Skill Gap Web Platform
 
 > **Hackathon Track:** Lenovo LEAP AI Hackathon 2026 (AKTU Lucknow)  
 > **Theme:** AI in Education & Skilling  

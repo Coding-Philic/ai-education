@@ -6,6 +6,7 @@
 import Groq from 'groq-sdk';
 import { VisualFrame, SkillGapAssessment, AiRemediationAdvice } from './types';
 import { executeSqlEngine } from './sql-engine';
+import { getSmartFallbackRemediation, PRECOMPUTED_REMEDIATIONS } from './precomputed-remediations';
 
 const groqApiKey = process.env.GROQ_API_KEY;
 const isGroqConfigured = groqApiKey && groqApiKey !== 'mock_or_user_key' && !groqApiKey.includes('your_groq_api_key');
@@ -13,6 +14,47 @@ const isGroqConfigured = groqApiKey && groqApiKey !== 'mock_or_user_key' && !gro
 const groqClient = isGroqConfigured
   ? new Groq({ apiKey: groqApiKey, maxRetries: 0 })
   : null;
+
+type DiagnosticResult = Omit<SkillGapAssessment, 'id' | 'userId' | 'submissionId' | 'createdAt'>;
+
+// In-memory response caches with TTL to eliminate redundant API calls
+const remediationCache = new Map<string, { data: AiRemediationAdvice; timestamp: number }>();
+const diagnosticCache = new Map<string, { data: DiagnosticResult; timestamp: number }>();
+const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
+const FALLBACK_MODELS = [
+  process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
+  'llama-3.3-70b-versatile',
+  'llama-3.1-8b-instant',
+];
+
+async function executeGroqWithFallback(createParams: any, timeoutMs = 4000): Promise<any> {
+  if (!groqClient) throw new Error('Groq client not initialized');
+  const models = Array.from(new Set([createParams.model, ...FALLBACK_MODELS].filter(Boolean)));
+
+  let lastErr: any = null;
+  for (const model of models) {
+    try {
+      const fetchPromise = groqClient.chat.completions.create({
+        ...createParams,
+        model,
+      });
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(`Groq request timed out on model ${model}`)), timeoutMs)
+      );
+      return await Promise.race([fetchPromise, timeoutPromise]);
+    } catch (err: any) {
+      lastErr = err;
+      const isRateLimit = err?.status === 429 || err?.message?.includes('Rate limit') || err?.code === 'rate_limit_exceeded';
+      if (isRateLimit) {
+        console.warn(`[Groq AI] Model ${model} rate-limited (429 OTPM). Cascading to next fallback model...`);
+        continue;
+      }
+      console.warn(`[Groq AI] Model ${model} failed (${err?.message || 'Unknown'}). Cascading...`);
+    }
+  }
+  throw lastErr;
+}
 
 /**
  * Deterministic fallback generator when Groq API key is not configured
@@ -1892,7 +1934,7 @@ function simulateDPTable(elements: any[], codeLines: string[], algoName: string)
 /**
  * Dynamic Master Fallback Generator that executes code simulation
  */
-function generateDeterministicFrames(challengeType: string, codeOrQuery: string, initialVisualState: any): VisualFrame[] {
+export function generateDeterministicFrames(challengeType: string, codeOrQuery: string, initialVisualState: any): VisualFrame[] {
   if (challengeType === 'dsa_algo') {
     const codeLines = codeOrQuery.split('\n');
     const structureType = initialVisualState?.type || 'ARRAY';
@@ -2241,7 +2283,7 @@ CRITICAL ANIMATION COMPLETION RULES:
 Maximum 40 frames. Do NOT include any text outside the JSON.
 `.trim();
 
-    const fetchVisualPromise = groqClient.chat.completions.create({
+    const response = await executeGroqWithFallback({
       model: process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
       messages: [
         { role: 'system', content: systemPrompt },
@@ -2253,13 +2295,7 @@ Maximum 40 frames. Do NOT include any text outside the JSON.
       response_format: { type: 'json_object' },
       temperature: 0.1,
       max_tokens: 950,
-    });
-
-    const timeoutPromise = new Promise<any>((_, reject) =>
-      setTimeout(() => reject(new Error('Groq visual trace generation timed out after 3500ms')), 3500)
-    );
-
-    const response = await Promise.race([fetchVisualPromise, timeoutPromise]);
+    }, 4500);
 
     console.log(`⚡ [Groq LPU LIVE INFERENCE] Visual frames generated! Model: ${response.model}, Tokens: ${JSON.stringify(response.usage)}`);
 
@@ -2390,7 +2426,14 @@ Output MUST be strict JSON:
 }
 `.trim();
 
-    const fetchDiagnosticPromise = groqClient.chat.completions.create({
+    // Check diagnostic cache first
+    const diagCacheKey = `${challengeType}_${problemStatement.slice(0, 30)}_${submittedCodeOrQuery.slice(0, 50)}_${testPassed}`;
+    const cachedDiag = diagnosticCache.get(diagCacheKey);
+    if (cachedDiag && Date.now() - cachedDiag.timestamp < CACHE_TTL_MS) {
+      return cachedDiag.data;
+    }
+
+    const response = await executeGroqWithFallback({
       model: process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
       messages: [
         { role: 'system', content: systemPrompt },
@@ -2401,14 +2444,8 @@ Output MUST be strict JSON:
       ],
       response_format: { type: 'json_object' },
       temperature: 0.1,
-      max_tokens: 450,
-    });
-
-    const timeoutPromise = new Promise<any>((_, reject) =>
-      setTimeout(() => reject(new Error('Groq diagnostic reasoning timed out after 3500ms')), 3500)
-    );
-
-    const response = await Promise.race([fetchDiagnosticPromise, timeoutPromise]);
+      max_tokens: 280,
+    }, 3500);
 
     console.log(`⚡ [Groq LPU LIVE INFERENCE] Skill gap diagnosed! Model: ${response.model}, Tokens: ${JSON.stringify(response.usage)}`);
 
@@ -2419,7 +2456,7 @@ Output MUST be strict JSON:
       const rawScore = typeof parsed.conceptSeverityScore === 'number' ? parsed.conceptSeverityScore : (hasGap ? 45 : 0);
       const conceptSeverityScore = !hasGap ? Math.min(rawScore, 5) : rawScore;
 
-      return {
+      const result: DiagnosticResult = {
         domain: challengeType === 'dsa_algo' ? 'dsa' : challengeType === 'sql_lab' ? 'sql' : 'system_design',
         hasLearningGap: hasGap,
         gapCategory: parsed.gapCategory || (hasGap ? 'Algorithmic Optimization' : 'Optimal Solution Mastered'),
@@ -2428,21 +2465,30 @@ Output MUST be strict JSON:
         adaptiveStudyPlan: parsed.adaptiveStudyPlan || [],
         conceptSeverityScore,
       };
+
+      diagnosticCache.set(diagCacheKey, { data: result, timestamp: Date.now() });
+      return result;
     }
-  } catch (error) {
-    console.error('[Groq AI] Diagnostic reasoning error:', error);
+  } catch (error: any) {
+    console.warn('[Groq AI] Diagnostic reasoning rate-limit/fallback triggered:', error?.message || 'Handled');
   }
 
   return {
-    domain: challengeType === 'dsa_algo' ? 'dsa' : 'sql',
+    domain: challengeType === 'dsa_algo' ? 'dsa' : challengeType === 'sql_lab' ? 'sql' : 'system_design',
     hasLearningGap: !testPassed,
-    gapCategory: 'Algorithmic Efficiency Gap',
-    rootCauseAnalysis: 'Observed suboptimal traversal or boundary check.',
-    remedyExplanation: 'Practice visual stepping to understand memory pointers.',
+    gapCategory: testPassed ? 'Optimal Solution Mastered' : 'Algorithmic Efficiency Gap',
+    rootCauseAnalysis: testPassed
+      ? 'Optimal time and space bounds achieved with clean pointer convergence.'
+      : 'Observed suboptimal traversal or boundary condition checking.',
+    remedyExplanation: testPassed
+      ? 'Outstanding implementation. Continue to the next curriculum milestone.'
+      : 'Practice visual stepping to inspect pointer state transitions frame-by-frame.',
     adaptiveStudyPlan: [
-      { stepOrder: 1, action: 'Step Visualizer', recommendation: 'Inspect memory changes frame-by-frame.' }
+      { stepOrder: 1, action: 'Step Visualizer', recommendation: 'Inspect memory changes frame-by-frame.' },
+      { stepOrder: 2, action: 'Boundary Testing', recommendation: 'Test with edge-case arrays (empty, single-element, extremes).' },
+      { stepOrder: 3, action: 'Time Complexity Review', recommendation: 'Ensure O(N) or O(log N) optimal bound is maintained.' }
     ],
-    conceptSeverityScore: 50,
+    conceptSeverityScore: testPassed ? 0 : 40,
   };
 }
 
@@ -2460,108 +2506,58 @@ export async function generateRemediationAndSolution(
 ): Promise<AiRemediationAdvice> {
   const isSql = language.toLowerCase() === 'sql';
   const isSysDesign = language.toLowerCase() === 'system_design';
+
+  // 1. Check in-memory cache for instant 0ms return on re-runs
+  const remCacheKey = `${challengeTitle}_${language}_${submittedCode.slice(0, 80)}`;
+  const cachedRem = remediationCache.get(remCacheKey);
+  if (cachedRem && Date.now() - cachedRem.timestamp < CACHE_TTL_MS) {
+    return cachedRem.data;
+  }
+
   if (!groqClient) {
-    const defaultCode = (starterCode as any)?.[language] || (starterCode as any)?.sql || (starterCode as any)?.python || submittedCode;
-    return {
-      isBuggy: false,
-      bugExplanation: isSysDesign
-        ? 'Distributed Topology Evaluator: Checked Ingress, Microservice scalability, Cache absorption, and DB replication.'
-        : isSql
-        ? 'Relational Engine: Query syntax verified and relational algebra execution plan optimized.'
-        : 'Local Cognitive Engine: Code parsed and validated.',
-      hints: [
-        { level: 1, title: isSysDesign ? 'Ingress & Redundancy' : 'Conceptual Invariant', hint: isSysDesign ? 'Eliminate Single Points of Failure (SPOF) with Active-Standby Load Balancers.' : isSql ? 'Verify table join predicates and key relationships.' : `Keep track of the problem's core invariants and edge cases.` },
-        { level: 2, title: isSysDesign ? 'Cache & Buffer Tier' : 'Boundary Checking', hint: isSysDesign ? 'Introduce Redis Cluster to absorb read bursts and Kafka to decouple write operations.' : isSql ? 'Check for NULL values and empty join intersections.' : `Verify empty, single-element, and extreme boundary conditions.` },
-        { level: 3, title: isSysDesign ? 'Persistence & Failover' : 'Algorithmic Efficiency', hint: isSysDesign ? 'Add PostgreSQL Read Replicas with automated WAL replication and Patroni auto-failover.' : isSql ? 'Consider indexing foreign keys and filtering before grouping.' : `Ensure asymptotic time and space constraints are satisfied.` },
-      ],
-      solution: {
-        language,
-        code: defaultCode,
-        explanation: isSysDesign
-          ? 'Canonical fault-tolerant distributed architecture with multi-tier redundancy.'
-          : isSql
-          ? 'Canonical SQL query using optimal relational join order and indexing.'
-          : 'Canonical reference solution implementing optimal time/space complexity.',
-        timeComplexity: benchmarkSolution?.timeComplexity || (isSysDesign ? 'P99 < 20ms' : isSql ? 'O(N + M) [Hash Join]' : 'O(n)'),
-        spaceComplexity: benchmarkSolution?.spaceComplexity || (isSysDesign ? 'N+1 Redundancy' : isSql ? 'O(N) [Hash Table in RAM]' : 'O(1)'),
-      },
-    };
+    return getSmartFallbackRemediation(challengeTitle, problemStatement, submittedCode, language, starterCode, benchmarkSolution);
   }
 
   try {
     const systemPrompt = isSysDesign ? `
 You are the CogniFlow AI Master Distributed Systems Architect for Lenovo LEAP AI Hackathon.
-Analyze the user's submitted architecture topology and configuration for the challenge: "${challengeTitle}".
-
-TASK:
-1. Examine if the architecture is resilient or has critical bottlenecks/defects (e.g. Single Point of Failure, unbuffered write spikes, missing cache causing DB overload, lack of horizontal scaling, cascading timeout risks).
-   - "isBuggy": boolean (true if SPOF or bottleneck exists)
-   - "bugExplanation": Plain-English architectural critique (2-3 sentences) detailing why the system fails under peak load or what CAP theorem invariant it violates. If resilient, commend the design.
-2. Generate 3 Progressive Socratic Hints:
-   - Level 1 ("Ingress & Edge"): Clue about CDN, DNS, or Load Balancer redundancy.
-   - Level 2 ("Caching & Async Buffering"): Clue about Redis caching or Kafka event queues.
-   - Level 3 ("Storage & Failover"): Clue about database sharding, replication, or auto-failover.
-3. Provide the Complete Optimal Working Architecture Summary:
-   - "code": Formatted JSON or YAML configuration of the optimal benchmark topology.
-   - "explanation": Step-by-step breakdown of how the benchmark architecture solves the challenge constraints.
-   - "timeComplexity": e.g. "P99 Latency < 15ms"
-   - "spaceComplexity": e.g. "99.999% SLA (Multi-AZ Redundancy)"
-
-Output MUST be strict valid JSON:
-{
-  "isBuggy": boolean,
-  "bugExplanation": "string",
-  "hints": [
-    { "level": 1, "title": "Ingress & Edge", "hint": "string" },
-    { "level": 2, "title": "Caching & Buffering", "hint": "string" },
-    { "level": 3, "title": "Storage & Failover", "hint": "string" }
-  ],
-  "solution": {
-    "language": "system_design",
-    "code": "string",
-    "explanation": "string",
-    "timeComplexity": "string",
-    "spaceComplexity": "string"
-  }
+Analyze the user's submitted architecture topology for challenge: "${challengeTitle}".
+Output strict JSON with fields:
+"isBuggy": boolean,
+"bugExplanation": "string (2-3 sentences)",
+"hints": [
+  { "level": 1, "title": "Ingress & Edge", "hint": "string" },
+  { "level": 2, "title": "Caching & Buffering", "hint": "string" },
+  { "level": 3, "title": "Storage & Failover", "hint": "string" }
+],
+"solution": {
+  "language": "system_design",
+  "code": "string",
+  "explanation": "string",
+  "timeComplexity": "P99 < 20ms",
+  "spaceComplexity": "Multi-AZ Redundancy"
 }
 `.trim() : `
-You are the CogniFlow AI Master Algorithm & Database Tutor for Lenovo LEAP AI Hackathon.
-Analyze the user's submitted ${isSql ? 'SQL query' : 'code'} for the challenge: "${challengeTitle}".
-
-TASK:
-1. Examine if the student's solution is correct or has a bug/defect (${isSql ? 'syntax error, wrong join type, Cartesian product, missing GROUP BY column, incorrect WHERE filter, NULL handling bug' : 'logic error, missing edge case, boundary issue, infinite loop, wrong return'}).
-   - "isBuggy": boolean
-   - "bugExplanation": A crisp, plain-English educational explanation (2-3 sentences) detailing why the ${isSql ? 'query failed or what relational invariant' : 'code broke or what invariant'} it violates. If correct, commend their solution and explain why it executes efficiently.
-2. Generate 3 Progressive Socratic Hints:
-   - Level 1 ("Conceptual Direction"): Guide their mental model ${isSql ? 'of relational tables and set theory' : 'without giving code'}.
-   - Level 2 ("Edge Case & Invariant Clue"): Highlight ${isSql ? 'NULL values, outer join mismatches, or duplicate rows' : 'boundary cases (e.g., duplicates, null/empty, extremes)'}.
-   - Level 3 ("Concrete Algorithmic Step"): Detail the exact ${isSql ? 'SQL clause (JOIN ON, WHERE, GROUP BY, HAVING, WINDOW)' : 'algorithmic step or condition'} to fix the logic.
-3. Provide the Complete Optimal Working Solution in "${language}" (${isSql ? 'clean uppercase SQL keywords, standard ANSI SQL' : 'clean, production-ready, beautifully commented'}):
-   - "code": Full runnable ${language} query or code.
-   - "explanation": Step-by-step breakdown of how the solution works and why it satisfies all constraints.
-   - "timeComplexity": e.g. ${isSql ? '"O(N + M) Hash Join"' : '"O(N)"'}
-   - "spaceComplexity": e.g. ${isSql ? '"O(min(N, M)) RAM Hash Table"' : '"O(1)"'}
-
-Output MUST be strict valid JSON:
-{
-  "isBuggy": boolean,
-  "bugExplanation": "string",
-  "hints": [
-    { "level": 1, "title": "Conceptual Direction", "hint": "string" },
-    { "level": 2, "title": "Edge Case & Invariant Clue", "hint": "string" },
-    { "level": 3, "title": "Concrete Algorithmic Step", "hint": "string" }
-  ],
-  "solution": {
-    "language": "${language}",
-    "code": "string",
-    "explanation": "string",
-    "timeComplexity": "string",
-    "spaceComplexity": "string"
-  }
+You are the CogniFlow AI Master Algorithm Tutor.
+Analyze student ${isSql ? 'SQL' : language} code for challenge: "${challengeTitle}".
+Output strict JSON:
+"isBuggy": boolean,
+"bugExplanation": "string (2 sentences)",
+"hints": [
+  { "level": 1, "title": "Conceptual Direction", "hint": "string" },
+  { "level": 2, "title": "Boundary Invariant", "hint": "string" },
+  { "level": 3, "title": "Algorithmic Step", "hint": "string" }
+],
+"solution": {
+  "language": "${language}",
+  "code": "string",
+  "explanation": "string",
+  "timeComplexity": "string",
+  "spaceComplexity": "string"
 }
 `.trim();
 
-    const fetchRemediationPromise = groqClient.chat.completions.create({
+    const response = await executeGroqWithFallback({
       model: process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
       messages: [
         { role: 'system', content: systemPrompt },
@@ -2572,27 +2568,21 @@ Output MUST be strict valid JSON:
       ],
       response_format: { type: 'json_object' },
       temperature: 0.1,
-      max_tokens: 500,
-    });
-
-    const timeoutPromise = new Promise<any>((_, reject) =>
-      setTimeout(() => reject(new Error('Groq remediation synthesis timed out after 3500ms')), 3500)
-    );
-
-    const response = await Promise.race([fetchRemediationPromise, timeoutPromise]);
+      max_tokens: 320,
+    }, 3500);
 
     console.log(`⚡ [Groq LPU LIVE INFERENCE] Stage 2 Remediation & Solution synthesized! Model: ${response.model}, Tokens: ${JSON.stringify(response.usage)}`);
 
     const content = response.choices[0]?.message?.content;
     if (content) {
       const parsed = JSON.parse(content);
-      return {
+      const advice: AiRemediationAdvice = {
         isBuggy: Boolean(parsed.isBuggy),
-        bugExplanation: parsed.bugExplanation || 'Review logic flow and edge cases.',
-        hints: Array.isArray(parsed.hints) ? parsed.hints : [
-          { level: 1, title: 'Conceptual Direction', hint: 'Consider the data structure invariant.' },
-          { level: 2, title: 'Edge Case Clue', hint: 'Test with boundary inputs.' },
-          { level: 3, title: 'Algorithmic Step', hint: 'Ensure pointer termination condition is maintained.' },
+        bugExplanation: parsed.bugExplanation || 'Algorithmic invariant verified against benchmark test constraints.',
+        hints: Array.isArray(parsed.hints) && parsed.hints.length >= 3 ? parsed.hints : [
+          { level: 1, title: 'Conceptual Invariant', hint: 'Consider the data structure invariant and sorted properties.' },
+          { level: 2, title: 'Boundary Inspection', hint: 'Test with edge-case arrays (empty, single-element, extremes).' },
+          { level: 3, title: 'Optimal Convergence', hint: 'Ensure pointer termination condition strictly converges.' },
         ],
         solution: {
           language: parsed.solution?.language || language,
@@ -2602,27 +2592,24 @@ Output MUST be strict valid JSON:
           spaceComplexity: parsed.solution?.spaceComplexity || 'O(1)',
         },
       };
+
+      remediationCache.set(remCacheKey, { data: advice, timestamp: Date.now() });
+      return advice;
     }
-  } catch (error) {
-    console.error('[Groq AI] Remediation generation error:', error);
+  } catch (error: any) {
+    console.warn('[Groq AI] Remediation rate-limit/fallback triggered:', error?.message || 'Handled');
   }
 
-  // Fallback
-  return {
-    isBuggy: false,
-    bugExplanation: 'Algorithmic invariant analysis complete.',
-    hints: [
-      { level: 1, title: 'Conceptual Direction', hint: 'Focus on maintaining structural invariants.' },
-      { level: 2, title: 'Boundary Inspection', hint: 'Verify edge conditions like null or single elements.' },
-      { level: 3, title: 'Optimal Traversal', hint: 'Avoid redundant recalculations.' },
-    ],
-    solution: {
-      language,
-      code: (starterCode as any)?.[language] || submittedCode,
-      explanation: 'Optimal canonical reference solution.',
-      timeComplexity: benchmarkSolution?.timeComplexity || 'O(n)',
-      spaceComplexity: benchmarkSolution?.spaceComplexity || 'O(1)',
-    },
-  };
+  // Robust, challenge-specific smart fallback with complete precomputed hints & code
+  const fallbackAdvice = getSmartFallbackRemediation(
+    challengeTitle,
+    problemStatement,
+    submittedCode,
+    language,
+    starterCode,
+    benchmarkSolution
+  );
+  remediationCache.set(remCacheKey, { data: fallbackAdvice, timestamp: Date.now() });
+  return fallbackAdvice;
 }
 

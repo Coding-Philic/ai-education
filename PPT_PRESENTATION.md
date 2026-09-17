@@ -2,43 +2,63 @@
 ## Pitch Deck for Lenovo LEAP AI Hackathon 2026
 
 **Track:** Generative AI & Deep Tech Skilling in Education  
+**Platform URL:** `http://localhost:3000`  
 **Format:** 12-Slide Pitch Deck (Ready for Canva, Google Slides, or Keynote)  
-**Target Time:** 4 to 5 Minutes + 2 Minutes Live Demo  
+**Target Time:** 4 to 5 Minutes Presentation + Live Demo  
+
+---
+
+## 🎨 Official Website Theme & Design System (For Slide Styling)
+
+To ensure your presentation perfectly matches the CogniFlow AI website theme, use the following design specifications when building your slides in Canva, Keynote, or Google Slides:
+
+* **Background Color:** `#090d16` (Deep Obsidian Slate)
+* **Card & Container Surfaces:** `#0d1322` with `1px solid rgba(51, 65, 85, 0.6)` border and `16px (rounded-2xl)` radius
+* **Primary Brand Gradient:** `linear-gradient(135deg, #10b981 0%, #06b6d4 100%)` (Emerald to Cyan)
+* **Secondary Brand Accent:** `linear-gradient(135deg, #8b5cf6 0%, #38bdf8 100%)` (Electric Violet to Sky Blue)
+* **Primary Headings:** `#f8fafc` (Slate 50) — Modern Clean Sans-Serif (Inter / Outfit / Geist)
+* **Muted / Secondary Text:** `#94a3b8` (Slate 400)
+* **Code / AST Highlights:** Monospace font (JetBrains Mono / Fira Code) in `#34d399` (Emerald 400) with `#064e3b` container background
+* **Status Badges:** Minimalist glassmorphic pill badges (`bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full px-3 py-1 text-xs`)
+* **Design Aesthetic:** Dark mode, clean glassmorphism, zero clutter, high-contrast readability, sleek tech workbench feel.
 
 ---
 
 ### Slide 1: Title & Vision Hook
 * **Slide Title:** **CogniFlow AI**
-* **Subtitle:** The Next-Generation Autonomous Visual Learning & Cognitive Skill Diagnostic OS
+* **Subtitle:** Next-Generation Autonomous Visual Learning & Cognitive Skill Diagnostic Web Platform
 * **Tagline:** *"Turning Abstract Code into Living, Interactive Visual Computations."*
-* **Visual Layout:**
-  - Sleek dark theme (`#030712`) with vibrant teal and emerald neon gradient accents.
-  - Mockup of the CogniFlow dashboard showing the dynamic Tree Visualizer and the Skill Radar.
-  - Team Name & Lenovo LEAP AI Hackathon 2026 badge.
+* **Theme & Layout:**
+  - Background: `#090d16` with faint glowing emerald/cyan radial background blur.
+  - Center: Clean glassmorphic card (`#0d1322`) showing the CogniFlow logo and subtitle.
+  - Bottom Bar: Minimalist pill badges: `[DSA Visual Trace Canvas]` `[Chai SQLab]` `[System Design Chaos Simulator]` `[Groq LPU Accelerated]`.
 * **Presenter Talking Points:**
-  > *"Good morning respected judges! Today, millions of students are practicing code on LeetCode and watching YouTube tutorials, yet less than 15% can pass a core product-firm technical interview. Why? Because existing platforms are blind black-boxes. Today, we introduce **CogniFlow AI** — the first platform that compiles arbitrary student code into living, line-synchronized visual execution traces in under 20 milliseconds."*
+  > *"Good morning respected judges! Today, millions of engineering students practice code on LeetCode and watch YouTube tutorials, yet over 85% struggle in core technical interviews. Why? Because existing platforms are blind black-boxes. Today, we present **CogniFlow AI** — a unified interactive web platform that compiles student code into living, line-synchronized visual execution traces in under 20 milliseconds."*
 
 ---
 
 ### Slide 2: The Core Problem — The "Black-Box" Coding Crisis
 * **Slide Title:** **The Engineering Education Bottleneck**
-* **Key Visual:** Split screen comparing "How Students Learn Today" vs "What the Brain Needs".
+* **Theme & Layout:**
+  - Left Card (Red/Dark border `#ef444433`): *"How Students Learn Today (The Flawed Reality)"*
+  - Right Card (Emerald/Dark border `#10b98133`): *"What Cognitive Mastery Demands"*
 * **Key Bullet Points:**
-  - **The Black-Box Execution Gap:** LeetCode and HackerRank tell you *if* code passed (`Accepted` or `Wrong Answer`), never *how* memory, pointers, and variables mutated step-by-step.
-  - **Fragility of Existing Tools:** VisuAlgo and YouTube animations are **100% static and hardcoded** — change one variable name or input, and the visualization shatters.
-  - **The AI Spoon-Feeding Trap:** ChatGPT dumps complete solution code, destroying the cognitive grit required to learn invariant debugging.
-  - **The Tier 2/3 Placement Tragedy:** Over 1.5 million engineering graduates in India, but less than 15% possess genuine algorithmic intuition.
+  - **The Black-Box Gap:** LeetCode and HackerRank tell you *if* code passed (`Accepted` or `Wrong Answer`), never *how* memory, pointers, and variables mutate at each line.
+  - **Fragility of Existing Tools:** VisuAlgo and static videos are **100% hardcoded** — change one variable name or input array, and the visualization fails.
+  - **The AI Copy-Paste Trap:** ChatGPT dumps complete code solutions directly, eliminating the cognitive friction required to develop algorithmic intuition.
+  - **Tier 2/3 Placement Crisis:** Over 1.5 million engineering graduates annually in India, but less than 15% possess genuine algorithmic debugging intuition.
 * **Presenter Talking Points:**
-  > *"When a student writes a Two-Pointer or Binary Tree algorithm, the execution happens invisibly in RAM. If an invariant fails at loop iteration 12, they have no idea why. They either give up or ask ChatGPT for the code. This creates students who memorize syntax but fail fundamental engineering reasoning."*
+  > *"When a student writes a Two-Pointer or Binary Search algorithm, the execution happens invisibly inside RAM. If an invariant fails at iteration 12, they have no idea why. They either give up or ask ChatGPT for the code. This produces students who memorize syntax but lack fundamental engineering reasoning."*
 
 ---
 
 ### Slide 3: The Solution — CogniFlow AI Triad
-* **Slide Title:** **The CogniFlow AI Multi-Domain Triad**
-* **Key Visual:** 3-pillar glassmorphism card layout with neon glow icons.
-* **The 3 Pillars:**
-  1. **Dynamic DSA Visualizer:** 18-22 granular animation frames for ANY code; line-by-line synchronized highlighting and live memory pointer tracking.
-  2. **Chai SQLab:** Real-time relational database query visualizer; row-by-row animated JOIN pipelines and visual `EXPLAIN` query trees.
+* **Slide Title:** **The CogniFlow AI Unified Web Platform**
+* **Theme & Layout:**
+  - 3 Glassmorphic Cards (`#0d1322`) side-by-side with subtle hover borders and cyan/emerald glowing icons:
+* **The 3 Core Labs:**
+  1. **Dynamic DSA Visualizer:** 18 to 22 granular animation frames for user code; line-by-line synchronized highlighting and live memory pointer tracking.
+  2. **SQLab:** Real-time in-browser relational query visualizer; animated row-by-row JOIN pipelines and visual `EXPLAIN` query trees.
   3. **System Design Chaos Simulator:** Interactive distributed topology canvas with live request packet flows (up to 30,000 RPS) and real-time Chaos Engineering fault injection.
 * **Presenter Talking Points:**
   > *"CogniFlow AI solves this by introducing a unified triad of computer science fundamentals: Dynamic DSA execution, interactive SQL relational execution, and distributed system design chaos modeling — all tied together by an autonomous AI diagnostic tutor."*
@@ -46,8 +66,10 @@
 ---
 
 ### Slide 4: Core Architectural Innovation — Code-to-Animation Compiler
-* **Slide Title:** **Under the Hood: Real-Time AST Trace Compiler**
-* **Key Visual:** Flow diagram of the Two-Stage AI Execution Architecture.
+* **Slide Title:** **Architecture: Real-Time AST Trace Compiler**
+* **Theme & Layout:**
+  - Horizontal pipeline flow diagram on dark slate background:
+  - `[Student Code]` ➔ `[AST Simulation Engine (<20ms)]` ➔ `[18-22 Frame Trace]` ➔ `[Groq LPU Async Reasoning (<1s)]` ➔ `[Socratic Clues & Skill Radar]`
 * **Key Bullet Points:**
   - **Stage 1 (Immediate Trace — < 20ms):** Custom AST simulation engine runs client-side/edge in milliseconds, producing 18 to 22 granular frames without LLM token delays.
   - **Stage 2 (Async Socratic AI Tutor — < 1s):** Groq Cloud LPU acceleration (`qwen/qwen3.8-27b`) analyzes code logic, edge cases, and time/space invariants in the background.
@@ -60,21 +82,22 @@
 ### Slide 5: Live Demonstration — DSA Visual Trace
 * **Slide Title:** **LIVE DEMO: DSA Dynamic Visualizer**
 * **[LIVE DEMO TRANSITION CUE]**
-* **Demo Steps on Screen:**
-  1. Open challenge: *Symmetric Tree: Mirror Reflection (LC 101)* or *Two Sum II (LC 167)*.
+* **Demo Steps on Screen (at `localhost:3000`):**
+  1. Open challenge: *Two Sum II: Input Array Is Sorted (LC 167)* or *Symmetric Tree (LC 101)*.
   2. Show custom Python/JS code in the editor.
   3. Click **"Run & Visualize (Any Algorithm)"**.
-  4. Point out the terminal log: `✓ Execution trace generated in 18ms` | `Visual animation frames: 20`.
-  5. Show the playback controls: step forward, step backward, scrubbing between Frame 1 and Frame 20.
-  6. Highlight how the exact Python line lights up in emerald green as pointers compare nodes in memory!
+  4. Point out the terminal log: `✓ Execution trace generated in 18ms` | `Visual animation frames: 22`.
+  5. Show the playback controls: step forward, step backward, scrubbing between Frame 1 and Frame 22.
+  6. Highlight how the exact Python line lights up in emerald green as pointers compare numbers in memory!
 * **Presenter Talking Points:**
-  > *"Let's watch this live! Notice we don't just show 5 frames. CogniFlow generates 20 exhaustive animation frames! Watch how Frame 5 evaluates the root, Frame 6 steps into Level 1 outer children, Frame 8 checks the leaf boundary, and the editor highlights the exact matching return statement. Every single variable in our Variable Inspector is live."*
+  > *"Let's watch this live! Notice we don't just show 5 frames. CogniFlow generates 22 exhaustive animation frames! Watch how Frame 4 checks the while condition, Frame 5 reads numbers[left] and numbers[right], Frame 6 calculates current_sum, and the editor highlights the exact matching line. Every single variable in our Variable Inspector is live."*
 
 ---
 
 ### Slide 6: Live Demonstration — SQL Lab & System Design
 * **Slide Title:** **LIVE DEMO: Relational Engine & Chaos Simulator**
-* **Key Visual:** Split screen showing SQL Join animation and System Design packet flows.
+* **Theme & Layout:**
+  - Split screen showing the Chai SQLab Relational Canvas and the Distributed System Design Topology Canvas.
 * **Key Features Demonstrated:**
   - **SQL Lab:** Run `SELECT s.name, c.title FROM students s JOIN enrollments e...` and watch row-by-row animated matching into the result set table.
   - **System Design Simulator:** Watch ingress traffic dispatching at 30,000 RPS through Load Balancer to Caches and DB replicas.
@@ -84,22 +107,24 @@
 
 ---
 
-### Slide 7: AI Socratic Tutoring (No Answer Spoilers)
+### Slide 7: Socratic AI Tutoring (No Answer Spoilers)
 * **Slide Title:** **Pedagogical AI: Teaching How to Think, Not What to Copy**
-* **Key Visual:** The 3-Tier Progressive Hint Drawer interface card.
+* **Theme & Layout:**
+  - Dark container card showing the 3-Tier Progressive Hint Drawer:
 * **Key Bullet Points:**
   - **Level 1 — Conceptual Direction:** High-level algorithmic nudge focusing on structural invariants.
   - **Level 2 — Edge-Case Clue:** Pinpoints specific boundary conditions (e.g., negative sums, null leaf descendants).
   - **Level 3 — Algorithmic Step:** Concrete guidance on pointer transition logic without dumping the full code.
   - **AI Defect Doctor:** Automatically isolates invariant violations and off-by-one errors.
 * **Presenter Talking Points:**
-  > *"Unlike ChatGPT which dumps the answer and kills learning, CogniFlow acts as an elite Socratic mentor. It gives Level 1 conceptual clues, Level 2 boundary clues, and only guides the student to discover the solution themselves."*
+  > *"Unlike ChatGPT which dumps the answer and kills learning, CogniFlow acts as an elite Socratic mentor. It gives Level 1 conceptual clues, Level 2 boundary clues, and guides the student to discover the solution themselves."*
 
 ---
 
 ### Slide 8: Skill Gap Radar & Adaptive Student Profiling
 * **Slide Title:** **Autonomous Cognitive Diagnostic Core**
-* **Key Visual:** High-resolution 5-axis Skill Radar chart (DSA, Optimization, SQL, System Design, Speed).
+* **Theme & Layout:**
+  - Central 5-axis Skill Radar chart (DSA, Optimization, SQL, System Design, Speed) with glowing cyan fill.
 * **Key Bullet Points:**
   - **Real-Time Skill Gap Score (0 - 100):** Continuously scores conceptual mastery vs invariant failure.
   - **Root Cause Defect Analysis:** Flags algorithmic antipatterns (e.g., nested $O(N^2)$ loops instead of two pointers, Cartesian products in SQL).
@@ -111,9 +136,10 @@
 
 ### Slide 9: Measurable Educational Impact
 * **Slide Title:** **Empowering 1.5M+ Engineering Students**
-* **Key Visual:** Comparison graph showing Retention & Comprehension Rates.
+* **Theme & Layout:**
+  - High-impact stat metric cards (`#0d1322` cards with bold emerald stats):
 * **Key Metrics:**
-  - **4x Higher Conceptual Retention:** Dual-coding visual memory reinforces syntax understanding.
+  - **4x Higher Conceptual Retention:** Dual-coding visual memory reinforces syntax understanding (Paivio's Dual-Coding Theory).
   - **80% Faster Bug Isolation:** Students identify off-by-one and boundary errors visually instead of blindly print-debugging.
   - **Democratizing Tier 2 & Tier 3 Colleges:** Brings world-class interactive mentorship to colleges without dedicated placement training infrastructure.
 * **Presenter Talking Points:**
@@ -123,7 +149,8 @@
 
 ### Slide 10: Business Model & Monetization Engine
 * **Slide Title:** **Scalable B2C & B2B Revenue Architecture**
-* **Key Visual:** 3-Stream Revenue Funnel Graphic.
+* **Theme & Layout:**
+  - 3-Column pricing tier layout matching CogniFlow's sleek dark theme:
 * **The 3 Streams:**
   1. **B2C Freemium Model:**
      - Free: Core starter problem library & standard animations.
@@ -139,33 +166,23 @@
 
 ### Slide 11: Competitive Advantage Matrix
 * **Slide Title:** **Why CogniFlow AI Wins**
-* **Key Visual:** Feature comparison table with green checkmarks highlighting CogniFlow.
+* **Theme & Layout:**
+  - Clean comparison matrix with emerald checkmarks for CogniFlow and muted crosses for competitors.
 * **Key Highlights:**
   - **Dynamic Code:** Visualizes ANY user code (vs VisuAlgo's hardcoded scripts).
   - **Granular Depth:** 18 to 22 detailed execution frames (vs 5 static steps).
   - **Multi-Domain:** DSA + SQL + System Design unified (vs single-topic platforms).
   - **Socratic Tutoring:** Progressive hints without spoilers (vs ChatGPT code dumps).
 * **Presenter Talking Points:**
-  > *"VisuAlgo is static. LeetCode is blind. ChatGPT spoils the answer. CogniFlow AI is the only platform that dynamically animates arbitrary code, teaches with Socratic hints, and bridges DSA, SQL, and System Design together."*
+  > *"VisuAlgo is static. LeetCode is blind. ChatGPT spoils the answer. CogniFlow AI is the comprehensive platform that dynamically animates arbitrary code, teaches with Socratic hints, and bridges DSA, SQL, and System Design together."*
 
 ---
 
-### Slide 12: Roadmap & Future Vision
-* **Slide Title:** **The Roadmap: Scaling Visual Education**
-* **Key Visual:** 3-quarter forward milestone timeline.
-* **Milestones:**
-  - **Q2 2026:** Multi-Modal Voice AI Pair Programmer (live conversational debugging).
-  - **Q3 2026:** VS Code & JetBrains Extension (visualize memory frames directly inside the student's local IDE).
-  - **Q4 2026:** Peer-to-Peer Collaborative Visual Canvas (live multi-student pair programming and competitive visualization battles).
-* **Presenter Talking Points:**
-  > *"Our vision is to bring visual computing to every developer screen. Next up is our VS Code extension, allowing developers worldwide to visualize memory directly inside their IDEs."*
-
----
-
-### Slide 13: Team & Conclusion — Call to Action
+### Slide 12: Team & Conclusion — Call to Action
 * **Slide Title:** **Empowering the Next Generation of Engineers**
-* **Key Visual:** CogniFlow platform logo, team credentials, GitHub QR code, and Lenovo LEAP Hackathon thank you badge.
+* **Theme & Layout:**
+  - CogniFlow branding, Lenovo LEAP Hackathon badge, GitHub repository link, and team details.
 * **Closing Tagline:**
   *"CogniFlow AI: Because Great Engineers Aren't Made by Memorizing Code — They're Made by Seeing It Come Alive."*
 * **Presenter Talking Points:**
-  > *"Thank you judges! We invite you to try CogniFlow AI live right now at localhost:3000. We are ready for your questions!"*
+  > *"Thank you judges! We invite you to experience CogniFlow AI live right now at localhost:3000. We are ready for your questions!"*

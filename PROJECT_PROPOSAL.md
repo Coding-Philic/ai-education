@@ -1,5 +1,5 @@
 # PROJECT PROPOSAL: CogniFlow AI
-## The Next-Generation Autonomous AI-Powered Visual Learning & Adaptive Skill Diagnostic Operating System
+## The Next-Generation Autonomous AI-Powered Visual Learning & Adaptive Skill Diagnostic Web Platform
 
 **Hackathon Track:** International / Premier Tier — Lenovo LEAP AI Hackathon 2026  
 **Theme:** AI in Education, Deep Tech Skilling & Personalized Pedagogy  
@@ -17,7 +17,7 @@ While these legacy platforms tell a user *if* their code passed or failed a test
 2. They offer **no real-time dynamic visual feedback** for custom student code written in arbitrary styles or programming languages.
 3. When edge cases or logical bugs occur, legacy platforms either dump a cryptic error message or encourage students to look up full solutions, destroying genuine problem-solving development.
 
-**CogniFlow AI** transforms this experience into a world-class, real-time, AI-driven visual learning operating system. Powered by ultra-low-latency Groq Cloud LPUs (`llama-3.3-70b-versatile` and `deepseek-r1-distill`), CogniFlow AI parses arbitrary student code written in **Python, JavaScript, Java, or C++** in real time (`< 400ms`), dynamically synthesizes animated step-by-step visual execution frames (pointers, array states, recursion trees, and memory scopes), synchronizes line-by-line code highlighting with pointer movements, and provides Socratic edge-case hints rather than spoon-feeding answers.
+**CogniFlow AI** transforms this experience into a world-class, real-time, AI-driven visual learning web platform. Powered by ultra-low-latency Groq Cloud LPUs (`llama-3.3-70b-versatile` and `deepseek-r1-distill`), CogniFlow AI parses arbitrary student code written in **Python, JavaScript, Java, or C++** in real time (`< 400ms`), dynamically synthesizes animated step-by-step visual execution frames (pointers, array states, recursion trees, and memory scopes), synchronizes line-by-line code highlighting with pointer movements, and provides Socratic edge-case hints rather than spoon-feeding answers.
 
 Beyond algorithmic problem-solving (DSA), CogniFlow AI provides a unified triad of computer science fundamentals: **DSA Visualizer**, **Chai SQLab** (interactive relational query execution engine), and **Distributed System Design Chaos Simulator**. Furthermore, an **Autonomous AI Diagnostic Roadmap Engine** calibrates personalized, task-driven learning paths based on the student's cognitive level, tracks progress dynamically, sends reminders, and re-routes the curriculum in real time based on observed learner performance.
 

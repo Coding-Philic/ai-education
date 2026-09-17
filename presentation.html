@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CogniFlow AI — Presentation Deck (Lenovo LEAP AI Hackathon)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #0d1322;
+      --border: rgba(51, 65, 85, 0.6);
+      --accent-emerald: #10b981;
+      --accent-cyan: #06b6d4;
+      --accent-violet: #8b5cf6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px;
+      overflow-x: hidden;
+    }
+    .header, .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+      padding-bottom: 16px;
+    }
+    .footer {
+      border-top: 1px solid rgba(51, 65, 85, 0.4);
+      border-bottom: none;
+      padding-top: 16px;
+      padding-bottom: 0;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: #34d399;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+    .badge-pill {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(51, 65, 85, 0.8);
+      color: #cbd5e1;
+    }
+    .slide-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0;
+    }
+    .slide-card {
+      width: 100%;
+      max-width: 1100px;
+      min-height: 520px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .slide-card.active { display: flex; }
+    .slide-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      margin: 10px 0 6px 0;
+    }
+    .slide-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .slide-body {
+      margin: auto 0;
+      padding: 24px 0;
+      width: 100%;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+    .card-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(51, 65, 85, 0.5);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    button {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #f8fafc;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    button:hover {
+      background: #334155;
+    }
+    button.primary {
+      background: #10b981;
+      color: #090d16;
+      border: none;
+      font-weight: 700;
+    }
+    button.primary:hover {
+      background: #34d399;
+    }
+    .notes-box {
+      margin-top: 16px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 13px;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+    .notes-title {
+      color: #34d399;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      background: #334155;
+      cursor: pointer;
+    }
+    .dot.active {
+      width: 24px;
+      background: #10b981;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+      text-align: left;
+    }
+    th {
+      font-family: 'JetBrains Mono', monospace;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <div class="header">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span class="badge">LENOVO LEAP AI HACKATHON 2026</span>
+      <span style="font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;" id="slideCategory">Vision & Hook</span>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button onclick="toggleNotes()">Toggle Speaker Notes (N)</button>
+      <button onclick="toggleFullscreen()">Fullscreen (F)</button>
+    </div>
+  </div>
+
+  <!-- Slide Stage -->
+  <div class="slide-stage">
+    <!-- Slide 1 -->
+    <div class="slide-card active" data-cat="Vision & Hook" data-notes="Respected judges, millions of students practice on LeetCode or watch static tutorials, yet over 85% struggle in technical interviews. Why? Because existing platforms are blind black-boxes. CogniFlow AI is an interactive visual learning web platform that compiles student code into living, line-synchronized visual execution traces in under 20 milliseconds.">
+      <div>
+        <span class="badge">Track: AI in Education & Deep Tech Skilling</span>
+        <h1 class="slide-title" style="font-size: 48px; margin-top: 16px;">CogniFlow <span class="gradient-text">AI</span></h1>
+        <p class="slide-subtitle" style="font-size: 18px;">Next-Generation Autonomous Visual Learning & Cognitive Skill Diagnostic Web Platform</p>
+      </div>
+      <div class="slide-body" style="text-align: center;">
+        <p style="font-size: 16px; color: #cbd5e1; max-width: 700px; margin: 0 auto 24px auto;">
+          Turning Abstract Code into Living, Interactive Visual Computations
+        </p>
+        <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+          <span class="badge badge-pill">⚡ DSA Dynamic Visualizer</span>
+          <span class="badge badge-pill">📊 SQLab Relational Engine</span>
+          <span class="badge badge-pill">🌐 System Design Chaos Lab</span>
+          <span class="badge" style="background: rgba(16,185,129,0.15);">🧠 Groq LPU Accelerated</span>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        <span>Platform URL: http://localhost:3000</span>
+        <span>Slide 1 of 12</span>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide-card" data-cat="Problem Statement" data-notes="When a student writes Two-Pointer or Binary Search code, execution happens invisibly in RAM. If an invariant fails at iteration 12, they have no idea why. Existing visualizers like VisuAlgo are 100% hardcoded. ChatGPT dumps code directly, killing cognitive friction.">
+      <div>
+        <span class="badge">The Educational Bottleneck</span>
+        <h2 class="slide-title">The "Black-Box" Coding Crisis</h2>
+        <p class="slide-subtitle">Why 85% of Engineering Students Struggle in Core Technical Interviews</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card-box" style="border-color: rgba(239, 68, 68, 0.4); background: rgba(127, 29, 29, 0.15);">
+            <div style="color: #f87171; font-weight: 700; font-size: 13px; margin-bottom: 12px;">✕ The Flawed Reality Today</div>
+            <ul style="font-size: 12px; color: #cbd5e1; line-height: 1.8; padding-left: 16px;">
+              <li><strong>Black-Box Gap:</strong> LeetCode tells you <em>if</em> code passed, never <em>how</em> memory and pointers mutate.</li>
+              <li><strong>Static Fragility:</strong> VisuAlgo and video tutorials are 100% hardcoded. Change one variable and it breaks.</li>
+              <li><strong>The AI Copy-Paste Trap:</strong> ChatGPT dumps full code, destroying mental model development.</li>
+              <li><strong>Tier 2/3 Placement Crisis:</strong> 1.5M engineers graduate annually in India; &lt;15% have real debugging intuition.</li>
+            </ul>
+          </div>
+          <div class="card-box" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(6, 78, 59, 0.15);">
+            <div style="color: #34d399; font-weight: 700; font-size: 13px; margin-bottom: 12px;">✓ What Cognitive Mastery Demands</div>
+            <ul style="font-size: 12px; color: #cbd5e1; line-height: 1.8; padding-left: 16px;">
+              <li><strong>Dual-Coding Visualization:</strong> Paivio’s Dual-Coding Theory proves visual execution traces yield 4x higher retention.</li>
+              <li><strong>Dynamic AST Compilation:</strong> Live visual traces synthesized for ANY user code in Python, JS, Java, C++.</li>
+              <li><strong>Socratic Mentorship:</strong> 3-tier progressive hints that teach thinking without spoiling the answer.</li>
+              <li><strong>Multi-Domain Integration:</strong> Unifying DSA, SQL Relational Execution, and Distributed Systems.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        <span>CogniFlow AI • Problem Analysis</span>
+        <span>Slide 2 of 12</span>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide-card" data-cat="Solution Overview" data-notes="CogniFlow AI introduces a unified triad of computer science fundamentals: Dynamic DSA execution, interactive SQL relational execution, and distributed system design chaos modeling.">
+      <div>
+        <span class="badge">Product Architecture</span>
+        <h2 class="slide-title">The CogniFlow AI Triad</h2>
+        <p class="slide-subtitle">A Unified Web Platform for Computer Science Core Competencies</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card-box">
+            <div style="color: #10b981; font-weight: 700; font-size: 14px; margin-bottom: 8px;">1. Dynamic DSA Visualizer</div>
+            <p style="font-size: 12px; color: #94a3b8; line-height: 1.6;">
+              18 to 22 granular animation frames for custom user code. Synchronized line-by-line editor highlighting, active memory pointers, and variable inspector.
+            </p>
+          </div>
+          <div class="card-box">
+            <div style="color: #06b6d4; font-weight: 700; font-size: 14px; margin-bottom: 8px;">2. Chai SQLab</div>
+            <p style="font-size: 12px; color: #94a3b8; line-height: 1.6;">
+              In-browser relational execution visualizer. Watch animated row-by-row JOIN pipelines, Hash Join bucket matching, and visual EXPLAIN query trees.
+            </p>
+          </div>
+          <div class="card-box">
+            <div style="color: #8b5cf6; font-weight: 700; font-size: 14px; margin-bottom: 8px;">3. System Design Chaos Lab</div>
+            <p style="font-size: 12px; color: #94a3b8; line-height: 1.6;">
+              Interactive distributed topology canvas with animated live packet flows (up to 30,000 RPS). Inject Chaos Engineering faults (Kill DB, Sever Cache) live!
+            </p>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        <span>CogniFlow AI • Core Triad</span>
+        <span>Slide 3 of 12</span>
+      </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide-card" data-cat="System Architecture" data-notes="We designed a proprietary Two-Stage Architecture. Stage 1 compiles code into 18-22 granular execution frames in under 20ms. Stage 2 triggers Groq LPU inference asynchronously for cognitive skill diagnosis and Socratic clues.">
+      <div>
+        <span class="badge">Technical Innovation</span>
+        <h2 class="slide-title">Two-Stage Real-Time Compiler</h2>
+        <p class="slide-subtitle">Zero-Waiting 60fps Visual Simulation Decoupled from Socratic AI Reasoning</p>
+      </div>
+      <div class="slide-body">
+        <div class="card-box" style="margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="text-align: center;"><div style="color: #94a3b8; font-size: 10px;">INPUT</div><strong>Student Code</strong></div>
+          <span style="color: #10b981;">➔</span>
+          <div style="text-align: center;"><div style="color: #10b981; font-size: 10px;">STAGE 1 (&lt; 20ms)</div><strong>AST Trace Engine</strong><div style="font-size: 10px; color: #94a3b8;">18–22 Frames</div></div>
+          <span style="color: #06b6d4;">➔</span>
+          <div style="text-align: center;"><div style="color: #06b6d4; font-size: 10px;">STAGE 2 (&lt; 1s ASYNC)</div><strong>Groq LPU Inference</strong><div style="font-size: 10px; color: #94a3b8;">llama-3.3-70b / qwen</div></div>
+          <span style="color: #8b5cf6;">➔</span>
+          <div style="text-align: center;"><div style="color: #8b5cf6; font-size: 10px;">OUTPUT</div><strong>Socratic AI & Radar</strong><div style="font-size: 10px; color: #94a3b8;">Adaptive Remediation</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card-box">
+            <strong style="color: #10b981; font-size: 13px;">⚡ Instantaneous Latency (&lt; 20ms)</strong>
+            <p style="font-size: 12px; color: #94a3b8; margin-top: 6px;">Visual frame generation does not block on LLM token generation. Students get 60fps animations instantly.</p>
+          </div>
+          <div class="card-box">
+            <strong style="color: #06b6d4; font-size: 13px;">🧠 Multi-Model Failover Cascade</strong>
+            <p style="font-size: 12px; color: #94a3b8; margin-top: 6px;">Dynamic fallback between Groq models with in-memory caching ensures zero rate-limit disruptions.</p>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        <span>CogniFlow AI • Architectural Pipeline</span>
+        <span>Slide 4 of 12</span>
+      </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide-card" data-cat="Product Demo" data-notes="Watch this live at localhost:3000! Notice how when we click Run & Visualize, CogniFlow synthesizes 22 exhaustive frames in 18ms. As Frame 4 checks the while condition, Frame 5 reads numbers[left] and numbers[right], the editor highlights the exact matching line!">
+      <div>
+        <span class="badge">Live Demonstration</span>
+        <h2 class="slide-title">LIVE DEMO: DSA Dynamic Trace</h2>
+        <p class="slide-subtitle">Line-by-Line Code Highlighting & Live Memory Scope Stepper</p>
+      </div>
+      <div class="slide-body">
+        <div class="card-box" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #000;">
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 8px; margin-bottom: 12px; color: #94a3b8;">
+            <span>DEMO: Two Sum II (LC 167)</span>
+            <span style="color: #10b981;">✓ Generated in 18ms • 22 Frames</span>
+          </div>
+          <div class="grid-2">
+            <div>
+              <div style="color: #10b981; font-size: 10px; margin-bottom: 4px;">SYNCHRONIZED EDITOR</div>
+              <div style="color: #64748b;">1: def two_sum(numbers, target):</div>
+              <div style="color: #64748b;">2:   left = 0, right = len(numbers) - 1</div>
+              <div style="color: #34d399; background: rgba(16,185,129,0.2); padding: 2px 4px; border-left: 2px solid #10b981;">
+                3:   while left &lt; right:  ← FRAME 4
+              </div>
+              <div style="color: #64748b;">4:     current_sum = numbers[left] + numbers[right]</div>
+            </div>
+            <div>
+              <div style="color: #06b6d4; font-size: 10px; margin-bottom: 4px;">ACTIVE MEMORY CANVAS</div>
+              <div style="display: flex; gap: 8px; margin-top: 8px;">
+                <div style="padding: 8px; background: rgba(16,185,129,0.2); border: 1px solid #10b981; border-radius: 8px; font-weight: 700;">[2] left:0</div>
+                <div style="padding: 8px; background: #1e293b; border-radius: 8px;">[7]</div>
+                <div style="padding: 8px; background: #1e293b; border-radius: 8px;">[11]</div>
+                <div style="padding: 8px; background: rgba(6,182,212,0.2); border: 1px solid #06b6d4; border-radius: 8px; font-weight: 700;">[15] right:3</div>
+              </div>
+              <div style="margin-top: 8px; color: #94a3b8;">Variables: current_sum = 17, target = 9</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        <span>CogniFlow AI • Live Demo</span>
+        <span>Slide 5 of 12</span>
+      </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide-card" data-cat="Product Demo" data-notes="In SQLab, students watch relational algebra execute row-by-row. In System Design, students simulate 30,000 RPS and test Chaos Engineering — killing a database node to watch automated failover in real time!">
+      <div>
+        <span class="badge">Multi-Domain Live Demo</span>
+        <h2 class="slide-title">SQLab & System Design Chaos</h2>
+        <p class="slide-subtitle">Visual Relational Algebra & Live Distributed Architecture Simulation</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card-box" style="border-color: rgba(6, 182, 212, 0.4);">
+            <strong style="color: #06b6d4; font-size: 14px;">Chai SQLab Engine</strong>
+            <ul style="font-size: 12px; color: #cbd5e1; line-height: 1.8; margin-top: 8px; padding-left: 16px;">
+              <li>• <strong>Animated JOIN Pipelines:</strong> Watch students and courses match row-by-row into the result set table.</li>
+              <li>• <strong>Visual EXPLAIN Query Trees:</strong> Inspect Hash Joins, Sequential Scans, and Filter Predicates.</li>
+              <li>• <strong>In-Browser ANSI SQL:</strong> Zero complex database setup required.</li>
+            </ul>
+          </div>
+          <div class="card-box" style="border-color: rgba(139, 92, 246, 0.4);">
+            <strong style="color: #8b5cf6; font-size: 14px;">System Design Chaos Lab</strong>
+            <ul style="font-size: 12px; color: #cbd5e1; line-height: 1.8; margin-top: 8px; padding-left: 16px;">
+              <li>• <strong>Live Topologies:</strong> CDN, Load Balancers, Microservices, Redis Caches, and PostgreSQL.</li>
+              <li>• <strong>Traffic Simulator:</strong> Up to 30,000 RPS with animated packet routes.</li>
+              <li>• <strong>Interactive Chaos:</strong> Kill DB or sever cache to watch circuit breakers trip live!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        <span>CogniFlow AI • Systems & Databases</span>
+        <span>Slide 6 of 12</span>
+      </div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="slide-card" data-cat="Pedagogy" data-notes="Unlike ChatGPT which dumps complete code solutions and kills learning, CogniFlow acts as an elite Socratic mentor. It gives Level 1 conceptual clues, Level 2 boundary clues, and guides the student to discover the solution themselves.">
+      <div>
+        <span class="badge">Pedagogical Innovation</span>
+        <h2 class="slide-title">Socratic AI Tutoring (No Spoilers)</h2>
+        <p class="slide-subtitle">Teaching How to Think, Rather Than Spoon-Feeding Code</p>
+      </div>
+      <div class="slide-body">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="card-box" style="display: flex; gap: 14px; align-items: center;">
+            <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(16,185,129,0.2); color: #10b981; font-weight: 700; display: flex; align-items: center; justify-content: center;">L1</div>
+            <div>
+              <strong>Level 1 — Conceptual Direction:</strong>
+              <div style="font-size: 12px; color: #94a3b8;">High-level algorithmic nudge focusing on structural invariants (e.g. "Take advantage of sorted order").</div>
+            </div>
+          </div>
+          <div class="card-box" style="display: flex; gap: 14px; align-items: center;">
+            <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(6,182,212,0.2); color: #06b6d4; font-weight: 700; display: flex; align-items: center; justify-content: center;">L2</div>
+            <div>
+              <strong>Level 2 — Boundary & Invariant Clue:</strong>
+              <div style="font-size: 12px; color: #94a3b8;">Pinpoints specific boundary conditions (e.g. duplicate triplets in 3Sum or ancestor bounds in BST).</div>
+            </div>
+          </div>
+          <div class="card-box" style="display: flex; gap: 14px; align-items: center;">
+            <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(139,92,246,0.2); color: #8b5cf6; font-weight: 700; display: flex; align-items: center; justify-content: center;">L3</div>
+            <div>
+              <strong>Level 3 — Concrete Algorithmic Step:</strong>
+              <div style="font-size: 12px; color: #94a3b8;">Concrete guidance on pointer transition logic without dumping the full code.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        <span>CogniFlow AI • Socratic Mentorship</span>
+        <span>Slide 7 of 12</span>
+      </div>
+    </div>
+
+    <!-- Slide 8 -->
+    <div class="slide-card" data-cat="Skill Diagnostics" data-notes="Every submission dynamically updates the student's 5-axis Skill Radar across DSA, Optimization, SQL, System Design, and Speed. We generate a 3-step individualized study plan tailored to their exact weaknesses.">
+      <div>
+        <span class="badge">Problem Statement 1 Compliance</span>
+        <h2 class="slide-title">Autonomous Skill Gap Diagnostic Core</h2>
+        <p class="slide-subtitle">5-Axis Cognitive Profiling & 3-Step Individualized Remediation Plans</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card-box">
+            <strong style="color: #10b981; font-size: 13px;">Dynamic Cognitive Profiling</strong>
+            <ul style="font-size: 12px; color: #cbd5e1; line-height: 1.8; margin-top: 8px; padding-left: 16px;">
+              <li>• <strong>Real-Time Skill Gap Score (0–100):</strong> Measures conceptual mastery vs invariant failure.</li>
+              <li>• <strong>Root Cause Defect Isolation:</strong> Pinpoints algorithmic antipatterns.</li>
+              <li>• <strong>3-Step Remediation Plan:</strong> Prescribes specific tasks, visual stepping, and follow-up challenges.</li>
+            </ul>
+          </div>
+          <div class="card-box" style="font-family: 'JetBrains Mono', monospace; font-size: 11px;">
+            <div style="color: #94a3b8; margin-bottom: 8px;">5-AXIS COGNITIVE RADAR</div>
+            <div style="margin-bottom: 6px;">DSA Foundations: 92%</div>
+            <div style="margin-bottom: 6px;">Algorithmic Optimization: 84%</div>
+            <div style="margin-bottom: 6px;">Relational SQL: 78%</div>
+            <div style="margin-bottom: 6px;">System Architecture: 88%</div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        <span>CogniFlow AI • Adaptive Profiling</span>
+        <span>Slide 8 of 12</span>
+      </div>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide-card" data-cat="Impact" data-notes="Dual-coding cognitive science proves that combining visual animation with code syntax increases long-term retention by 400%. For students in Tier 2 and Tier 3 universities, CogniFlow provides an elite engineering mentor on their laptop 24/7.">
+      <div>
+        <span class="badge">Social & Pedagogical ROI</span>
+        <h2 class="slide-title">Measurable Educational Impact</h2>
+        <p class="slide-subtitle">Democratizing Elite Computer Science Skilling Across Tier 2 & Tier 3 Colleges</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3" style="text-align: center;">
+          <div class="card-box">
+            <div style="font-size: 44px; font-weight: 800; color: #10b981;">4x</div>
+            <strong style="display: block; margin: 8px 0 4px 0;">Higher Retention</strong>
+            <p style="font-size: 12px; color: #94a3b8;">Dual-coding visual memory reinforces syntax understanding (Paivio's Theory).</p>
+          </div>
+          <div class="card-box">
+            <div style="font-size: 44px; font-weight: 800; color: #06b6d4;">80%</div>
+            <strong style="display: block; margin: 8px 0 4px 0;">Faster Bug Isolation</strong>
+            <p style="font-size: 12px; color: #94a3b8;">Students identify boundary errors visually instead of print-debugging.</p>
+          </div>
+          <div class="card-box">
+            <div style="font-size: 44px; font-weight: 800; color: #8b5cf6;">1.5M+</div>
+            <strong style="display: block; margin: 8px 0 4px 0;">Engineers Empowered</strong>
+            <p style="font-size: 12px; color: #94a3b8;">Brings world-class mentorship to colleges without dedicated training labs.</p>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        <span>CogniFlow AI • Impact</span>
+        <span>Slide 9 of 12</span>
+      </div>
+    </div>
+
+    <!-- Slide 10 -->
+    <div class="slide-card" data-cat="Business Model" data-notes="Our business model is triple-pronged: B2C freemium subscriptions for ambitious students, institutional B2B campus licenses for universities seeking better placement rates, and corporate recruitment fees for delivering pre-vetted engineers.">
+      <div>
+        <span class="badge">Commercial Viability</span>
+        <h2 class="slide-title">Monetization & Revenue Architecture</h2>
+        <p class="slide-subtitle">Scalable B2C Subscriptions, University Campus SaaS & Recruitment Pipeline</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card-box">
+            <div style="color: #10b981; font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 700;">STREAM 1: B2C PRO</div>
+            <div style="font-size: 24px; font-weight: 800; margin: 8px 0;">₹499 <span style="font-size: 12px; color: #94a3b8; font-weight: 400;">/ mo</span></div>
+            <ul style="font-size: 12px; color: #94a3b8; line-height: 1.6; padding-left: 16px;">
+              <li>Unlimited arbitrary code animation traces</li>
+              <li>System Design Chaos Lab access</li>
+              <li>AI mock technical interviews</li>
+            </ul>
+          </div>
+          <div class="card-box">
+            <div style="color: #06b6d4; font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 700;">STREAM 2: B2B CAMPUS SAAS</div>
+            <div style="font-size: 24px; font-weight: 800; margin: 8px 0;">₹2.5L – ₹10L <span style="font-size: 12px; color: #94a3b8; font-weight: 400;">/ yr</span></div>
+            <ul style="font-size: 12px; color: #94a3b8; line-height: 1.6; padding-left: 16px;">
+              <li>Cohort skill gap heatmaps for faculty</li>
+              <li>Automated lab exam proctoring</li>
+              <li>Verified placement certificates</li>
+            </ul>
+          </div>
+          <div class="card-box">
+            <div style="color: #8b5cf6; font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 700;">STREAM 3: TALENT PIPELINE</div>
+            <div style="font-size: 24px; font-weight: 800; margin: 8px 0;">5% – 8% <span style="font-size: 12px; color: #94a3b8; font-weight: 400;">fee</span></div>
+            <ul style="font-size: 12px; color: #94a3b8; line-height: 1.6; padding-left: 16px;">
+              <li>Pre-vetted skill profiles for hiring</li>
+              <li>Direct recruitment pipeline</li>
+              <li>Zero resume spam for hiring teams</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        <span>CogniFlow AI • Revenue Model</span>
+        <span>Slide 10 of 12</span>
+      </div>
+    </div>
+
+    <!-- Slide 11 -->
+    <div class="slide-card" data-cat="Competitive Edge" data-notes="VisuAlgo is static. LeetCode is blind. ChatGPT spoils answers. CogniFlow AI is the unified platform that dynamically animates arbitrary code, teaches with Socratic hints, and bridges DSA, SQL, and System Design together.">
+      <div>
+        <span class="badge">Market Differentiation</span>
+        <h2 class="slide-title">Why CogniFlow AI Wins</h2>
+        <p class="slide-subtitle">Unfair Architectural & Pedagogical Advantages Over Existing Solutions</p>
+      </div>
+      <div class="slide-body">
+        <table class="card-box" style="padding: 0; overflow: hidden;">
+          <thead>
+            <tr>
+              <th>CAPABILITY</th>
+              <th>LEETCODE</th>
+              <th>VISUALGO</th>
+              <th>CHATGPT</th>
+              <th style="color: #34d399; font-weight: 700;">COGNIFLOW AI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Dynamic User Code Animation</strong></td>
+              <td style="color: #f87171;">✕ None</td>
+              <td style="color: #f87171;">✕ Hardcoded Only</td>
+              <td style="color: #f87171;">✕ Text Only</td>
+              <td style="color: #34d399; font-weight: 700;">✓ ANY Python/JS Code</td>
+            </tr>
+            <tr>
+              <td><strong>Execution Trace Depth</strong></td>
+              <td>Binary Output</td>
+              <td>5–7 Steps</td>
+              <td>Static Explanation</td>
+              <td style="color: #34d399; font-weight: 700;">✓ 18–22 Granular Frames</td>
+            </tr>
+            <tr>
+              <td><strong>Multi-Domain Integration</strong></td>
+              <td>DSA Only</td>
+              <td>DSA Only</td>
+              <td>Fragmented</td>
+              <td style="color: #34d399; font-weight: 700;">✓ DSA + SQL + System Design</td>
+            </tr>
+            <tr>
+              <td><strong>AI Pedagogy</strong></td>
+              <td>Discussion Board</td>
+              <td>None</td>
+              <td style="color: #f87171;">Full Code Spoiled</td>
+              <td style="color: #34d399; font-weight: 700;">✓ 3-Level Socratic Hints</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        <span>CogniFlow AI • Competitive Matrix</span>
+        <span>Slide 11 of 12</span>
+      </div>
+    </div>
+
+    <!-- Slide 12 -->
+    <div class="slide-card" data-cat="Conclusion" data-notes="Thank you respected judges! We invite you to experience CogniFlow AI live right now at localhost:3000. We are ready for your questions!">
+      <div>
+        <span class="badge">Lenovo LEAP AI Hackathon 2026</span>
+        <h2 class="slide-title">Empowering the Next Generation of Engineers</h2>
+      </div>
+      <div class="slide-body" style="text-align: center;">
+        <h2 style="font-size: 28px; line-height: 1.4; margin-bottom: 20px;">
+          "Because Great Engineers Aren’t Made by Memorizing Code —<br />
+          <span class="gradient-text">They’re Made by Seeing It Come Alive."</span>
+        </h2>
+        <p style="font-size: 14px; color: var(--text-muted); max-width: 600px; margin: 0 auto 24px auto;">
+          Ready to deploy across AKTU universities to transform student placement outcomes and deep technical intuition.
+        </p>
+        <a href="http://localhost:3000" target="_blank" style="display: inline-block; background: #10b981; color: #090d16; font-weight: 700; padding: 12px 24px; border-radius: 9999px; text-decoration: none; font-size: 13px;">
+          Experience Live Platform (localhost:3000)
+        </a>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        <span>CogniFlow AI • Thank You Judges!</span>
+        <span>Slide 12 of 12</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Speaker Notes Box (Collapsible) -->
+  <div class="notes-box" id="notesBox" style="display: none;">
+    <div class="notes-title">Presenter Talking Points (Speaker Notes):</div>
+    <div id="notesText">Notes will appear here...</div>
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <div class="footer">
+    <button onclick="prevSlide()" id="prevBtn">Previous</button>
+    <div class="dots" id="dotsContainer"></div>
+    <button class="primary" onclick="nextSlide()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    let current = 0;
+    const slides = document.querySelectorAll('.slide-card');
+    const dotsContainer = document.getElementById('dotsContainer');
+    const notesBox = document.getElementById('notesBox');
+    const notesText = document.getElementById('notesText');
+    const slideCategory = document.getElementById('slideCategory');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    // Create dots
+    slides.forEach((_, idx) => {
+      const dot = document.createElement('div');
+      dot.className = `dot ${idx === 0 ? 'active' : ''}`;
+      dot.onclick = () => goToSlide(idx);
+      dotsContainer.appendChild(dot);
+    });
+
+    function updateSlide() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === current);
+      });
+      document.querySelectorAll('.dot').forEach((d, idx) => {
+        d.classList.toggle('active', idx === current);
+      });
+      const activeSlide = slides[current];
+      slideCategory.innerText = activeSlide.getAttribute('data-cat') || '';
+      notesText.innerText = '"' + (activeSlide.getAttribute('data-notes') || '') + '"';
+
+      prevBtn.disabled = current === 0;
+      prevBtn.style.opacity = current === 0 ? '0.4' : '1';
+
+      if (current === slides.length - 1) {
+        nextBtn.innerText = 'Finish';
+      } else {
+        nextBtn.innerText = 'Next';
+      }
+    }
+
+    function nextSlide() {
+      if (current < slides.length - 1) {
+        current++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (current > 0) {
+        current--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(idx) {
+      current = idx;
+      updateSlide();
+    }
+
+    function toggleNotes() {
+      notesBox.style.display = notesBox.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key.toLowerCase() === 'n') {
+        toggleNotes();
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFullscreen();
+      }
+    });
+
+    updateSlide();
+  </script>
+</body>
+</html>

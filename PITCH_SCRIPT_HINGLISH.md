@@ -21,7 +21,7 @@
 > 
 > Aur jab student stuck hota hai, toh wo ChatGPT se code copy-paste karta hai. Result? Syntax toh yaad ho gaya, lekin **engineering intuition zero!**  
 > 
-> Isi massive problem ko permanently solve karne ke liye, we built: **CogniFlow AI** — The World’s First Real-Time AI Visual Learning & Cognitive Skill Diagnostic OS!"
+> Isi massive problem ko permanently solve karne ke liye, we built: **CogniFlow AI** — The Next-Generation Real-Time AI Visual Learning & Cognitive Skill Diagnostic Platform!"
 
 ---
 
@@ -115,7 +115,7 @@
 > 
 > Computer science education pichle 20 saal se sirf text aur terminal me band tha. **CogniFlow AI** ne code ko visible, interactive aur intelligent bana diya hai.  
 > 
-> Hum sirf ek tool nahi bana rahe — we are building **The Visual Operating System for Future Software Engineers!**  
+> Hum sirf ek tool nahi bana rahe — we are building **The Unified Visual Learning Platform for Future Software Engineers!**  
 > 
 > Thank you so much, judges! We are now open for your questions!"
 

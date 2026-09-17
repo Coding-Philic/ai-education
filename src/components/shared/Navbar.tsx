@@ -65,6 +65,7 @@ export default function Navbar() {
     { label: 'My Roadmap', href: '/roadmap', icon: Map, badge: 'AI' },
     { label: 'Community', href: '/community', icon: Users },
     { label: 'Admin', href: '/admin', icon: ShieldCheck, badge: 'Faculty' },
+    { label: 'Pitch Deck (PPT)', href: '/presentation', icon: Sparkles, badge: 'Deck' },
   ];
 
   return (

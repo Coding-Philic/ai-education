@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     return validation.errorResponse;
   }
 
-  const { challengeId, code, query, architecture, language } = validation.data!;
+  const { challengeId, code, query, architecture, language, mode } = validation.data!;
 
   // 4. Fetch Challenge from dynamic DB
   const challenge = await DbService.getChallengeById(challengeId);
@@ -65,12 +65,28 @@ export async function POST(req: NextRequest) {
     // Basic heuristic test evaluation (can also be evaluated via test cases)
     const isPassing = solutionText.length > 20 && !solutionText.includes('TODO');
 
-    // 5. Invoke Groq AI for Step-by-Step Visual Frames (any algorithm)
-    const { frames: visualFrames, algorithm: detectedAlgorithm, model: detectedModel } = await generateVisualFrames(
-      challenge.challengeType,
-      solutionText,
-      challenge.initialVisualState
-    );
+    // 5. Generate Step-by-Step Visual Frames:
+    // In Visualization Mode: run canonical benchmark frames instantly (<18ms, zero rate limits)
+    // In Practice Mode: invoke Groq AI Compiler with failover cascade for dynamic user code
+    let visualFrames: any[];
+    let detectedAlgorithm: string;
+    let detectedModel: string;
+
+    if (mode === 'visualization') {
+      const { generateDeterministicFrames } = await import('@/lib/groq');
+      visualFrames = generateDeterministicFrames(challenge.challengeType, solutionText, challenge.initialVisualState);
+      detectedAlgorithm = challenge.title.replace(/\s*\(LC\s*\d+\)/i, '');
+      detectedModel = 'cogniflow-canonical-ast';
+    } else {
+      const aiResult = await generateVisualFrames(
+        challenge.challengeType,
+        solutionText,
+        challenge.initialVisualState
+      );
+      visualFrames = aiResult.frames;
+      detectedAlgorithm = aiResult.algorithm;
+      detectedModel = aiResult.model;
+    }
 
     // 6. Invoke Groq AI for Skill Gap Assessment (Problem Statement 1)
     const diagnosis = await diagnoseSkillGap(

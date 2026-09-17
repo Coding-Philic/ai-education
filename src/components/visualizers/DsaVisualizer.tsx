@@ -525,7 +525,7 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
   const [visualElements, setVisualElements] = useState<any[]>(
     (challenge.initialVisualState as any)?.elements || [10, 22, 35, 47, 50, 63, 75, 88, 99]
   );
-  const [editorMode, setEditorMode] = useState<'practice' | 'visualization'>('practice');
+  const [editorMode, setEditorMode] = useState<'practice' | 'visualization'>('visualization');
   const consoleRef = useRef<HTMLDivElement>(null);
   const codeLines = code.split('\n');
 
@@ -641,7 +641,7 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
       const res = await fetch('/api/submissions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ challengeId: ch.id, code: codeToRun, language: lang }),
+        body: JSON.stringify({ challengeId: ch.id, code: codeToRun, language: lang, mode: editorMode }),
       });
 
       const elapsed = Date.now() - startTime;
@@ -804,7 +804,11 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
               <span>Practice Mode (AI Compiler)</span>
             </button>
             <button
-              onClick={() => setEditorMode('visualization')}
+              onClick={() => {
+                setEditorMode('visualization');
+                const canonical = (currentChallenge.starterCode as any)?.[lang] || (currentChallenge.starterCode as any)?.python || '';
+                if (canonical) setCode(canonical);
+              }}
               className={`px-3.5 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
                 editorMode === 'visualization'
                   ? 'bg-[#0D382B] text-white shadow-xs font-bold'
@@ -812,7 +816,7 @@ export default function DsaVisualizer({ challenge, allChallenges = [], onSelectC
               }`}
             >
               <Sliders className="w-3.5 h-3.5" />
-              <span>Visualization Mode</span>
+              <span>Visualization Mode (Locked)</span>
             </button>
           </div>
         </div>
@@ -1323,8 +1327,32 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
               </div>
             </div>
 
+            {/* Editor Mode Banner: Read-Only in Visualization Mode vs Editable in Practice Mode */}
+            {editorMode === 'visualization' ? (
+              <div className="mt-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-center justify-between text-[11px] text-amber-300 font-mono">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                  <span>🔒 Visualization Mode (Read-Only) — Benchmark Code Locked</span>
+                </span>
+                <button
+                  onClick={() => setEditorMode('practice')}
+                  className="text-emerald-400 hover:text-emerald-300 font-bold underline cursor-pointer text-[10px]"
+                >
+                  Switch to Practice Mode to edit
+                </button>
+              </div>
+            ) : (
+              <div className="mt-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-between text-[11px] text-emerald-300 font-mono">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>⚡ Practice Mode (Editable) — Write any custom code for AI compilation</span>
+                </span>
+                <span className="text-[10px] text-emerald-400/80">Groq AI Active</span>
+              </div>
+            )}
+
             {/* Editor with line numbers overlay */}
-            <div className="flex-1 mt-3 bg-[#0A0E0D] rounded-xl border border-[#1E2825] overflow-hidden relative">
+            <div className="flex-1 mt-2 bg-[#0A0E0D] rounded-xl border border-[#1E2825] overflow-hidden relative">
               {/* Line numbers + active-line highlight overlay */}
               <div aria-hidden className="absolute inset-0 overflow-hidden pointer-events-none z-10 font-mono text-xs leading-[1.6rem] pt-2 pl-2">
                 {codeLines.map((_, idx) => (
@@ -1337,14 +1365,24 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
                   </div>
                 ))}
               </div>
-              {/* Main editable textarea — wrap=off keeps line numbers in sync */}
+              {/* Main textarea: readOnly in visualization mode, fully editable in practice mode */}
               <textarea
                 value={code}
-                onChange={e => setCode(e.target.value)}
+                onChange={e => {
+                  if (editorMode === 'visualization') return;
+                  setCode(e.target.value);
+                }}
+                readOnly={editorMode === 'visualization'}
                 spellCheck={false}
                 wrap="off"
-                className="absolute inset-0 w-full h-full resize-none bg-transparent font-mono text-xs text-emerald-200 leading-[1.6rem] pt-2 pl-10 pr-3 focus:outline-none caret-[#34D399] z-20 overflow-x-auto"
-                placeholder={'# Paste or write any algorithm here\n# Binary Search, Two Pointer, Merge Sort, BFS, DP...\n# Click Run & Visualize below — AI traces every step!'}
+                className={`absolute inset-0 w-full h-full resize-none bg-transparent font-mono text-xs text-emerald-200 leading-[1.6rem] pt-2 pl-10 pr-3 focus:outline-none caret-[#34D399] z-20 overflow-x-auto ${
+                  editorMode === 'visualization' ? 'cursor-not-allowed select-text opacity-85' : ''
+                }`}
+                placeholder={
+                  editorMode === 'visualization'
+                    ? '# Visualization Mode: Benchmark algorithm is locked read-only.\n# Switch to Practice Mode above to edit or paste your own code.'
+                    : '# Practice Mode: Paste or write any algorithm here\n# Binary Search, Two Pointer, Merge Sort, BFS, DP...\n# Click Run & Visualize with AI below — AI traces every step!'
+                }
               />
             </div>
 
@@ -1355,7 +1393,13 @@ ALGORITHM ${currentChallenge.slug.replace(/-/g, '_').toUpperCase()}():
               className="mt-3 w-full py-3 rounded-full bg-[#0D382B] hover:bg-[#08261D] text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-2 transition-all disabled:opacity-60 cursor-pointer"
             >
               <Sparkles className="w-4 h-4 text-[#34D399]" />
-              <span>{loading ? 'AI Analyzing...' : 'Run & Visualize (Any Algorithm)'}</span>
+              <span>
+                {loading
+                  ? 'AI Analyzing...'
+                  : editorMode === 'practice'
+                  ? 'Run & Visualize with AI (Practice Mode)'
+                  : 'Run & Step Benchmark (Visualization Mode)'}
+              </span>
             </button>
           </div>
 

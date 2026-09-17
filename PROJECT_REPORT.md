@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-**CogniFlow AI** is an intelligent, real-time visual execution operating system designed to eradicate the "black-box" rote-learning crisis in computer science education. 
+**CogniFlow AI** is an intelligent, real-time interactive visual learning web platform designed to eradicate the "black-box" rote-learning crisis in computer science education. 
 
 While platforms like LeetCode, HackerRank, and YouTube offer vast libraries of coding challenges, they are fundamentally **blind**: they tell a student *if* their code passed or failed, but never show *how* computer memory, pointers, tree recursion stacks, and relational tables transform at every line of execution. Furthermore, existing algorithm visualizers (such as VisuAlgo) are **100% hardcoded**, breaking the moment a student alters variable names, introduces edge cases, or writes custom logic.
 
@@ -188,4 +188,4 @@ CogniFlow AI features a diversified, highly scalable multi-tiered revenue model:
 
 CogniFlow AI bridges the chasm between **writing code** and **understanding computation**. By delivering real-time, line-synchronized visual traces, deep relational execution graphics, and interactive distributed systems chaos modeling, CogniFlow empowers the next generation of software engineers to master deep technical principles from the ground up.
 
-CogniFlow AI is not just a coding tool — it is **The Visual Operating System for Computer Science Education**.
+CogniFlow AI is not just a coding tool — it is **The Unified Visual Learning Platform for Computer Science Education**.

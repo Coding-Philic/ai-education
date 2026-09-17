@@ -1,6 +1,6 @@
 # CogniFlow AI: Project Architecture Blueprint
 
-**Project Title:** CogniFlow AI — Real-Time Visual Education & Adaptive Skill Gap Operating System  
+**Project Title:** CogniFlow AI — Real-Time Visual Education & Adaptive Skill Gap Web Platform  
 **Hackathon Target:** Lenovo LEAP AI Hackathon 2026 (AKTU Lucknow)  
 **Theme:** AI in Education & Skilling — Problem Statement 1 (Learning Gaps, Weakness Identification & Individualized Study Plans)  
 **Benchmark Archetypes:** Masterji Platform Tour ([YouTube: I4HEpowCM20](https://youtu.be/I4HEpowCM20)), Chai SQLab ([YouTube: MhLycECL_Ec](https://youtu.be/MhLycECL_Ec)), ChaiCode DSA Visualizer ([dsa.chaicode.com](https://dsa.chaicode.com))

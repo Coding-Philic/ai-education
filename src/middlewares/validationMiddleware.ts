@@ -33,6 +33,7 @@ export const SubmissionSchema = z.object({
   query: z.string().optional(),
   architecture: z.any().optional(),
   language: z.string().default('python'),
+  mode: z.string().optional(),
 });
 
 export const ChallengeCreateSchema = z.object({
