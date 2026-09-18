@@ -3,7 +3,7 @@
 
 **Event:** Lenovo LEAP AI Hackathon 2026  
 **Theme:** Generative AI in Education, Deep Tech Skilling & Personalized Pedagogy  
-**Platform URL:** `http://localhost:3000`  
+**Platform URL:** [cogniflow-iwz0n9rsm-coding-philics-projects.vercel.app](https://cogniflow-iwz0n9rsm-coding-philics-projects.vercel.app)  
 **Repository:** [Coding-Philic/ai-education](https://github.com/Coding-Philic/ai-education)  
 **Target Audience:** Computer Science & Engineering Students, Technical Universities (Tier 1/2/3), Technical Recruiters, Self-Taught Developers  
 

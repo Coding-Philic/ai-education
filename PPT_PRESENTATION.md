@@ -2,7 +2,7 @@
 ## Pitch Deck for Lenovo LEAP AI Hackathon 2026
 
 **Track:** Generative AI & Deep Tech Skilling in Education  
-**Platform URL:** `http://localhost:3000`  
+**Platform URL:** [cogniflow-iwz0n9rsm-coding-philics-projects.vercel.app](https://cogniflow-iwz0n9rsm-coding-philics-projects.vercel.app)  
 **Format:** 12-Slide Pitch Deck (Ready for Canva, Google Slides, or Keynote)  
 **Target Time:** 4 to 5 Minutes Presentation + Live Demo  
 
@@ -82,7 +82,7 @@ To ensure your presentation perfectly matches the CogniFlow AI website theme, us
 ### Slide 5: Live Demonstration — DSA Visual Trace
 * **Slide Title:** **LIVE DEMO: DSA Dynamic Visualizer**
 * **[LIVE DEMO TRANSITION CUE]**
-* **Demo Steps on Screen (at `localhost:3000`):**
+* **Demo Steps on Screen (Live Vercel Production):**
   1. Open challenge: *Two Sum II: Input Array Is Sorted (LC 167)* or *Symmetric Tree (LC 101)*.
   2. Show custom Python/JS code in the editor.
   3. Click **"Run & Visualize (Any Algorithm)"**.
@@ -185,4 +185,4 @@ To ensure your presentation perfectly matches the CogniFlow AI website theme, us
 * **Closing Tagline:**
   *"CogniFlow AI: Because Great Engineers Aren't Made by Memorizing Code — They're Made by Seeing It Come Alive."*
 * **Presenter Talking Points:**
-  > *"Thank you judges! We invite you to experience CogniFlow AI live right now at localhost:3000. We are ready for your questions!"*
+  > *"Thank you judges! We invite you to experience CogniFlow AI live right now at cogniflow-iwz0n9rsm-coding-philics-projects.vercel.app. We are ready for your questions!"*
